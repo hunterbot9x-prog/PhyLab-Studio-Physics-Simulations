@@ -200,7 +200,9 @@ export default function App() {
       case 'g12-diffraction-grating': comp = <DiffractionGratingSimulator {...commonProps} />; break;
       case 'alevel-young':
       case 'g12-young': comp = <YoungInterferenceSimulator {...commonProps} />; break;
+      case 'alevel-photoelectric':
       case 'g12-photoelectric': comp = <PhotoelectricSimulator {...commonProps} />; break;
+      case 'alevel-radioactive':
       case 'g12-radioactive': comp = <RadioactiveSimulator {...commonProps} />; break;
       default: comp = <ArchimedesSimulator {...commonProps} />; break;
     }

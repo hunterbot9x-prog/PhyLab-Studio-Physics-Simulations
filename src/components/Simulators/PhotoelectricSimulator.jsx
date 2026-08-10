@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Zap, Sparkles, Activity } from 'lucide-react';
 
-export default function PhotoelectricSimulator({ lang, params, onParamChange, onDataRecorded }) {
+export default function PhotoelectricSimulator({ lang, params = {}, onParamChange, onDataRecorded }) {
   const isEn = lang === 'en';
   const canvasRef = useRef(null);
 
