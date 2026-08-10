@@ -80,6 +80,17 @@ export default function App() {
 
   const handleToggleLang = () => setLang(prev => (prev === 'vi' ? 'en' : 'vi'));
 
+  const getCategoryLabel = (catKey) => {
+    switch (catKey) {
+      case 'Cơ học': return t.catMechanics;
+      case 'Quang học': return t.catOptics;
+      case 'Điện - Từ': return t.catElectricity;
+      case 'Nhiệt học': return t.catThermodynamics;
+      case 'Vật lý Hiện đại': return t.catModernPhysics;
+      default: return catKey;
+    }
+  };
+
   const filteredExperiments = EXPERIMENTS_DATA.filter((exp) => {
     const matchesGrade = selectedGrade === 'all' || String(exp.grade) === String(selectedGrade);
     const matchesCategory = selectedCategory === 'all' || exp.category === selectedCategory;
