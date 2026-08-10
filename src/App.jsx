@@ -56,7 +56,7 @@ export default function App() {
   const t = TRANSLATIONS[lang] || TRANSLATIONS.vi;
 
   const [selectedGrade, setSelectedGrade] = useState('all');
-  const [selectedCategory, setSelectedCategory] = useState(t.allCategories);
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeExpId, setActiveExpId] = useState('g6-archimedes');
   const [activeMode, setActiveMode] = useState('free'); // 'free' | 'guided'
@@ -80,24 +80,9 @@ export default function App() {
 
   const handleToggleLang = () => setLang(prev => (prev === 'vi' ? 'en' : 'vi'));
 
-  const getCategoryLabel = (catKey) => {
-    switch (catKey) {
-      case 'Cơ học': return t.catMechanics;
-      case 'Quang học': return t.catOptics;
-      case 'Điện - Từ': return t.catElectricity;
-      case 'Nhiệt học': return t.catThermodynamics;
-      case 'Vật lý Hiện đại': return t.catModernPhysics;
-      default: return catKey;
-    }
-  };
-
   const filteredExperiments = EXPERIMENTS_DATA.filter((exp) => {
     const matchesGrade = selectedGrade === 'all' || String(exp.grade) === String(selectedGrade);
-
-    let matchesCategory = true;
-    if (selectedCategory !== t.allCategories) {
-      matchesCategory = getCategoryLabel(exp.category) === selectedCategory;
-    }
+    const matchesCategory = selectedCategory === 'all' || exp.category === selectedCategory;
 
     const titleStr = lang === 'en' ? (exp.titleEn || exp.title) : exp.title;
     const subStr = lang === 'en' ? (exp.subtitleEn || exp.subtitle) : exp.subtitle;
