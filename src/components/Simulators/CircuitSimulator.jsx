@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Zap, ToggleLeft, ToggleRight, RotateCcw, Activity } from 'lucide-react';
 
-export default function CircuitSimulator({ lang, params, onParamChange, onDataRecorded }) {
+export default function CircuitSimulator({ lang, params = {}, onParamChange, onDataRecorded }) {
   const isEn = lang === 'en';
   const canvasRef = useRef(null);
   const [animOffset, setAnimOffset] = useState(0);

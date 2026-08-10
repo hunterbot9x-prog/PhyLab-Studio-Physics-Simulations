@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Activity, Play, RotateCcw, ShieldCheck } from 'lucide-react';
 
-export default function VerticalSpringSimulator({ lang, params, onParamChange, onDataRecorded }) {
+export default function VerticalSpringSimulator({ lang, params = {}, onParamChange, onDataRecorded }) {
   const isEn = lang === 'en';
   const canvasRef = useRef(null);
   const animRef = useRef(null);

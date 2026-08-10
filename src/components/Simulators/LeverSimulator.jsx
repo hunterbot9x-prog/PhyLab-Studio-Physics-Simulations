@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Scale, RotateCcw, CheckCircle2 } from 'lucide-react';
 
-export default function LeverSimulator({ lang, params, onParamChange, onDataRecorded }) {
+export default function LeverSimulator({ lang, params = {}, onParamChange, onDataRecorded }) {
   const isEn = lang === 'en';
   const canvasRef = useRef(null);
 

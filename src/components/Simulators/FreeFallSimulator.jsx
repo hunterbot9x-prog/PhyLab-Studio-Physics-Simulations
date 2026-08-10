@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowDown, Play, RotateCcw, ShieldCheck, Wind } from 'lucide-react';
 
-export default function FreeFallSimulator({ lang, params, onParamChange, onDataRecorded }) {
+export default function FreeFallSimulator({ lang, params = {}, onParamChange, onDataRecorded }) {
   const isEn = lang === 'en';
   const canvasRef = useRef(null);
   const animRef = useRef(null);

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Sun, ShieldCheck } from 'lucide-react';
 
-export default function SphericalMirrorSimulator({ lang, params, onParamChange, onDataRecorded }) {
+export default function SphericalMirrorSimulator({ lang, params = {}, onParamChange, onDataRecorded }) {
   const isEn = lang === 'en';
   const canvasRef = useRef(null);
 

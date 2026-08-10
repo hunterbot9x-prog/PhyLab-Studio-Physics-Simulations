@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Play, Pause, RotateCcw, Plus, Activity, Sliders } from 'lucide-react';
 import { TRANSLATIONS } from '../../i18n/translations';
 
-export default function Newton2Simulator({ lang, params, onParamChange, onDataRecorded }) {
+export default function Newton2Simulator({ lang, params = {}, onParamChange, onDataRecorded }) {
   const isEn = lang === 'en';
   const canvasRef = useRef(null);
   const [isRunning, setIsRunning] = useState(false);
