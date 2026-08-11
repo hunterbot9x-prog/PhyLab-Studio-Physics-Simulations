@@ -4,9 +4,8 @@ import { Zap, ToggleLeft, ToggleRight, RotateCcw, Activity } from 'lucide-react'
 export default function CircuitSimulator({ lang, params = {}, onParamChange, onDataRecorded }) {
   const isEn = lang === 'en';
   const canvasRef = useRef(null);
-  const [animOffset, setAnimOffset] = useState(0);
 
-  const voltage = params.voltage !== undefined ? params.voltage : 12; // Volts
+  const voltage = params.voltage !== undefined ? params.voltage : 6; // Volts
   const r1 = params.r1 || 10; // Ohms
   const r2 = params.r2 || 20; // Ohms
   const circuitType = params.circuitType || 'series'; // 'series' | 'parallel'
@@ -39,95 +38,340 @@ export default function CircuitSimulator({ lang, params = {}, onParamChange, onD
     }
   }
 
-  // Animation Loop for Current Electrons
+  // 60 FPS Physics & Wiring Canvas Renderer
   useEffect(() => {
-    if (!isSwitchClosed || totalCurrent === 0) return;
-    const interval = setInterval(() => {
-      setAnimOffset(prev => (prev + Math.min(6, totalCurrent * 2)) % 30);
-    }, 40);
-    return () => clearInterval(interval);
-  }, [isSwitchClosed, totalCurrent]);
+    let animId;
+    let time = 0;
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const width = canvas.width;
-    const height = canvas.height;
+    const render = () => {
+      time += 0.03;
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
 
-    ctx.clearRect(0, 0, width, height);
+      ctx.clearRect(0, 0, w, h);
 
-    // Dark Background
-    const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
-    bgGrad.addColorStop(0, '#090d16');
-    bgGrad.addColorStop(1, '#020408');
-    ctx.fillStyle = bgGrad;
-    ctx.fillRect(0, 0, width, height);
+      // Dark Background
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+      bgGrad.addColorStop(0, '#040914');
+      bgGrad.addColorStop(1, '#02040a');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, w, h);
 
-    // Grid
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
-    ctx.lineWidth = 1;
-    for (let x = 0; x < width; x += 30) {
-      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
-    }
-    for (let y = 0; y < height; y += 30) {
-      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
-    }
+      // Grid
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < w; x += 30) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+      }
+      for (let y = 0; y < h; y += 30) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+      }
 
-    const cX = width * 0.5;
-    const cY = height * 0.5;
+      const cX = w * 0.5;
+      const cY = h * 0.5 + 5;
 
-    // Draw Wires
-    ctx.strokeStyle = isSwitchClosed && totalCurrent > 0 ? '#38bdf8' : '#475569';
-    ctx.lineWidth = 3;
+      const isLive = isSwitchClosed && totalCurrent > 0;
+      const wireColor = isLive ? '#38bdf8' : '#475569';
+
+      // --- 1. TITLE & STATUS BANNER ---
+      ctx.fillStyle = isLive ? '#10b981' : '#f43f5e';
+      ctx.font = 'extrabold 13px Inter';
+      ctx.textAlign = 'center';
+      ctx.fillText(
+        isLive
+          ? (isEn
+              ? `🟢 CLOSED CIRCUIT (${circuitType === 'series' ? 'SERIES' : 'PARALLEL'}): Total I = ${totalCurrent.toFixed(2)}A | R_eq = ${totalResistance.toFixed(1)}Ω`
+              : `🟢 MẠCH KÍN (${circuitType === 'series' ? 'GẮN NỐI TIẾP' : 'GẮN SONG SONG'}): Cường độ I_tổng = ${totalCurrent.toFixed(2)}A | R_tương đương = ${totalResistance.toFixed(1)}Ω`)
+          : (isEn ? '🔴 OPEN CIRCUIT (SWITCH K OPEN): Current I = 0.00A' : '🔴 MẠCH HỞ (CÔNG TẮC K NGẮT): Cường độ I = 0.00A'),
+        cX,
+        28
+      );
+
+
+      // --- 2. CIRCUIT WIRING LAYOUT (SERIES VS PARALLEL) ---
+      if (circuitType === 'series') {
+        // --- SERIES CIRCUIT TOPOLOGY ---
+        const sW = 360;
+        const sH = 200;
+        const sL = cX - sW / 2;
+        const sR = cX + sW / 2;
+        const sT = cY - sH / 2;
+        const sB = cY + sH / 2;
+
+        // Series Wire Loop
+        ctx.strokeStyle = wireColor;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.roundRect(sL, sT, sW, sH, 14);
+        ctx.stroke();
+
+        // Animated Electrons along Series Loop
+        if (isLive) {
+          drawElectronsOnPath(ctx, [
+            { x: sL, y: sB }, { x: sL, y: sT }, { x: sR, y: sT }, { x: sR, y: sB }, { x: sL, y: sB }
+          ], totalCurrent, time);
+        }
+
+        // Resistor R1 (Top Wire Left)
+        drawResistor(ctx, cX - 100, sT, r1, 'R₁', '#f59e0b', v1, i1);
+
+        // Resistor R2 (Top Wire Right)
+        drawResistor(ctx, cX + 35, sT, r2, 'R₂', '#f59e0b', v2, i2);
+
+        // DC Voltage Source (Bottom Wire)
+        drawBattery(ctx, cX, sB, voltage);
+
+        // Switch K (Left Wire)
+        drawSwitch(ctx, sL, cY, isSwitchClosed);
+
+        // Ammeter A (Right Wire)
+        drawAmmeter(ctx, sR, cY, totalCurrent, 'A_tổng');
+
+      } else {
+        // --- PARALLEL CIRCUIT TOPOLOGY ---
+        const mainW = 380;
+        const mainH = 220;
+        const mL = cX - mainW / 2;
+        const mR = cX + mainW / 2;
+        const mT = cY - mainH / 2;
+        const mB = cY + mainH / 2;
+
+        const nodeA_x = cX - 110; // Junction Node A (Left)
+        const nodeB_x = cX + 110; // Junction Node B (Right)
+
+        const branch1_y = cY - 55; // Top Branch (R1)
+        const branch2_y = cY + 25; // Bottom Branch (R2)
+
+        // 2a. Main Circuit Outer Loop Wires
+        ctx.strokeStyle = wireColor;
+        ctx.lineWidth = 3;
+
+        // Bottom battery wire + sides up to nodes
+        ctx.beginPath();
+        ctx.moveTo(nodeA_x, branch1_y);
+        ctx.lineTo(mL, branch1_y);
+        ctx.lineTo(mL, mB);
+        ctx.lineTo(mR, mB);
+        ctx.lineTo(mR, branch1_y);
+        ctx.lineTo(nodeB_x, branch1_y);
+        ctx.stroke();
+
+        // 2b. Parallel Branch Wires between Node A and Node B
+        // Top Branch 1 (R1)
+        ctx.beginPath();
+        ctx.moveTo(nodeA_x, branch1_y);
+        ctx.lineTo(nodeB_x, branch1_y);
+        ctx.stroke();
+
+        // Bottom Branch 2 (R2)
+        ctx.beginPath();
+        ctx.moveTo(nodeA_x, branch2_y);
+        ctx.lineTo(nodeB_x, branch2_y);
+        ctx.stroke();
+
+        // Connect Node A & Node B vertical trunk lines
+        ctx.beginPath();
+        ctx.moveTo(nodeA_x, branch1_y);
+        ctx.lineTo(nodeA_x, branch2_y);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(nodeB_x, branch1_y);
+        ctx.lineTo(nodeB_x, branch2_y);
+        ctx.stroke();
+
+
+        // 2c. Animated Electrons in Parallel Branches
+        if (isLive) {
+          // Main loop electrons (Total Current I)
+          drawElectronsOnPath(ctx, [
+            { x: mL, y: mB }, { x: mL, y: branch1_y }, { x: nodeA_x, y: branch1_y }
+          ], totalCurrent, time);
+
+          drawElectronsOnPath(ctx, [
+            { x: nodeB_x, y: branch1_y }, { x: mR, y: branch1_y }, { x: mR, y: mB }, { x: cX, y: mB }
+          ], totalCurrent, time);
+
+          // Branch 1 electrons (I1)
+          drawElectronsOnPath(ctx, [
+            { x: nodeA_x, y: branch1_y }, { x: nodeB_x, y: branch1_y }
+          ], i1, time * 1.1);
+
+          // Branch 2 electrons (I2)
+          drawElectronsOnPath(ctx, [
+            { x: nodeA_x, y: branch1_y }, { x: nodeA_x, y: branch2_y }, { x: nodeB_x, y: branch2_y }, { x: nodeB_x, y: branch1_y }
+          ], i2, time * 0.9);
+        }
+
+
+        // 2d. Resistors in Parallel Branches
+        // Branch 1 Resistor R1
+        drawResistor(ctx, cX - 35, branch1_y, r1, 'R₁', '#f59e0b', v1, i1);
+
+        // Branch 2 Resistor R2
+        drawResistor(ctx, cX - 35, branch2_y, r2, 'R₂', '#38bdf8', v2, i2);
+
+
+        // 2e. Junction Nodes A & B (Point Nút A & Nút B)
+        [ { x: nodeA_x, y: branch1_y, name: 'Nút A' },
+          { x: nodeA_x, y: branch2_y, name: '' },
+          { x: nodeB_x, y: branch1_y, name: 'Nút B' },
+          { x: nodeB_x, y: branch2_y, name: '' }
+        ].forEach(node => {
+          ctx.fillStyle = '#00f2fe';
+          ctx.shadowColor = '#00f2fe';
+          ctx.shadowBlur = 8;
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, 5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          if (node.name) {
+            ctx.fillStyle = '#00f2fe';
+            ctx.font = 'bold 11px Inter';
+            ctx.textAlign = node.name === 'Nút A' ? 'right' : 'left';
+            ctx.fillText(node.name, node.x + (node.name === 'Nút A' ? -8 : 8), node.y - 8);
+          }
+        });
+
+
+        // DC Voltage Source (Bottom Wire)
+        drawBattery(ctx, cX, mB, voltage);
+
+        // Switch K (Left Wire)
+        drawSwitch(ctx, mL, cY, isSwitchClosed);
+
+        // Main Ammeter A (Right Wire)
+        drawAmmeter(ctx, mR, cY, totalCurrent, 'A_tổng');
+      }
+
+      animId = requestAnimationFrame(render);
+    };
+
+    animId = requestAnimationFrame(render);
+    return () => cancelAnimationFrame(animId);
+  }, [voltage, r1, r2, circuitType, isSwitchClosed, totalCurrent, v1, v2, i1, i2, totalResistance, isEn]);
+
+  // Helper: Draw Resistor Component Box
+  const drawResistor = (ctx, x, y, rVal, label, color, vVal, iVal) => {
+    ctx.fillStyle = '#0f172a';
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.roundRect(cX - 180, cY - 110, 360, 220, 16);
+    ctx.roundRect(x - 35, y - 14, 70, 28, 6);
+    ctx.fill();
     ctx.stroke();
 
-    // DC Battery Symbol
-    ctx.fillStyle = '#1e293b';
+    ctx.fillStyle = color;
+    ctx.font = 'extrabold 11px Inter';
+    ctx.textAlign = 'center';
+    ctx.fillText(`${label}: ${rVal}Ω`, x, y + 4);
+
+    if (iVal > 0) {
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = 'bold 9px Inter';
+      ctx.fillText(`${vVal.toFixed(1)}V | ${iVal.toFixed(2)}A`, x, y - 18);
+    }
+  };
+
+  // Helper: Draw DC Battery Source
+  const drawBattery = (ctx, x, y, volts) => {
+    ctx.fillStyle = '#0f172a';
     ctx.strokeStyle = '#00f2fe';
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.roundRect(cX - 35, cY + 110 - 15, 70, 30, 6);
-    ctx.fill(); ctx.stroke();
+    ctx.roundRect(x - 40, y - 15, 80, 30, 6);
+    ctx.fill();
+    ctx.stroke();
 
     ctx.fillStyle = '#00f2fe';
-    ctx.font = 'bold 11px Inter';
+    ctx.font = 'extrabold 12px Inter';
     ctx.textAlign = 'center';
-    ctx.fillText(`${voltage}V DC`, cX, cY + 110 + 4);
+    ctx.fillText(`${volts}V DC`, x, y + 4);
+  };
 
-    // Resistors
-    ctx.fillStyle = '#334155';
-    ctx.strokeStyle = '#f59e0b';
+  // Helper: Draw Switch K
+  const drawSwitch = (ctx, x, y, isClosed) => {
+    ctx.fillStyle = '#0f172a';
+    ctx.strokeStyle = isClosed ? '#10b981' : '#f43f5e';
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.roundRect(cX - 100, cY - 110 - 15, 70, 30, 6);
-    ctx.fill(); ctx.stroke();
-    ctx.fillStyle = '#f59e0b';
-    ctx.fillText(`R₁: ${r1}Ω`, cX - 65, cY - 110 + 4);
+    ctx.arc(x, y, 16, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
 
-    ctx.fillStyle = '#334155';
-    ctx.strokeStyle = '#f59e0b';
-    ctx.beginPath();
-    ctx.roundRect(cX + 30, cY - 110 - 15, 70, 30, 6);
-    ctx.fill(); ctx.stroke();
-    ctx.fillStyle = '#f59e0b';
-    ctx.fillText(`R₂: ${r2}Ω`, cX + 65, cY - 110 + 4);
-
-    // Current Value Badge
-    ctx.fillStyle = isSwitchClosed ? '#10b981' : '#f43f5e';
-    ctx.font = 'bold 13px Inter';
+    ctx.fillStyle = isClosed ? '#10b981' : '#f43f5e';
+    ctx.font = 'extrabold 11px Inter';
     ctx.textAlign = 'center';
-    ctx.fillText(
-      isSwitchClosed
-        ? (isEn ? `🟢 CLOSED CIRCUIT: Total Current I = ${totalCurrent.toFixed(2)}A` : `🟢 MẠCH KÍN: Cường độ dòng I = ${totalCurrent.toFixed(2)}A`)
-        : (isEn ? '🔴 OPEN CIRCUIT (SWITCH K OPEN): Current I = 0.00A' : '🔴 MẠCH HỞ (CÔNG TẮC K NGẮT): Cường độ I = 0.00A'),
-      cX,
-      35
-    );
+    ctx.fillText('K', x, y + 4);
+  };
 
-  }, [voltage, r1, r2, circuitType, isSwitchClosed, totalCurrent, isEn]);
+  // Helper: Draw Ammeter A
+  const drawAmmeter = (ctx, x, y, current, label) => {
+    ctx.fillStyle = '#0f172a';
+    ctx.strokeStyle = '#10b981';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(x, y, 18, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = '#10b981';
+    ctx.font = 'extrabold 11px Inter';
+    ctx.textAlign = 'center';
+    ctx.fillText('A', x, y + 4);
+
+    ctx.fillStyle = '#34d399';
+    ctx.font = 'bold 10px Inter';
+    ctx.fillText(`${current.toFixed(2)}A`, x + 35, y + 4);
+  };
+
+  // Helper: Draw Animated Flowing Electron Dots along a polyline path
+  const drawElectronsOnPath = (ctx, points, current, time) => {
+    if (points.length < 2 || current <= 0) return;
+
+    ctx.fillStyle = '#00f5d4';
+    ctx.shadowColor = '#00f5d4';
+    ctx.shadowBlur = 6;
+
+    // Calculate segments
+    let totalLen = 0;
+    const segments = [];
+    for (let i = 0; i < points.length - 1; i++) {
+      const p1 = points[i];
+      const p2 = points[i + 1];
+      const len = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+      segments.push({ p1, p2, len, startDist: totalLen });
+      totalLen += len;
+    }
+
+    if (totalLen === 0) return;
+
+    const particleSpacing = 28;
+    const particleCount = Math.floor(totalLen / particleSpacing);
+    const speed = Math.min(4, current * 1.5);
+
+    for (let p = 0; p < particleCount; p++) {
+      const dist = (p * particleSpacing + time * speed * 30) % totalLen;
+
+      // Find segment
+      const seg = segments.find(s => dist >= s.startDist && dist <= s.startDist + s.len);
+      if (seg && seg.len > 0) {
+        const segProgress = (dist - seg.startDist) / seg.len;
+        const px = seg.p1.x + (seg.p2.x - seg.p1.x) * segProgress;
+        const py = seg.p1.y + (seg.p2.y - seg.p1.y) * segProgress;
+
+        ctx.beginPath();
+        ctx.arc(px, py, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    ctx.shadowBlur = 0;
+  };
 
   const recordPoint = () => {
     onDataRecorded?.({
@@ -254,10 +498,22 @@ export default function CircuitSimulator({ lang, params = {}, onParamChange, onD
               <span className="text-emerald-400 font-bold text-sm">{totalCurrent.toFixed(2)} A</span>
             </div>
 
+            {/* Individual Branch Readings for Parallel / Series */}
+            <div className="col-span-2 grid grid-cols-2 gap-2">
+              <div className="bg-slate-950 p-2 rounded-lg border border-slate-800">
+                <span className="text-slate-400 block text-[10px]">R₁ (V₁, I₁):</span>
+                <span className="text-cyan-400 font-bold text-xs">{v1.toFixed(1)}V | {i1.toFixed(2)}A</span>
+              </div>
+              <div className="bg-slate-950 p-2 rounded-lg border border-slate-800">
+                <span className="text-slate-400 block text-[10px]">R₂ (V₂, I₂):</span>
+                <span className="text-cyan-400 font-bold text-xs">{v2.toFixed(1)}V | {i2.toFixed(2)}A</span>
+              </div>
+            </div>
+
             <div className="col-span-2 bg-cyan-950/40 p-3 rounded-lg border border-cyan-800/50 flex justify-between items-center">
               <div>
                 <span className="text-cyan-300 font-semibold block text-xs">{isEn ? "Ohm's Formula:" : 'Công thức Ohm:'}</span>
-                <span className="text-slate-400 text-[10px]">I = U / R_eq</span>
+                <span className="text-slate-400 text-[10px]">{circuitType === 'series' ? 'R_eq = R1 + R2' : '1/R_eq = 1/R1 + 1/R2'}</span>
               </div>
               <span className="text-cyan-400 font-extrabold text-base">
                 {voltage}V / {totalResistance.toFixed(1)}Ω = {totalCurrent.toFixed(2)}A
