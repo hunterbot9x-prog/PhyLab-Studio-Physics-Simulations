@@ -170,7 +170,7 @@ export default function Header({
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-xs shadow-md shadow-violet-600/20 transition-all active:scale-95 border border-violet-400/30"
           >
             <Sparkles className="w-4 h-4 text-amber-300 animate-pulse" />
-            <span>{isEn ? 'AI Physics Tutor' : 'Trợ lý AI Vật lý'}</span>
+            <span>{isEn ? 'Physics Assistant' : 'Trợ lý hỗ trợ vật lý'}</span>
           </button>
 
           {/* Noise / Experimental Error Toggle */}

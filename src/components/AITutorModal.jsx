@@ -284,7 +284,7 @@ export default function AITutorModal({ experiment, onClose, lang }) {
           {isTyping && (
             <div className="flex items-center gap-2 text-xs text-slate-400 italic bg-slate-900/60 p-2.5 rounded-xl w-fit border border-slate-800">
               <RefreshCw className="w-3.5 h-3.5 animate-spin text-violet-400" />
-              {isEn ? 'AI Physics Tutor is thinking...' : 'Trợ lý AI Vật lý đang suy luận câu trả lời...'}
+              {isEn ? 'Physics Assistant is thinking...' : 'Trợ lý hỗ trợ vật lý đang suy luận câu trả lời...'}
             </div>
           )}
 
