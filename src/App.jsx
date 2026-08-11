@@ -55,6 +55,7 @@ export default function App() {
   const [lang, setLang] = useState('vi'); // 'vi' | 'en'
   const t = TRANSLATIONS[lang] || TRANSLATIONS.vi;
 
+  const [theme, setTheme] = useState('cyber'); // 'cyber' | 'space' | 'light' | 'gold'
   const [selectedGrade, setSelectedGrade] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -233,7 +234,12 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-950">
+    <div className={`min-h-screen flex flex-col font-sans selection:bg-cyan-500 selection:text-slate-950 transition-colors duration-300 ${
+      theme === 'light' ? 'bg-slate-100 text-slate-900' :
+      theme === 'space' ? 'bg-[#02040a] text-slate-100' :
+      theme === 'gold' ? 'bg-[#0c0a09] text-stone-100' :
+      'bg-slate-950 text-slate-100'
+    }`}>
       {/* Top Header Controls */}
       <Header
         lang={lang}
@@ -246,6 +252,8 @@ export default function App() {
         onSearchChange={setSearchQuery}
         activeMode={activeMode}
         onToggleMode={() => setActiveMode(prev => (prev === 'free' ? 'guided' : 'free'))}
+        theme={theme}
+        onSelectTheme={setTheme}
       />
 
       {/* Main Content Area */}
