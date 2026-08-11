@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Play, Pause, RotateCcw, Plus, Zap, Layers } from 'lucide-react';
+import { Play, Pause, RotateCcw, Plus, Zap, Layers, Activity, Info, ArrowDown, ArrowUp } from 'lucide-react';
 
 export default function CapacitorSimulator({ lang, params = {}, onParamChange, onDataRecorded }) {
   const isEn = lang === 'en';
@@ -30,6 +30,25 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
     { name: isEn ? 'Water (ε = 80)' : 'Nước cất (ε = 80)', eps: 80.0, color: 'rgba(14, 165, 233, 0.5)' }
   ];
 
+  // Dynamic Physics Explanation Text Generator
+  const getPhysicsDescription = () => {
+    if (voltage === 0) {
+      return isEn
+        ? "⚡ [U = 0V] Source voltage is OFF. No electrostatic charge is accumulated on plates (Q = 0, E = 0)."
+        : "⚡ [U = 0V] Nguồn chưa cấp điện áp. Hai bản cực chưa tích điện tĩnh (Q = 0 nC, Cường độ E = 0 kV/m).";
+    }
+
+    if (dielectricEps > 1.0) {
+      return isEn
+        ? `⚛️ [Dielectric Polarization ε = ${dielectricEps}] Inserting ${dielectricPresets.find(p=>p.eps===dielectricEps)?.name} causes Atomic Dipole Polarization inside dielectric slab. Dipole reverse field reduces total E-field, boosting capacitance by ${dielectricEps}x to ${capacitancePf.toFixed(2)} pF!`
+        : `⚛️ [Phân cực điện môi ε = ${dielectricEps}] Lớp điện môi bị phân cực lưỡng cực nguyên tử (Atomic Dipoles). Điện trường ngược do các lưỡng cực tạo ra giảm bớt E-thực tế, giúp tụ điện nạp gấp ${dielectricEps} lần điện tích (Q = ${chargeNc.toFixed(2)} nC) và năng lượng W = ${energyUj.toFixed(3)} µJ!`;
+    }
+
+    return isEn
+      ? `⚡ [Charging & E-Field] Voltage U = ${voltage}V drives electrons onto bottom plate (-), accumulating Q = ${chargeNc.toFixed(2)} nC. Uniform electric field E = U/d = ${electricFieldEv.toFixed(2)} kV/m forms between plates.`
+      : `⚡ [Tích điện & Điện trường] Điện áp U = ${voltage}V đẩy các hạt electron di chuyển tích tụ trên bản cực âm (-), tạo điện tích Q = ${chargeNc.toFixed(2)} nC. Giữa 2 bản hình thành điện trường đều E = U/d = ${electricFieldEv.toFixed(2)} kV/m hướng từ bản (+) sang bản (-).`;
+  };
+
   // 60 FPS Canvas Physics Renderer
   useEffect(() => {
     let animId;
@@ -59,7 +78,7 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
         ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
       }
       for (let y = 0; y < h; y += 30) {
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, h); ctx.stroke();
       }
 
       const centerX = 390;
@@ -219,11 +238,11 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
       ctx.fillText(`d = ${separationMm}mm`, dimX + 10, centerY + 4);
 
 
-      // --- 5. DC POWER SUPPLY & WIRING ---
+      // --- 5. DC POWER SUPPLY & ANIMATED WIRES ELECTRONS ---
       const psuX = 100;
       const psuY = centerY;
 
-      // Battery / Power Supply Unit Casing
+      // Battery Casing
       ctx.fillStyle = '#0f172a';
       ctx.strokeStyle = '#00f2fe';
       ctx.lineWidth = 2;
@@ -232,7 +251,7 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
       ctx.fill();
       ctx.stroke();
 
-      // Digital LED Display in Power Supply
+      // Digital LED Display
       ctx.fillStyle = '#022c22';
       ctx.fillRect(psuX - 35, psuY - 28, 70, 24);
       ctx.fillStyle = '#10b981';
@@ -264,8 +283,31 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
       ctx.lineTo(centerX - plateWidth / 2, bottomPlateY);
       ctx.stroke();
 
+      // Flowing Electron Particles along Wires when U > 0
+      if (voltage > 0) {
+        ctx.fillStyle = '#00f5d4';
+        ctx.shadowColor = '#00f5d4';
+        ctx.shadowBlur = 6;
+        const eSpeed = Math.min(3, voltage * 0.25);
 
-      // --- 6. REALTIME PHYSICS TITLE & HUD BANNER ---
+        // Electrons flowing into bottom plate (-)
+        for (let e = 0; e < 6; e++) {
+          const dist = (e * 35 + time * eSpeed * 25) % 180;
+          let ex, ey;
+          if (dist < 80) {
+            ex = psuX; ey = psuY + 40 + dist;
+          } else {
+            ex = psuX + (dist - 80); ey = bottomPlateY;
+          }
+          if (ex <= centerX - plateWidth / 2) {
+            ctx.beginPath(); ctx.arc(ex, ey, 2.5, 0, Math.PI * 2); ctx.fill();
+          }
+        }
+        ctx.shadowBlur = 0;
+      }
+
+
+      // --- 6. REALTIME PHYSICS TITLE BANNER ---
       ctx.fillStyle = '#00f2fe';
       ctx.font = 'extrabold 13px Inter';
       ctx.textAlign = 'center';
@@ -274,7 +316,7 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
           ? `CAPACITANCE C = ${capacitancePf.toFixed(2)} pF | CHARGE Q = ${chargeNc.toFixed(2)} nC | ENERGY W = ${energyUj.toFixed(3)} µJ`
           : `ĐIỆN DUNG C = ${capacitancePf.toFixed(2)} pF | ĐIỆN TÍCH Q = ${chargeNc.toFixed(2)} nC | NĂNG LƯỢNG W = ${energyUj.toFixed(3)} µJ`,
         w * 0.5,
-        28
+        25
       );
 
       animId = requestAnimationFrame(render);
@@ -307,6 +349,14 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
           height={320}
           className="w-full h-[320px] rounded-xl border border-slate-800 bg-slate-900 shadow-2xl"
         />
+
+        {/* DYNAMIC REALTIME PHYSICAL PHENOMENON LOG BANNER */}
+        <div className="w-full max-w-[720px] mt-3 bg-slate-900/90 p-3 rounded-xl border border-cyan-500/30 flex items-center gap-3 shadow-lg">
+          <Info className="w-5 h-5 text-cyan-400 shrink-0 animate-pulse" />
+          <p className="text-xs text-slate-200 font-medium leading-relaxed">
+            {getPhysicsDescription()}
+          </p>
+        </div>
       </div>
 
       {/* Control Sidebar */}
@@ -326,7 +376,7 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
               type="range" min="0" max="24" step="1"
               value={voltage}
               onChange={(e) => onParamChange('voltage', Number(e.target.value))}
-              className="w-full accent-amber-400 h-2 bg-slate-700 rounded-lg"
+              className="w-full accent-amber-400 h-2 bg-slate-700 rounded-lg cursor-pointer"
             />
           </div>
 
@@ -340,7 +390,7 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
               type="range" min="100" max="500" step="10"
               value={plateAreaMm2}
               onChange={(e) => onParamChange('plateAreaMm2', Number(e.target.value))}
-              className="w-full accent-cyan-400 h-2 bg-slate-700 rounded-lg"
+              className="w-full accent-cyan-400 h-2 bg-slate-700 rounded-lg cursor-pointer"
             />
           </div>
 
@@ -354,7 +404,7 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
               type="range" min="2" max="15" step="1"
               value={separationMm}
               onChange={(e) => onParamChange('separationMm', Number(e.target.value))}
-              className="w-full accent-purple-400 h-2 bg-slate-700 rounded-lg"
+              className="w-full accent-purple-400 h-2 bg-slate-700 rounded-lg cursor-pointer"
             />
           </div>
 
@@ -381,8 +431,8 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
 
         {/* Realtime Measured Results */}
         <div className="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col gap-3">
-          <h3 className="text-sm font-bold text-emerald-400 uppercase tracking-wider">
-            📊 {isEn ? 'ELECTROSTATIC MEASUREMENTS' : 'Số liệu Điện trường & Tích điện'}
+          <h3 className="text-sm font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+            <Activity className="w-4 h-4 text-emerald-400" /> {isEn ? 'ELECTROSTATIC MEASUREMENTS' : 'Số liệu Điện trường & Tích điện'}
           </h3>
 
           <div className="grid grid-cols-2 gap-2 text-xs">
