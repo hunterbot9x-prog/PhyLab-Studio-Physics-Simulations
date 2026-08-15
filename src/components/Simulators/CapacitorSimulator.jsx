@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Play, Pause, RotateCcw, Plus, Zap, Layers, Activity, Info, ArrowDown, ArrowUp } from 'lucide-react';
+import { Play, Pause, RotateCcw, Plus, Zap, Layers, Activity, Info, ArrowDown, ArrowUp, Link2, Unlink } from 'lucide-react';
 
 export default function CapacitorSimulator({ lang, params = {}, onParamChange, onDataRecorded }) {
   const isEn = lang === 'en';
@@ -9,6 +9,7 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
   const plateAreaMm2 = params.plateAreaMm2 || 220; // mm^2 (Area A)
   const separationMm = params.separationMm || 6; // mm (Distance d)
   const dielectricEps = params.dielectricEps || 1.0; // Dielectric constant (Air=1, Paper=3.5, Glass=5.0, Water=80)
+  const isBatteryConnected = params.isBatteryConnected !== undefined ? params.isBatteryConnected : true;
 
   // Physics constants
   const eps0 = 8.854e-12; // F/m
@@ -17,9 +18,16 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
 
   // Capacitance C = eps * eps0 * A / d (in Picofarads pF)
   const capacitancePf = ((dielectricEps * eps0 * areaM2) / distM) * 1e12;
-  const chargeNc = (capacitancePf * voltage) / 1000; // Charge Q in nC
-  const energyUj = (0.5 * capacitancePf * 1e-12 * Math.pow(voltage, 2)) * 1e6; // Energy W in microjoules µJ
-  const electricFieldEv = distM > 0 ? (voltage / distM) / 1000 : 0; // kV/m
+
+  // Trapped Charge vs Constant Voltage calculation
+  const baseCapacitancePf = ((1.0 * eps0 * areaM2) / distM) * 1e12;
+  const initialChargeNc = (baseCapacitancePf * voltage) / 1000;
+
+  // Effective U and Q based on battery connection state
+  const effectiveChargeNc = isBatteryConnected ? (capacitancePf * voltage) / 1000 : initialChargeNc;
+  const effectiveVoltage = isBatteryConnected ? voltage : (effectiveChargeNc * 1000) / capacitancePf;
+  const energyUj = (0.5 * capacitancePf * 1e-12 * Math.pow(effectiveVoltage, 2)) * 1e6; // Energy W in µJ
+  const electricFieldEv = distM > 0 ? (effectiveVoltage / distM) / 1000 : 0; // kV/m
 
   const dielectricPresets = [
     { name: isEn ? 'Air (ε = 1.0)' : 'Không khí (ε = 1.0)', eps: 1.0, color: 'rgba(56, 189, 248, 0.1)' },
@@ -32,7 +40,13 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
 
   // Dynamic Physics Explanation Text Generator
   const getPhysicsDescription = () => {
-    if (voltage === 0) {
+    if (!isBatteryConnected) {
+      return isEn
+        ? `✂️ [Battery Disconnected - Trapped Charge Q = ${effectiveChargeNc.toFixed(2)}nC] When battery is disconnected, charge Q remains constant on plates. Inserting dielectric (ε = ${dielectricEps}) increases C by ${dielectricEps}x, causing Voltage U to DROP from ${voltage}V to ${effectiveVoltage.toFixed(2)}V (U = Q/C)!`
+        : `✂️ [Ngắt nguồn điện - Điện tích Q = ${effectiveChargeNc.toFixed(2)} nC không đổi] Khi ngắt tụ khỏi nguồn, điện tích Q bị bẫy lại trên 2 bản cực. Việc chèn chất điện môi (ε = ${dielectricEps}) làm điện dung C tăng ${dielectricEps} lần, khiến Điện áp U GIẢM từ ${voltage}V xuống ${effectiveVoltage.toFixed(2)}V (theo công thức U = Q/C)!`;
+    }
+
+    if (effectiveVoltage === 0) {
       return isEn
         ? "⚡ [U = 0V] Source voltage is OFF. No electrostatic charge is accumulated on plates (Q = 0, E = 0)."
         : "⚡ [U = 0V] Nguồn chưa cấp điện áp. Hai bản cực chưa tích điện tĩnh (Q = 0 nC, Cường độ E = 0 kV/m).";
@@ -40,13 +54,13 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
 
     if (dielectricEps > 1.0) {
       return isEn
-        ? `⚛️ [Dielectric Polarization ε = ${dielectricEps}] Inserting ${dielectricPresets.find(p=>p.eps===dielectricEps)?.name} causes Atomic Dipole Polarization inside dielectric slab. Dipole reverse field reduces total E-field, boosting capacitance by ${dielectricEps}x to ${capacitancePf.toFixed(2)} pF!`
-        : `⚛️ [Phân cực điện môi ε = ${dielectricEps}] Lớp điện môi bị phân cực lưỡng cực nguyên tử (Atomic Dipoles). Điện trường ngược do các lưỡng cực tạo ra giảm bớt E-thực tế, giúp tụ điện nạp gấp ${dielectricEps} lần điện tích (Q = ${chargeNc.toFixed(2)} nC) và năng lượng W = ${energyUj.toFixed(3)} µJ!`;
+        ? `⚛️ [Dielectric Polarization ε = ${dielectricEps}] Battery maintains U = ${effectiveVoltage}V. Atomic Dipole Polarization inside dielectric slab creates reverse E-field, boosting capacitance by ${dielectricEps}x and drawing ${dielectricEps}x more charge (Q = ${effectiveChargeNc.toFixed(2)}nC)!`
+        : `⚛️ [Phân cực điện môi ε = ${dielectricEps}] Nguồn điện giữ nguyên U = ${effectiveVoltage}V. Sự phân cực lưỡng cực nguyên tử tạo điện trường ngược, giúp tụ nạp thêm gấp ${dielectricEps} lần điện tích (Q = ${effectiveChargeNc.toFixed(2)} nC) và năng lượng W = ${energyUj.toFixed(3)} µJ!`;
     }
 
     return isEn
-      ? `⚡ [Charging & E-Field] Voltage U = ${voltage}V drives electrons onto bottom plate (-), accumulating Q = ${chargeNc.toFixed(2)} nC. Uniform electric field E = U/d = ${electricFieldEv.toFixed(2)} kV/m forms between plates.`
-      : `⚡ [Tích điện & Điện trường] Điện áp U = ${voltage}V đẩy các hạt electron di chuyển tích tụ trên bản cực âm (-), tạo điện tích Q = ${chargeNc.toFixed(2)} nC. Giữa 2 bản hình thành điện trường đều E = U/d = ${electricFieldEv.toFixed(2)} kV/m hướng từ bản (+) sang bản (-).`;
+      ? `⚡ [Charging & E-Field] Voltage U = ${effectiveVoltage}V drives electrons onto bottom plate (-), accumulating Q = ${effectiveChargeNc.toFixed(2)} nC. Uniform electric field E = U/d = ${electricFieldEv.toFixed(2)} kV/m forms between plates.`
+      : `⚡ [Tích điện & Điện trường] Điện áp U = ${effectiveVoltage}V đẩy các hạt electron di chuyển tích tụ trên bản cực âm (-), tạo điện tích Q = ${effectiveChargeNc.toFixed(2)} nC. Giữa 2 bản hình thành điện trường đều E = U/d = ${electricFieldEv.toFixed(2)} kV/m hướng từ bản (+) sang bản (-).`;
   };
 
   // 60 FPS Canvas Physics Renderer
@@ -81,7 +95,7 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, h); ctx.stroke();
       }
 
-      const centerX = 390;
+      const centerX = 400;
       const centerY = 160;
 
       // Plate dimensions
@@ -103,7 +117,7 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
         ctx.strokeRect(centerX - plateWidth / 2 + 6, topPlateY + 6, plateWidth - 12, plateGap - 12);
 
         // Polarized Atomic Dipoles (+ - ellipses inside dielectric)
-        if (voltage > 0) {
+        if (effectiveVoltage > 0) {
           const cols = Math.floor((plateWidth - 30) / 36);
           const rows = Math.floor((plateGap - 20) / 28);
 
@@ -112,7 +126,6 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
               const dx = centerX - plateWidth / 2 + 25 + c * 36;
               const dy = topPlateY + 20 + r * 28;
 
-              // Dipole Ellipse Body
               ctx.fillStyle = 'rgba(30, 41, 59, 0.85)';
               ctx.strokeStyle = '#a855f7';
               ctx.lineWidth = 1;
@@ -121,7 +134,6 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
               ctx.fill();
               ctx.stroke();
 
-              // Dipole minus (top) & plus (bottom) charges
               ctx.fillStyle = '#60a5fa';
               ctx.font = 'bold 9px Inter';
               ctx.textAlign = 'center';
@@ -141,7 +153,7 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
 
 
       // --- 2. UNIFORM ELECTRIC FIELD LINES E (Top Plate (+) to Bottom Plate (-)) ---
-      if (voltage > 0) {
+      if (effectiveVoltage > 0) {
         const fieldLinesCount = Math.floor(plateWidth / 20);
         const eOpacity = Math.min(0.85, 0.15 + (electricFieldEv / 5) * 0.7);
 
@@ -191,34 +203,30 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
       ctx.strokeRect(centerX - plateWidth / 2, bottomPlateY - 8, plateWidth, 16);
 
       // Free Charges on Metal Plates (+ on Top, - on Bottom)
-      if (voltage > 0) {
+      if (effectiveVoltage > 0 || effectiveChargeNc > 0) {
         const chargeDensityCount = Math.floor((plateWidth - 20) / 16);
         ctx.font = 'extrabold 12px Inter';
         ctx.textAlign = 'center';
 
         for (let c = 0; c < chargeDensityCount; c++) {
           const cx = centerX - plateWidth / 2 + 15 + c * 16;
-          // Positive charges (+) on top plate
           ctx.fillStyle = '#ffffff';
           ctx.fillText('+', cx, topPlateY + 4);
-
-          // Negative charges (-) on bottom plate
-          ctx.fillStyle = '#ffffff';
           ctx.fillText('-', cx, bottomPlateY + 4);
         }
       }
 
-      // Plate Labels
+      // Plate Labels (Positioned outside above/below to NEVER overlap wires)
       ctx.fillStyle = '#ef4444';
       ctx.font = 'bold 11px Inter';
-      ctx.textAlign = 'right';
-      ctx.fillText(isEn ? 'Top Plate (+)' : 'Bản cực Dương (+)', centerX - plateWidth / 2 - 12, topPlateY + 4);
+      ctx.textAlign = 'center';
+      ctx.fillText(isEn ? 'Top Plate (+)' : 'Bản cực Dương (+)', centerX, topPlateY - 14);
 
       ctx.fillStyle = '#3b82f6';
-      ctx.fillText(isEn ? 'Bottom Plate (-)' : 'Bản cực Âm (-)', centerX - plateWidth / 2 - 12, bottomPlateY + 4);
+      ctx.fillText(isEn ? 'Bottom Plate (-)' : 'Bản cực Âm (-)', centerX, bottomPlateY + 24);
 
 
-      // --- 4. DIMENSION INDICATOR LINES (Area A & Distance d) ---
+      // --- 4. DIMENSION INDICATOR LINES & ELECTROSTATIC ATTRACTION FORCE ARROWS ---
       // Distance d dimension line (Right side)
       const dimX = centerX + plateWidth / 2 + 25;
       ctx.strokeStyle = '#f59e0b';
@@ -228,7 +236,6 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
       ctx.lineTo(dimX, bottomPlateY);
       ctx.stroke();
 
-      // Top & Bottom end caps
       ctx.beginPath(); ctx.moveTo(dimX - 6, topPlateY); ctx.lineTo(dimX + 6, topPlateY); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(dimX - 6, bottomPlateY); ctx.lineTo(dimX + 6, bottomPlateY); ctx.stroke();
 
@@ -237,14 +244,35 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
       ctx.textAlign = 'left';
       ctx.fillText(`d = ${separationMm}mm`, dimX + 10, centerY + 4);
 
+      // Electrostatic Attraction Force Vectors (F_hút between plates)
+      if (effectiveChargeNc > 0) {
+        const fLength = Math.min(22, 6 + (electricFieldEv / 4) * 12);
+        ctx.strokeStyle = '#f43f5e';
+        ctx.fillStyle = '#f43f5e';
+        ctx.lineWidth = 2;
 
-      // --- 5. DC POWER SUPPLY & ANIMATED WIRES ELECTRONS ---
+        const forceX1 = centerX - plateWidth / 4;
+        const forceX2 = centerX + plateWidth / 4;
+
+        [forceX1, forceX2].forEach(fx => {
+          // Top plate downward force vector
+          ctx.beginPath(); ctx.moveTo(fx, topPlateY + 8); ctx.lineTo(fx, topPlateY + 8 + fLength); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(fx, topPlateY + 8 + fLength); ctx.lineTo(fx - 4, topPlateY + 4 + fLength); ctx.lineTo(fx + 4, topPlateY + 4 + fLength); ctx.fill();
+
+          // Bottom plate upward force vector
+          ctx.beginPath(); ctx.moveTo(fx, bottomPlateY - 8); ctx.lineTo(fx, bottomPlateY - 8 - fLength); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(fx, bottomPlateY - 8 - fLength); ctx.lineTo(fx - 4, bottomPlateY - 4 - fLength); ctx.lineTo(fx + 4, bottomPlateY - 4 - fLength); ctx.fill();
+        });
+      }
+
+
+      // --- 5. DC POWER SUPPLY, SWITCH & ACCURATE ELECTRON WIRE PATH ---
       const psuX = 100;
       const psuY = centerY;
 
       // Battery Casing
       ctx.fillStyle = '#0f172a';
-      ctx.strokeStyle = '#00f2fe';
+      ctx.strokeStyle = isBatteryConnected ? '#00f2fe' : '#64748b';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.roundRect(psuX - 45, psuY - 40, 90, 80, 10);
@@ -254,52 +282,89 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
       // Digital LED Display
       ctx.fillStyle = '#022c22';
       ctx.fillRect(psuX - 35, psuY - 28, 70, 24);
-      ctx.fillStyle = '#10b981';
+      ctx.fillStyle = isBatteryConnected ? '#10b981' : '#64748b';
       ctx.font = 'extrabold 13px Inter';
       ctx.textAlign = 'center';
-      ctx.fillText(`${voltage.toFixed(1)} V`, psuX, psuY - 11);
+      ctx.fillText(`${effectiveVoltage.toFixed(1)} V`, psuX, psuY - 11);
 
       ctx.fillStyle = '#94a3b8';
       ctx.font = 'bold 10px Inter';
       ctx.fillText('DC SOURCE', psuX, psuY + 14);
-      ctx.fillText('U (0-24V)', psuX, psuY + 28);
+      ctx.fillText(isBatteryConnected ? 'CONNECTED' : 'DISCONNECTED', psuX, psuY + 28);
 
       // Connecting Wires (Top + wire in Red, Bottom - wire in Blue)
       ctx.lineWidth = 3;
 
       // Top Red Wire (+)
-      ctx.strokeStyle = '#ef4444';
+      ctx.strokeStyle = isBatteryConnected ? '#ef4444' : '#7f1d1d';
       ctx.beginPath();
       ctx.moveTo(psuX, psuY - 40);
       ctx.lineTo(psuX, topPlateY);
       ctx.lineTo(centerX - plateWidth / 2, topPlateY);
       ctx.stroke();
 
-      // Bottom Blue Wire (-)
-      ctx.strokeStyle = '#3b82f6';
+      // Bottom Blue Wire (-) with Knife Switch
+      ctx.strokeStyle = isBatteryConnected ? '#3b82f6' : '#1e3a8a';
       ctx.beginPath();
       ctx.moveTo(psuX, psuY + 40);
       ctx.lineTo(psuX, bottomPlateY);
-      ctx.lineTo(centerX - plateWidth / 2, bottomPlateY);
+      if (isBatteryConnected) {
+        ctx.lineTo(centerX - plateWidth / 2, bottomPlateY);
+      } else {
+        // Disconnected knife switch gap
+        ctx.lineTo(psuX + 30, bottomPlateY);
+        ctx.moveTo(psuX + 60, bottomPlateY);
+        ctx.lineTo(centerX - plateWidth / 2, bottomPlateY);
+      }
       ctx.stroke();
 
-      // Flowing Electron Particles along Wires when U > 0
-      if (voltage > 0) {
+      // Switch Gap Draw
+      if (!isBatteryConnected) {
+        ctx.strokeStyle = '#f43f5e';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(psuX + 30, bottomPlateY);
+        ctx.lineTo(psuX + 55, bottomPlateY - 18); // Open switch lever
+        ctx.stroke();
+      }
+
+      // Flowing Electron Particles along Wires (Accurate Pathing!)
+      if (isBatteryConnected && effectiveVoltage > 0) {
         ctx.fillStyle = '#00f5d4';
         ctx.shadowColor = '#00f5d4';
         ctx.shadowBlur = 6;
-        const eSpeed = Math.min(3, voltage * 0.25);
+        const eSpeed = Math.min(3, effectiveVoltage * 0.25);
 
-        // Electrons flowing into bottom plate (-)
+        const vertDist = Math.abs(bottomPlateY - (psuY + 40));
+        const horizDist = (centerX - plateWidth / 2) - psuX;
+        const totalPathLen = vertDist + horizDist;
+
+        // Electrons flowing along blue wire into bottom plate (-)
         for (let e = 0; e < 6; e++) {
-          const dist = (e * 35 + time * eSpeed * 25) % 180;
+          const dist = (e * 35 + time * eSpeed * 25) % totalPathLen;
           let ex, ey;
-          if (dist < 80) {
-            ex = psuX; ey = psuY + 40 + dist;
+          if (dist < vertDist) {
+            ex = psuX;
+            ey = (psuY + 40) + dist;
           } else {
-            ex = psuX + (dist - 80); ey = bottomPlateY;
+            ex = psuX + (dist - vertDist);
+            ey = bottomPlateY;
           }
-          if (ex <= centerX - plateWidth / 2) {
+          ctx.beginPath(); ctx.arc(ex, ey, 2.5, 0, Math.PI * 2); ctx.fill();
+        }
+
+        // Electrons flowing back along red wire from top plate (+) to battery
+        for (let e = 0; e < 6; e++) {
+          const dist = (e * 35 + time * eSpeed * 25) % totalPathLen;
+          let ex, ey;
+          if (dist < horizDist) {
+            ex = (centerX - plateWidth / 2) - dist;
+            ey = topPlateY;
+          } else {
+            ex = psuX;
+            ey = topPlateY - (dist - horizDist);
+          }
+          if (ey >= psuY - 40) {
             ctx.beginPath(); ctx.arc(ex, ey, 2.5, 0, Math.PI * 2); ctx.fill();
           }
         }
@@ -313,8 +378,8 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
       ctx.textAlign = 'center';
       ctx.fillText(
         isEn
-          ? `CAPACITANCE C = ${capacitancePf.toFixed(2)} pF | CHARGE Q = ${chargeNc.toFixed(2)} nC | ENERGY W = ${energyUj.toFixed(3)} µJ`
-          : `ĐIỆN DUNG C = ${capacitancePf.toFixed(2)} pF | ĐIỆN TÍCH Q = ${chargeNc.toFixed(2)} nC | NĂNG LƯỢNG W = ${energyUj.toFixed(3)} µJ`,
+          ? `CAPACITANCE C = ${capacitancePf.toFixed(2)} pF | CHARGE Q = ${effectiveChargeNc.toFixed(2)} nC | ENERGY W = ${energyUj.toFixed(3)} µJ`
+          : `ĐIỆN DUNG C = ${capacitancePf.toFixed(2)} pF | ĐIỆN TÍCH Q = ${effectiveChargeNc.toFixed(2)} nC | NĂNG LƯỢNG W = ${energyUj.toFixed(3)} µJ`,
         w * 0.5,
         25
       );
@@ -324,16 +389,17 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
 
     animId = requestAnimationFrame(render);
     return () => cancelAnimationFrame(animId);
-  }, [voltage, plateAreaMm2, separationMm, dielectricEps, capacitancePf, chargeNc, energyUj, electricFieldEv, isEn]);
+  }, [voltage, plateAreaMm2, separationMm, dielectricEps, isBatteryConnected, capacitancePf, effectiveChargeNc, effectiveVoltage, energyUj, electricFieldEv, isEn]);
 
   const handleRecord = () => {
     onDataRecorded?.({
-      voltage: `${voltage} V`,
+      batteryState: isBatteryConnected ? (isEn ? 'Connected' : 'Đã kết nối') : (isEn ? 'Disconnected' : 'Đã ngắt nguồn'),
+      voltage: `${effectiveVoltage.toFixed(2)} V`,
       plateAreaMm2: `${plateAreaMm2} mm²`,
       separationMm: `${separationMm} mm`,
       dielectricEps,
       capacitancePf: `${capacitancePf.toFixed(2)} pF`,
-      chargeNc: `${chargeNc.toFixed(2)} nC`,
+      chargeNc: `${effectiveChargeNc.toFixed(2)} nC`,
       energyUj: `${energyUj.toFixed(3)} µJ`,
       electricFieldEv: `${electricFieldEv.toFixed(2)} kV/m`
     });
@@ -366,6 +432,23 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
             <Zap className="w-4 h-4 text-amber-400" /> {isEn ? 'Capacitor Controls' : 'Tham số Tụ Điện'}
           </h3>
 
+          {/* Battery Connection Switch Toggle */}
+          <button
+            onClick={() => onParamChange('isBatteryConnected', !isBatteryConnected)}
+            className={`w-full py-2 px-3 rounded-lg font-bold text-xs flex items-center justify-center gap-2 border transition-all ${
+              isBatteryConnected
+                ? 'bg-emerald-950/80 border-emerald-500/60 text-emerald-400'
+                : 'bg-rose-950/80 border-rose-500/60 text-rose-400'
+            }`}
+          >
+            {isBatteryConnected ? <Link2 className="w-4 h-4" /> : <Unlink className="w-4 h-4" />}
+            <span>
+              {isBatteryConnected
+                ? (isEn ? 'Battery CONNECTED (U = Const)' : 'Nguồn Đang Nạp (U Không đổi)')
+                : (isEn ? 'Battery DISCONNECTED (Q = Const)' : 'Đã Ngắt Nguồn (Q Không đổi)')}
+            </span>
+          </button>
+
           {/* Voltage U */}
           <div>
             <div className="flex justify-between text-xs text-slate-400 mb-1">
@@ -375,8 +458,9 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
             <input
               type="range" min="0" max="24" step="1"
               value={voltage}
+              disabled={!isBatteryConnected}
               onChange={(e) => onParamChange('voltage', Number(e.target.value))}
-              className="w-full accent-amber-400 h-2 bg-slate-700 rounded-lg cursor-pointer"
+              className="w-full accent-amber-400 h-2 bg-slate-700 rounded-lg cursor-pointer disabled:opacity-50"
             />
           </div>
 
@@ -451,7 +535,7 @@ export default function CapacitorSimulator({ lang, params = {}, onParamChange, o
                 <span className="text-emerald-300 font-semibold block text-xs">{isEn ? 'Total Charge Q:' : 'Điện tích Q = C·U:'}</span>
                 <span className="text-slate-400 text-[10px]">C = ε·ε₀·A/d</span>
               </div>
-              <span className="text-emerald-400 font-extrabold text-base">{chargeNc.toFixed(2)} nC</span>
+              <span className="text-emerald-400 font-extrabold text-base">{effectiveChargeNc.toFixed(2)} nC</span>
             </div>
           </div>
 
