@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Printer, FileText, Download } from 'lucide-react';
+import { X, Printer, FileText, Download, ShieldAlert, Sparkles, Activity } from 'lucide-react';
 import { TRANSLATIONS } from '../i18n/translations';
 
 export default function ReportModal({ isOpen, experiment, recordedData, onClose, lang }) {
@@ -10,7 +10,7 @@ export default function ReportModal({ isOpen, experiment, recordedData, onClose,
 
   const [studentName, setStudentName] = useState(isEn ? 'John Doe' : 'Nguyễn Văn A');
   const [studentClass, setStudentClass] = useState(isEn ? `Grade ${experiment.grade}` : `Lớp ${experiment.grade}A1`);
-  const [notes, setNotes] = useState(isEn ? 'Experimental data matches theoretical formulas.' : 'Kết quả đo đạc phù hợp với lý thuyết trong sách giáo khoa.');
+  const [notes, setNotes] = useState(isEn ? 'Experimental data matches theoretical physics formulas within error tolerance.' : 'Kết quả đo đạc thực nghiệm phù hợp với các công thức lý thuyết trong chương trình học.');
 
   const handlePrint = () => {
     window.print();
@@ -18,12 +18,42 @@ export default function ReportModal({ isOpen, experiment, recordedData, onClose,
 
   const dataPoints = recordedData || [];
   const keys = dataPoints && dataPoints.length > 0 ? Object.keys(dataPoints[0]) : [];
+  const displayKeys = keys.filter(k => k !== 'id' && k !== 'expId' && k !== 'expTitle' && k !== 'timestamp');
+
+  // Automatic Cambridge A Level & SGK Uncertainty Calculation Engine
+  const calculateUncertainties = () => {
+    if (!dataPoints || dataPoints.length < 2) return [];
+
+    const results = [];
+    displayKeys.forEach(k => {
+      const values = dataPoints
+        .map(row => parseFloat(String(row[k]).replace(/[^\d.-]/g, '')))
+        .filter(v => !isNaN(v));
+
+      if (values.length >= 2) {
+        const mean = values.reduce((a, b) => a + b, 0) / values.length;
+        const maxDev = Math.max(...values.map(v => Math.abs(v - mean)));
+        const pctUncertainty = mean !== 0 ? (maxDev / Math.abs(mean)) * 100 : 0;
+
+        results.push({
+          param: k,
+          mean: mean.toFixed(3),
+          absUncertainty: maxDev.toFixed(3),
+          pctUncertainty: pctUncertainty.toFixed(1)
+        });
+      }
+    });
+
+    return results;
+  };
+
+  const uncertaintyAnalysis = calculateUncertainties();
 
   const handleExportCSV = () => {
     if (!dataPoints || dataPoints.length === 0) return;
-    const headers = keys.join(',');
-    const rows = dataPoints.map(row => keys.map(k => `"${row[k]}"`).join(','));
-    const csvContent = '\uFEFF' + [headers, ...rows].join('\n'); // UTF-8 BOM for Excel
+    const headers = displayKeys.join(',');
+    const rows = dataPoints.map(row => displayKeys.map(k => `"${row[k]}"`).join(','));
+    const csvContent = '\uFEFF' + [headers, ...rows].join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -107,7 +137,8 @@ export default function ReportModal({ isOpen, experiment, recordedData, onClose,
 
           {/* Measured Data Table */}
           <div className="space-y-2">
-            <h2 className="text-xs font-bold text-slate-300 uppercase tracking-wider">
+            <h2 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+              <Activity className="w-4 h-4 text-cyan-400" />
               {isEn ? 'I. MEASURED EXPERIMENTAL DATA' : 'I. BẢNG SỐ LIỆU ĐO ĐẠC THỰC NGHIỆM'}
             </h2>
             {dataPoints && dataPoints.length > 0 ? (
@@ -115,7 +146,7 @@ export default function ReportModal({ isOpen, experiment, recordedData, onClose,
                 <table className="w-full text-left text-xs border-collapse">
                   <thead>
                     <tr className="bg-slate-800 text-cyan-400 font-bold">
-                      {keys.filter(k => k !== 'id' && k !== 'expId' && k !== 'expTitle').map(k => (
+                      {displayKeys.map(k => (
                         <th key={k} className="p-2.5 border-b border-slate-700">{k}</th>
                       ))}
                     </tr>
@@ -123,7 +154,7 @@ export default function ReportModal({ isOpen, experiment, recordedData, onClose,
                   <tbody>
                     {dataPoints.map((row, idx) => (
                       <tr key={idx} className="border-b border-slate-800/60 hover:bg-slate-800/30">
-                        {keys.filter(k => k !== 'id' && k !== 'expId' && k !== 'expTitle').map(k => (
+                        {displayKeys.map(k => (
                           <td key={k} className="p-2.5 font-medium">{row[k]}</td>
                         ))}
                       </tr>
@@ -138,10 +169,42 @@ export default function ReportModal({ isOpen, experiment, recordedData, onClose,
             )}
           </div>
 
+          {/* A LEVEL & SGK EXPERIMENTAL UNCERTAINTY ANALYSIS */}
+          {uncertaintyAnalysis.length > 0 && (
+            <div className="space-y-2">
+              <h2 className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+                <ShieldAlert className="w-4 h-4 text-amber-400" />
+                {isEn ? 'II. CAMBRIDGE A LEVEL & SGK EXPERIMENTAL UNCERTAINTY ANALYSIS' : 'II. TÍNH TOÁN SAI SỐ THỰC NGHIỆM & PHẦN TRĂM SAI SỐ (A LEVEL & SGK)'}
+              </h2>
+              <div className="overflow-x-auto rounded-xl border border-amber-900/40 bg-slate-950/60 p-3">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr className="border-b border-slate-800 text-slate-400 font-bold">
+                      <th className="p-2">{isEn ? 'Parameter' : 'Đại lượng đo'}</th>
+                      <th className="p-2">{isEn ? 'Mean Value X̅' : 'Giá trị trung bình X̅'}</th>
+                      <th className="p-2">{isEn ? 'Abs Uncertainty ΔX' : 'Sai số tuyệt đối ΔX'}</th>
+                      <th className="p-2">{isEn ? 'Percentage Uncertainty %ΔX' : 'Phần trăm sai số %ΔX'}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {uncertaintyAnalysis.map((res, i) => (
+                      <tr key={i} className="border-b border-slate-900 text-slate-300">
+                        <td className="p-2 font-bold text-amber-300">{res.param}</td>
+                        <td className="p-2 font-mono text-cyan-400">{res.mean}</td>
+                        <td className="p-2 font-mono text-rose-400">± {res.absUncertainty}</td>
+                        <td className="p-2 font-mono text-emerald-400 font-bold">{res.pctUncertainty} %</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
           {/* Observations & Notes */}
           <div className="space-y-2">
             <h2 className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-              {isEn ? 'II. OBSERVATIONS & EXPERIMENTAL CONCLUSION' : 'II. NHẬN XÉT VÀ KẾT LUẬN THÍ NGHIỆM'}
+              {isEn ? 'III. OBSERVATIONS & EXPERIMENTAL CONCLUSION' : 'III. NHẬN XÉT VÀ KẾT LUẬN THÍ NGHIỆM'}
             </h2>
             <textarea
               rows={3}
