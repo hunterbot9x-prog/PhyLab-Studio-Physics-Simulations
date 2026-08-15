@@ -41,6 +41,9 @@ const PendulumGSimulator = lazy(() => import('./components/Simulators/PendulumGS
 const InternalResistanceSimulator = lazy(() => import('./components/Simulators/InternalResistanceSimulator'));
 const BoylesLawSimulator = lazy(() => import('./components/Simulators/BoylesLawSimulator'));
 const DiffractionGratingSimulator = lazy(() => import('./components/Simulators/DiffractionGratingSimulator'));
+const ResistivityWireSimulator = lazy(() => import('./components/Simulators/ResistivityWireSimulator'));
+const PotentiometerSimulator = lazy(() => import('./components/Simulators/PotentiometerSimulator'));
+const ResonanceTubeSimulator = lazy(() => import('./components/Simulators/ResonanceTubeSimulator'));
 
 // PhET Simulators
 const Newton2Simulator = lazy(() => import('./components/Simulators/Newton2Simulator'));
@@ -216,6 +219,9 @@ export default function App() {
       case 'g12-photoelectric': comp = <PhotoelectricSimulator {...commonProps} />; break;
       case 'alevel-radioactive':
       case 'g12-radioactive': comp = <RadioactiveSimulator {...commonProps} />; break;
+      case 'alevel-resistivity': comp = <ResistivityWireSimulator {...commonProps} />; break;
+      case 'alevel-potentiometer': comp = <PotentiometerSimulator {...commonProps} />; break;
+      case 'alevel-resonance-tube': comp = <ResonanceTubeSimulator {...commonProps} />; break;
       default: comp = <ArchimedesSimulator {...commonProps} />; break;
     }
 

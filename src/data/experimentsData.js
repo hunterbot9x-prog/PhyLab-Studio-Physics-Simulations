@@ -1863,5 +1863,190 @@ export const EXPERIMENTS_DATA = [
         explanationEn: "30s = 3 · T1/2. Remaining fraction = (1/2)³ = 1/8 = 12.5%."
       }
     ]
+  },
+  {
+    id: "alevel-resistivity",
+    grade: "A Level",
+    gradeLabel: "A Level",
+    curriculum: "ALEVEL",
+    category: "Điện - Từ",
+    title: "A Level: Điện trở suất Dây Kim loại & Thước Panme",
+    titleEn: "A Level: Resistivity of Wire & Micrometer Gauge",
+    subtitle: "Xác định điện trở suất ρ = R·A / L bằng đồ thị R(L) tuyến tính",
+    subtitleEn: "Determine wire resistivity ρ = R·A / L via linear R(L) graph",
+    icon: "Zap",
+    description: "Mô phỏng thước panme đo đường kính d, con trượt jockey thay đổi chiều dài L (cm), đồ thị R(L) tuyến tính và tính điện trở suất rho = R*A/L.",
+    theory: {
+      objective: "Đo điện trở suất ρ của dây kim loại dẫn điện và kiểm chứng định luật tỉ lệ thuận giữa điện trở R và chiều dài L.",
+      objectiveEn: "Measure electrical resistivity ρ of metal wire and verify direct proportionality R ∝ L.",
+      purpose: "Ứng dụng trong sản xuất dây dẫn truyền tải điện, cảm biến nhiệt điện trở và thiết bị sưởi ấm.",
+      purposeEn: "Applications in power grid cabling, RTD temperature sensors, and heating elements.",
+      summary: "Điện trở của một dây dẫn hình trụ tỉ lệ thuận với chiều dài L và tỉ lệ nghịch với tiết diện A: R = ρ · L / A.",
+      summaryEn: "Electrical resistance of a cylindrical conductor is proportional to length L and inversely proportional to area A: R = ρ · L / A.",
+      formulas: [
+        {
+          label: "Điện trở suất dây dẫn",
+          labelEn: "Wire Electrical Resistivity",
+          formula: "ρ = R · A / L = R · (π · d² / 4) / L",
+          symbols: [
+            { symbol: "ρ", name: "Điện trở suất của chất liệu", nameEn: "Material electrical resistivity", unit: "Ω·m", unitEn: "Ω·m" },
+            { symbol: "R", name: "Điện trở của dây dẫn", nameEn: "Wire electrical resistance", unit: "Ω (Ohm)", unitEn: "Ω (Ohms)" },
+            { symbol: "A", name: "Tiết diện ngang của dây", nameEn: "Wire cross-sectional area", unit: "m²", unitEn: "m²" },
+            { symbol: "d", name: "Đường kính dây (kẹp panme)", nameEn: "Wire diameter (micrometer)", unit: "mm", unitEn: "mm" },
+            { symbol: "L", name: "Chiều dài đoạn dây (con trượt jockey)", nameEn: "Wire length (jockey slider)", unit: "m", unitEn: "meters" }
+          ]
+        }
+      ],
+      sgkRef: "Cambridge A Level Physics 9702 (Chapter 9: Resistance & Resistivity)",
+      sgkRefEn: "Cambridge A Level Physics 9702 (Chapter 9: Resistance & Resistivity)",
+      guideSteps: [
+        "Bước 1: Chọn chất liệu dây dẫn (Constantan, Nichrome, Manganin).",
+        "Bước 2: Dùng thước kẹp panme chỉnh đường kính d (mm) của dây.",
+        "Bước 3: Di chuyển con trượt Jockey để thay đổi chiều dài L (cm).",
+        "Bước 4: Quan sát đồ thị R(L) tuyến tính và tính điện trở suất ρ."
+      ],
+      guideStepsEn: [
+        "Step 1: Select wire material (Constantan, Nichrome, Manganin).",
+        "Step 2: Adjust wire diameter d (mm) using micrometer screw gauge.",
+        "Step 3: Move jockey slider to vary wire length L (cm).",
+        "Step 4: Observe linear R(L) graph and compute resistivity ρ."
+      ]
+    },
+    defaultParams: { material: "constantan", wireLengthCm: 50, wireDiameterMm: 0.45, driverVoltageV: 2.0 },
+    challenges: [
+      {
+        id: "c1",
+        question: "Dây dẫn dài 1m tiết diện 1mm² có điện trở R = 0.49 Ω. Điện trở suất ρ bằng bao nhiêu?",
+        questionEn: "A 1m wire of area 1mm² has resistance R = 0.49 Ω. What is its resistivity ρ?",
+        options: ["4.9×10⁻⁷ Ω·m", "1.1×10⁻⁶ Ω·m", "1.7×10⁻⁸ Ω·m", "4.8×10⁻⁵ Ω·m"],
+        optionsEn: ["4.9×10⁻⁷ Ω·m", "1.1×10⁻⁶ Ω·m", "1.7×10⁻⁸ Ω·m", "4.8×10⁻⁵ Ω·m"],
+        correctIndex: 0,
+        explanation: "ρ = R · A / L = 0.49 · (1×10⁻⁶ m²) / 1m = 4.9×10⁻⁷ Ω·m.",
+        explanationEn: "ρ = R · A / L = 0.49 · (1×10⁻⁶ m²) / 1m = 4.9×10⁻⁷ Ω·m."
+      }
+    ]
+  },
+  {
+    id: "alevel-potentiometer",
+    grade: "A Level",
+    gradeLabel: "A Level",
+    curriculum: "ALEVEL",
+    category: "Điện - Từ",
+    title: "A Level: Cầu Điện Thế Slide Wire Potentiometer",
+    titleEn: "A Level: Slide Wire Metre Bridge Potentiometer",
+    subtitle: "Đo chính xác suất điện động Ex của pin tại điểm cân bằng Null (IG = 0)",
+    subtitleEn: "Measure exact cell EMF Ex at Null Balance point (IG = 0)",
+    icon: "ShieldCheck",
+    description: "Mô phỏng dây điện trở 1 mét, con trượt Jockey tìm điểm cân bằng NULL (IG = 0mA), đo chính xác suất điện động Ex mà không gây sụt áp pin.",
+    theory: {
+      objective: "Đo suất điện động Ex của nguồn điện bằng phương pháp xung đối cầu điện thế tại điểm cân bằng Null.",
+      objectiveEn: "Measure unknown cell EMF Ex using potentiometer null balance method.",
+      purpose: "Ưu điểm vượt trội: Đo suất điện động thực E mà không rút dòng từ pin (I_G = 0), tránh sai số do điện trở trong r.",
+      purposeEn: "Key advantage: Measures true EMF without drawing current at balance (I_G = 0), avoiding internal resistance voltage drop.",
+      summary: "Tại điểm cân bằng Null (I_G = 0), độ giảm thế V_Ax trên đoạn dây L_x đúng bằng suất điện động Ex: Ex = E1 · L_x / L_tổng.",
+      summaryEn: "At null balance (I_G = 0), potential drop V_Ax along balance wire equals cell EMF Ex: Ex = E1 · L_x / L_total.",
+      formulas: [
+        {
+          label: "Công thức cầu điện thế",
+          labelEn: "Potentiometer Equation",
+          formula: "E_x = E_1 · (L_x / L_tổng)",
+          symbols: [
+            { symbol: "E_x", name: "Suất điện động pin cần đo", nameEn: "Unknown cell EMF to measure", unit: "V (Volt)", unitEn: "V (Volts)" },
+            { symbol: "E_1", name: "Suất điện động nguồn chính (Driver)", nameEn: "Driver cell EMF", unit: "V (Volt)", unitEn: "V (Volts)" },
+            { symbol: "L_x", name: "Chiều dài đoạn dây ứng với điểm cân bằng Null", nameEn: "Balance length at null point", unit: "cm", unitEn: "cm" },
+            { symbol: "L_tổng", name: "Tổng chiều dài dây điện thế (100 cm)", nameEn: "Total potentiometer wire length (100 cm)", unit: "cm", unitEn: "cm" }
+          ]
+        }
+      ],
+      sgkRef: "Cambridge A Level Physics 9702 (Chapter 10: D.C. Circuits)",
+      sgkRefEn: "Cambridge A Level Physics 9702 (Chapter 10: D.C. Circuits - Potentiometers)",
+      guideSteps: [
+        "Bước 1: Chọn suất điện động pin cần đo E_x (0.5V - 1.8V).",
+        "Bước 2: Trượt con trượt Jockey J dọc theo dây điện thế 100cm.",
+        "Bước 3: Quan sát kim vôn kế Galvanometer G lệch âm hay dương.",
+        "Bước 4: Nhấn nút 'Tự động tìm điểm cân bằng' để vị trí I_G = 0 mA và đọc L_x."
+      ],
+      guideStepsEn: [
+        "Step 1: Set unknown cell EMF E_x (0.5V - 1.8V).",
+        "Step 2: Slide Jockey J along 100cm potentiometer wire.",
+        "Step 3: Observe Galvanometer needle deflection (-I or +I).",
+        "Step 4: Click 'Find Null Balance' to position I_G = 0 mA and read L_x."
+      ]
+    },
+    defaultParams: { driverEmfV: 2.0, testCellEmfV: 1.48, jockeyPosCm: 74 },
+    challenges: [
+      {
+        id: "c1",
+        question: "Cầu điện thế nguồn E1 = 2.0V dây dài 100cm. Cân bằng Null đạt được tại Lx = 74cm. Suất điện động Ex bằng bao nhiêu?",
+        questionEn: "Potentiometer driver E1 = 2.0V on 100cm wire. Null balance is at Lx = 74cm. What is test cell EMF Ex?",
+        options: ["1.48 V", "1.20 V", "1.60 V", "2.00 V"],
+        optionsEn: ["1.48 V", "1.20 V", "1.60 V", "2.00 V"],
+        correctIndex: 0,
+        explanation: "Ex = E1 · (Lx / 100) = 2.0 · (74 / 100) = 1.48 V.",
+        explanationEn: "Ex = E1 · (Lx / 100) = 2.0 · (74 / 100) = 1.48 V."
+      }
+    ]
+  },
+  {
+    id: "alevel-resonance-tube",
+    grade: "A Level",
+    gradeLabel: "A Level",
+    curriculum: "ALEVEL",
+    category: "Cơ học",
+    title: "A Level: Cột Sóng Dừng Ống Cộng Hưởng & Tốc Độ Âm",
+    titleEn: "A Level: Air Column Resonance Tube & Speed of Sound",
+    subtitle: "Xác định tốc độ âm thanh v = 4f(L1 + c) bằng cột sóng dừng",
+    subtitleEn: "Determine speed of sound v = 4f(L1 + c) via stationary waves",
+    icon: "Volume2",
+    description: "Mô phỏng ống cộng hưởng mực nước thay đổi L, âm thoa các tần số 256Hz, 384Hz, 512Hz, 1024Hz, nút/bụng sóng dừng và đỉnh âm thanh to nhất.",
+    theory: {
+      objective: "Đo tốc độ truyền âm trong không khí bằng ống cộng hưởng cột không khí một đầu kín một đầu hở.",
+      objectiveEn: "Measure speed of sound in air using open-closed air column resonance tube.",
+      purpose: "Ứng dụng trong chế tạo nhạc cụ khí (sáo, kèn organ), thiết kế âm học phòng hát và cảm biến đo độ sâu siêu âm.",
+      purposeEn: "Applications in wind instruments (flutes, pipe organs), room acoustics, and ultrasonic depth sensors.",
+      summary: "Sóng dừng trong ống một đầu kín có nút sóng tại mặt nước và bụng sóng tại miệng ống: L + c = (2n - 1) · λ / 4.",
+      summaryEn: "Stationary waves in open-closed tube form a node at water surface and antinode at tube top: L + c = (2n - 1) · λ / 4.",
+      formulas: [
+        {
+          label: "Tốc độ truyền âm trong không khí",
+          labelEn: "Speed of Sound in Air",
+          formula: "v = f · λ = 2 · f · (L_2 - L_1)",
+          symbols: [
+            { symbol: "v", name: "Tốc độ truyền âm trong không khí", nameEn: "Speed of sound in air", unit: "m/s", unitEn: "m/s" },
+            { symbol: "f", name: "Tần số dao động của âm thoa", nameEn: "Tuning fork frequency", unit: "Hz", unitEn: "Hz" },
+            { symbol: "λ", name: "Bước sóng âm thanh", nameEn: "Sound wavelength", unit: "m", unitEn: "meters" },
+            { symbol: "L_1", name: "Chiều dài cột khí tại cực đại cộng hưởng 1", nameEn: "Air column length at 1st resonance peak", unit: "m", unitEn: "meters" },
+            { symbol: "L_2", name: "Chiều dài cột khí tại cực đại cộng hưởng 2", nameEn: "Air column length at 2nd resonance peak", unit: "m", unitEn: "meters" }
+          ]
+        }
+      ],
+      sgkRef: "Cambridge A Level Physics 9702 (Chapter 14: Stationary Waves)",
+      sgkRefEn: "Cambridge A Level Physics 9702 (Chapter 14: Stationary Waves)",
+      guideSteps: [
+        "Bước 1: Chọn tần số âm thoa f (256Hz, 384Hz, 512Hz, 1024Hz).",
+        "Bước 2: Thay đổi chiều dài cột không khí L (cm) bằng cách chỉnh mực nước.",
+        "Bước 3: Nhấn nút 'Chỉnh tới Cực Đại 1' để đưa L về điểm âm thanh to nhất L1.",
+        "Bước 4: Tính tốc độ truyền âm v = 4f · (L1 + c) và so sánh với 343 m/s."
+      ],
+      guideStepsEn: [
+        "Step 1: Select tuning fork frequency f (256Hz, 384Hz, 512Hz, 1024Hz).",
+        "Step 2: Adjust air column length L (cm) by changing water level.",
+        "Step 3: Click 'Tune to 1st Peak' to locate max volume peak L1.",
+        "Step 4: Compute speed of sound v = 4f · (L1 + c) and compare with 343 m/s."
+      ]
+    },
+    defaultParams: { forkFreqHz: 512, tubeLengthCm: 16.5 },
+    challenges: [
+      {
+        id: "c1",
+        question: "Âm thoa 512 Hz tạo cộng hưởng cực đại 1 tại L1 = 16.0cm (c hiệu chỉnh = 0.75cm). Tốc độ âm v bằng bao nhiêu?",
+        questionEn: "A 512 Hz fork resonates at L1 = 16.0cm (end correction c = 0.75cm). What is speed of sound v?",
+        options: ["343 m/s", "320 m/s", "300 m/s", "360 m/s"],
+        optionsEn: ["343 m/s", "320 m/s", "300 m/s", "360 m/s"],
+        correctIndex: 0,
+        explanation: "λ/4 = L1 + c = 16.75cm => λ = 0.67m. Tốc độ v = f · λ = 512 · 0.67 = 343 m/s.",
+        explanationEn: "λ/4 = L1 + c = 16.75cm => λ = 0.67m. Speed v = f · λ = 512 · 0.67 = 343 m/s."
+      }
+    ]
   }
 ];
