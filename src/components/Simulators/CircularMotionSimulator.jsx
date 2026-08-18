@@ -24,6 +24,9 @@ export default function CircularMotionSimulator({ lang, params = {}, onParamChan
   const periodT = (2 * Math.PI) / omegaRadS; // s
   const frequencyHz = 1 / periodT; // Hz
 
+  // Weight P = mg
+  const weightN = massKg * g;
+
   // Centripetal Acceleration a_ht = v^2 / r = ω^2 * r (m/s²)
   const aCentripetal = Math.pow(linearSpeedMs, 2) / radiusM;
   const aCentripetal_g = aCentripetal / g; // in 'g' units
@@ -31,9 +34,12 @@ export default function CircularMotionSimulator({ lang, params = {}, onParamChan
   // Centripetal Force F_ht = m * a_ht = m * v^2 / r (N)
   const fCentripetalN = massKg * aCentripetal;
 
-  // Safe Banking Angle for Curved Road: tan(θ) = v^2 / (g * r)
+  // Safe Banking Angle for Curved Road: tan(θ) = v^2 / (g * r) = F_ht / P
   const bankAngleRad = Math.atan(Math.pow(linearSpeedMs, 2) / (g * radiusM));
   const bankAngleDeg = (bankAngleRad * 180) / Math.PI;
+
+  // Normal Force N = P / cos(θ) = sqrt(P^2 + F_ht^2)
+  const normalForceN = weightN / Math.cos(bankAngleRad);
 
   // Animation Loop
   useEffect(() => {
@@ -50,6 +56,28 @@ export default function CircularMotionSimulator({ lang, params = {}, onParamChan
     setIsRunning(true);
     setAnimProgress(0);
     timeRef.current = 0;
+  };
+
+  // Helper to draw clean arrowheads on vectors
+  const drawVectorArrow = (ctx, fromX, fromY, toX, toY, color, width = 2.5, headSize = 9) => {
+    const angle = Math.atan2(toY - fromY, toX - fromX);
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.lineWidth = width;
+
+    // Line
+    ctx.beginPath();
+    ctx.moveTo(fromX, fromY);
+    ctx.lineTo(toX, toY);
+    ctx.stroke();
+
+    // Arrow Head
+    ctx.beginPath();
+    ctx.moveTo(toX, toY);
+    ctx.lineTo(toX - headSize * Math.cos(angle - Math.PI / 6), toY - headSize * Math.sin(angle - Math.PI / 6));
+    ctx.lineTo(toX - headSize * Math.cos(angle + Math.PI / 6), toY - headSize * Math.sin(angle + Math.PI / 6));
+    ctx.closePath();
+    ctx.fill();
   };
 
   // 60 FPS Canvas Physics Renderer
@@ -148,13 +176,7 @@ export default function CircularMotionSimulator({ lang, params = {}, onParamChan
       const vEndX = puckX + vVectorLen * Math.cos(vAngle);
       const vEndY = puckY + vVectorLen * Math.sin(vAngle);
 
-      ctx.strokeStyle = '#10b981';
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      ctx.moveTo(puckX, puckY);
-      ctx.lineTo(vEndX, vEndY);
-      ctx.stroke();
-
+      drawVectorArrow(ctx, puckX, puckY, vEndX, vEndY, '#10b981', 2.5, 9);
       ctx.fillStyle = '#10b981';
       ctx.font = 'bold 10px Inter';
       ctx.fillText(`v = ${linearSpeedMs.toFixed(1)} m/s`, vEndX + 10 * Math.cos(vAngle), vEndY + 10 * Math.sin(vAngle));
@@ -165,28 +187,44 @@ export default function CircularMotionSimulator({ lang, params = {}, onParamChan
       const fEndX = puckX + fVectorLen * Math.cos(fAngle);
       const fEndY = puckY + fVectorLen * Math.sin(fAngle);
 
-      ctx.strokeStyle = '#ec4899';
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      ctx.moveTo(puckX, puckY);
-      ctx.lineTo(fEndX, fEndY);
-      ctx.stroke();
-
+      drawVectorArrow(ctx, puckX, puckY, fEndX, fEndY, '#ec4899', 2.5, 9);
       ctx.fillStyle = '#ec4899';
       ctx.font = 'bold 10px Inter';
       ctx.fillText(`F_ht = ${fCentripetalN.toFixed(1)} N`, puckX + (fVectorLen / 2) * Math.cos(fAngle), puckY + (fVectorLen / 2) * Math.sin(fAngle) - 8);
 
     } else {
       // -------------------------------------------------------------
-      // BANKED ROAD VIEW: ROAD INCLINE & FORCES RESOLUTION
+      // REALISTIC BANKED HIGHWAY CURVE & RIGOROUS FORCE PARALLELOGRAM
       // -------------------------------------------------------------
-      const roadW = 280;
-      const roadX = centerX - roadW / 2;
-      const roadY = centerY + 60;
-      const bankH = roadW * Math.sin(bankAngleRad);
+      // Clamp visual bank angle so the illustration stays readable
+      const visualBankAngle = Math.min(Math.PI * 0.38, Math.max(0.1, bankAngleRad));
 
-      // Incline Ramp Road Surface
-      ctx.fillStyle = '#1e293b';
+      const roadW = 270;
+      const roadX = centerX - 60;
+      const roadY = centerY + 100;
+      const bankH = roadW * Math.tan(visualBankAngle);
+
+      // 1. Central Vertical Rotation Axis (Trục quay qua tâm cua O)
+      const axisX = centerX - 180;
+      ctx.strokeStyle = '#64748b';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([6, 4]);
+      ctx.beginPath();
+      ctx.moveTo(axisX, 35);
+      ctx.lineTo(axisX, height - 30);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = 'bold 10px Inter';
+      ctx.textAlign = 'center';
+      ctx.fillText(isEn ? 'Vertical Rotation Axis (Center O)' : 'Trục Quay Thẳng Đứng (Tâm O)', axisX, 25);
+
+      // 2. Asphalt Banked Road Wedge
+      const roadGrad = ctx.createLinearGradient(roadX, roadY, roadX + roadW, roadY - bankH);
+      roadGrad.addColorStop(0, '#1e293b');
+      roadGrad.addColorStop(1, '#0f172a');
+      ctx.fillStyle = roadGrad;
       ctx.beginPath();
       ctx.moveTo(roadX, roadY);
       ctx.lineTo(roadX + roadW, roadY - bankH);
@@ -194,65 +232,186 @@ export default function CircularMotionSimulator({ lang, params = {}, onParamChan
       ctx.closePath();
       ctx.fill();
       ctx.strokeStyle = '#475569';
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 2.5;
       ctx.stroke();
 
-      // Angle Arc θ
+      // Asphalt Road Surface with Moving Lane Markings (When playing)
       ctx.strokeStyle = '#f59e0b';
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.arc(roadX, roadY, 50, -bankAngleRad, 0);
+      ctx.moveTo(roadX, roadY);
+      ctx.lineTo(roadX + roadW, roadY - bankH);
       ctx.stroke();
-      ctx.font = 'bold 11px Inter';
+
+      // Dashed Lane Marker
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([8, 8]);
+      ctx.lineDashOffset = -animProgress * 15;
+      ctx.beginPath();
+      ctx.moveTo(roadX + 20, roadY - 5);
+      ctx.lineTo(roadX + roadW - 20, roadY - bankH + 5);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.lineDashOffset = 0;
+
+      // Incline Angle Arc θ
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(roadX, roadY, 55, -visualBankAngle, 0);
+      ctx.stroke();
+      ctx.font = 'bold 12px Inter';
       ctx.fillStyle = '#fde047';
-      ctx.fillText(`θ = ${bankAngleDeg.toFixed(1)}°`, roadX + 65, roadY - 12);
+      ctx.textAlign = 'left';
+      ctx.fillText(`θ = ${bankAngleDeg.toFixed(1)}°`, roadX + 68, roadY - 14);
 
-      // Vehicle on Banked Surface
-      const carCenterX = roadX + roadW / 2;
-      const carCenterY = roadY - bankH / 2 - 15;
+      // 3. Vehicle Center of Mass (Rear View of Sports Car)
+      const carFraction = 0.52; // Position on slope
+      const carCenterX = roadX + roadW * carFraction;
+      const carCenterY = roadY - bankH * carFraction;
 
+      // Dashed line from Car to Rotation Axis showing Radius r
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(axisX, carCenterY);
+      ctx.lineTo(carCenterX, carCenterY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = 'bold 10px Inter';
+      ctx.textAlign = 'center';
+      ctx.fillText(`r = ${radiusM} m`, (axisX + carCenterX) / 2, carCenterY - 6);
+
+      // Draw Car Chassis (Tilted at angle θ)
       ctx.save();
       ctx.translate(carCenterX, carCenterY);
-      ctx.rotate(-bankAngleRad);
-      ctx.fillStyle = '#38bdf8';
-      ctx.fillRect(-20, -12, 40, 24);
+      ctx.rotate(-visualBankAngle);
+
+      // Wheels
+      ctx.fillStyle = '#020617';
+      ctx.fillRect(-22, -4, 8, 12);
+      ctx.fillRect(14, -4, 8, 12);
+
+      // Body (Sleek blue car body)
+      const carBodyGrad = ctx.createLinearGradient(-24, -20, 24, 0);
+      carBodyGrad.addColorStop(0, '#0284c7');
+      carBodyGrad.addColorStop(0.5, '#38bdf8');
+      carBodyGrad.addColorStop(1, '#0369a1');
+      ctx.fillStyle = carBodyGrad;
+      ctx.beginPath();
+      ctx.roundRect(-24, -22, 48, 20, 4);
+      ctx.fill();
       ctx.strokeStyle = '#ffffff';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(-20, -12, 40, 24);
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Rear Window
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.roundRect(-16, -20, 32, 8, 2);
+      ctx.fill();
+
+      // Tail Lights (Glowing Red)
+      ctx.fillStyle = '#ef4444';
+      ctx.shadowColor = '#ef4444';
+      ctx.shadowBlur = 8;
+      ctx.fillRect(-21, -11, 8, 4);
+      ctx.fillRect(13, -11, 8, 4);
+      ctx.shadowBlur = 0;
+
+      // License Plate / Mass Label
+      ctx.fillStyle = '#fde047';
+      ctx.font = 'bold 7px Inter';
+      ctx.textAlign = 'center';
+      ctx.fillText(`${massKg}kg`, 0, -8);
+
       ctx.restore();
 
-      // Normal Force N (Perpendicular to road)
-      ctx.strokeStyle = '#10b981';
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      ctx.moveTo(carCenterX, carCenterY);
-      ctx.lineTo(carCenterX - 55 * Math.sin(bankAngleRad), carCenterY - 55 * Math.cos(bankAngleRad));
-      ctx.stroke();
-      ctx.fillStyle = '#10b981';
-      ctx.fillText('Normal Force N', carCenterX - 55 * Math.sin(bankAngleRad), carCenterY - 55 * Math.cos(bankAngleRad) - 8);
+      // -------------------------------------------------------------
+      // 4. RIGOROUS FORCE VECTORS (P, N, F_ht) & PARALLELOGRAM RESOLUTION
+      // -------------------------------------------------------------
+      const scaleLen = 3.8; // Pixel scaling factor for forces
+      const pLen = Math.max(35, Math.min(85, weightN * scaleLen));
+      const fhtLen = Math.max(30, Math.min(100, fCentripetalN * scaleLen));
+      const nLen = Math.sqrt(pLen * pLen + fhtLen * fhtLen);
 
-      // Gravity Force P = mg (Straight Down)
-      ctx.strokeStyle = '#ef4444';
-      ctx.lineWidth = 2.5;
+      // Vector Endpoints from car center
+      const pEndX = carCenterX;
+      const pEndY = carCenterY + pLen;
+
+      const fhtEndX = carCenterX - fhtLen;
+      const fhtEndY = carCenterY;
+
+      const nEndX = carCenterX - nLen * Math.sin(visualBankAngle);
+      const nEndY = carCenterY - nLen * Math.cos(visualBankAngle);
+
+      // Parallelogram Resolution Dashed Lines
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([3, 3]);
+      // From P to F_ht resultant
       ctx.beginPath();
-      ctx.moveTo(carCenterX, carCenterY);
-      ctx.lineTo(carCenterX, carCenterY + 60);
+      ctx.moveTo(pEndX, pEndY);
+      ctx.lineTo(fhtEndX, fhtEndY);
       ctx.stroke();
+      // From N to F_ht resultant
+      ctx.beginPath();
+      ctx.moveTo(nEndX, nEndY);
+      ctx.lineTo(fhtEndX, fhtEndY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // 1. Trọng lực P = mg (Đỏ - Hướng thẳng đứng xuống)
+      drawVectorArrow(ctx, carCenterX, carCenterY, pEndX, pEndY, '#ef4444', 3, 10);
       ctx.fillStyle = '#ef4444';
-      ctx.fillText(`P = ${(massKg * g).toFixed(1)} N`, carCenterX, carCenterY + 75);
+      ctx.font = 'bold 11px Inter';
+      ctx.textAlign = 'left';
+      ctx.fillText(`P = mg = ${weightN.toFixed(1)} N`, pEndX + 8, pEndY + 2);
 
-      // Resultant Centripetal Force F_ht (Horizontal Left)
-      ctx.strokeStyle = '#ec4899';
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      ctx.moveTo(carCenterX, carCenterY);
-      ctx.lineTo(carCenterX - 60, carCenterY);
-      ctx.stroke();
+      // 2. Phản lực pháp tuyến N (Xanh lá - Vuông góc với mặt đường)
+      drawVectorArrow(ctx, carCenterX, carCenterY, nEndX, nEndY, '#10b981', 3, 10);
+      ctx.fillStyle = '#10b981';
+      ctx.font = 'bold 11px Inter';
+      ctx.textAlign = 'right';
+      ctx.fillText(
+        isEn ? `Normal Force N = ${normalForceN.toFixed(1)} N` : `Phản Lực N = ${normalForceN.toFixed(1)} N`,
+        nEndX - 8,
+        nEndY - 6
+      );
+
+      // 3. Hợp lực hướng tâm F_ht = N + P (Hồng dạ quang - Hướng ngang về tâm cua O)
+      drawVectorArrow(ctx, carCenterX, carCenterY, fhtEndX, fhtEndY, '#ec4899', 3.5, 11);
       ctx.fillStyle = '#ec4899';
-      ctx.fillText(`F_ht = ${fCentripetalN.toFixed(1)} N`, carCenterX - 85, carCenterY + 4);
+      ctx.font = 'bold 11px Inter';
+      ctx.textAlign = 'center';
+      ctx.fillText(
+        isEn ? `F_ht = N + P = ${fCentripetalN.toFixed(1)} N` : `F_ht = N + P = ${fCentripetalN.toFixed(1)} N`,
+        (carCenterX + fhtEndX) / 2,
+        carCenterY - 10
+      );
+
+      // Summary Condition Box on Top Right
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+      ctx.fillRect(width - 230, 35, 215, 52);
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(width - 230, 35, 215, 52);
+
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = 'bold 10px Inter';
+      ctx.textAlign = 'left';
+      ctx.fillText(isEn ? '⚡ No-Friction Turn Condition:' : '⚡ Điều Kiện Cua Không Ma Sát:', width - 220, 52);
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = 'bold 10px Inter';
+      ctx.fillText(`tan(θ) = v² / (g·r) = F_ht / P`, width - 220, 68);
+      ctx.fillText(`=> θ = arctan(${Math.tan(bankAngleRad).toFixed(2)}) = ${bankAngleDeg.toFixed(1)}°`, width - 220, 81);
     }
 
-  }, [animProgress, massKg, radiusM, rpmSpeed, viewMode]);
+  }, [animProgress, massKg, radiusM, rpmSpeed, viewMode, isEn]);
 
   const recordPoint = () => {
     if (onDataRecorded) {
@@ -262,9 +421,10 @@ export default function CircularMotionSimulator({ lang, params = {}, onParamChan
         Radius_m: `${radiusM} m`,
         Speed_RPM: `${rpmSpeed} RPM`,
         Linear_v_ms: `${linearSpeedMs.toFixed(2)} m/s (${linearSpeedKmh.toFixed(1)} km/h)`,
-        Accel_a_ht: `${aCentripetal.toFixed(2)} m/s² (${aCentripetal_g.toFixed(1)} g)`,
-        Force_F_ht: `${fCentripetalN.toFixed(1)} N`,
-        Bank_Angle: `${bankAngleDeg.toFixed(1)}°`
+        Weight_P_N: `${weightN.toFixed(1)} N`,
+        Normal_Force_N: `${normalForceN.toFixed(1)} N`,
+        Centripetal_Fht_N: `${fCentripetalN.toFixed(1)} N`,
+        Bank_Angle_Deg: `${bankAngleDeg.toFixed(1)}°`
       });
     }
   };
@@ -287,7 +447,7 @@ export default function CircularMotionSimulator({ lang, params = {}, onParamChan
             className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs shadow-lg shadow-cyan-500/20 transition-all active:scale-95"
           >
             <Play className="w-4 h-4" />
-            {isRunning ? (isEn ? 'Pause Rotation' : 'Tạm Dừng Chuyển Động') : (isEn ? 'Start Rotation' : 'Quay Tròn Đều')}
+            {isRunning ? (isEn ? 'Pause Simulation' : 'Tạm Dừng Mô Phỏng') : (isEn ? 'Start Motion' : 'Chạy Mô Phỏng')}
           </button>
           <button
             onClick={handleReset}
@@ -326,7 +486,7 @@ export default function CircularMotionSimulator({ lang, params = {}, onParamChan
                   viewMode === 'banked_curve' ? 'bg-cyan-500 text-slate-950' : 'bg-slate-800 text-slate-400'
                 }`}
               >
-                📐 {isEn ? 'Banked Road θ' : 'Góc Nghiêng Khúc Cua'}
+                📐 {isEn ? 'Banked Curve' : 'Góc Nghiêng Khúc Cua'}
               </button>
             </div>
           </div>
