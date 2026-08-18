@@ -8,6 +8,7 @@ import Stopwatch from './components/Tools/Stopwatch';
 import DataPlotter from './components/Tools/DataPlotter';
 import TheoryModal from './components/TheoryModal';
 import ReportModal from './components/ReportModal';
+import ExamMethodologyModal from './components/ExamMethodologyModal';
 
 // Interactive Wiring Workbench
 import InteractiveWiringWorkbench from './components/InteractiveWiringWorkbench';
@@ -52,7 +53,7 @@ const FaradaySimulator = lazy(() => import('./components/Simulators/FaradaySimul
 const CapacitorSimulator = lazy(() => import('./components/Simulators/CapacitorSimulator'));
 const StandingWaveSimulator = lazy(() => import('./components/Simulators/StandingWaveSimulator'));
 
-import { BookOpen, FileText, Sparkles, Box, Layers, Network, Loader2 } from 'lucide-react';
+import { BookOpen, FileText, Sparkles, Box, Layers, Network, Loader2, Target } from 'lucide-react';
 
 export default function App() {
   const [lang, setLang] = useState('vi'); // 'vi' | 'en'
@@ -76,6 +77,7 @@ export default function App() {
   // Modals state
   const [isTheoryOpen, setIsTheoryOpen] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
+  const [isExamMethodologyOpen, setIsExamMethodologyOpen] = useState(false);
 
   // 3D Placed Components & Selection
   const [placed3DComponents, setPlaced3DComponents] = useState([]);
@@ -292,6 +294,13 @@ export default function App() {
             {/* Modal Action Buttons */}
             <div className="flex items-center gap-2 shrink-0">
               <button
+                onClick={() => setIsExamMethodologyOpen(true)}
+                className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold text-xs flex items-center gap-1.5 transition-all shadow-lg shadow-amber-500/20 active:scale-95"
+              >
+                <Target className="w-4 h-4" /> {t.examMethodologyBtn || "🎯 Phương Pháp Giải Bài Tập Thi"}
+              </button>
+
+              <button
                 onClick={() => setIsTheoryOpen(true)}
                 className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-cyan-400 font-bold text-xs flex items-center gap-1.5 border border-slate-700 transition-all shadow-md active:scale-95"
               >
@@ -415,6 +424,13 @@ export default function App() {
       <TheoryModal
         isOpen={isTheoryOpen}
         onClose={() => setIsTheoryOpen(false)}
+        experiment={activeExp}
+        lang={lang}
+      />
+
+      <ExamMethodologyModal
+        isOpen={isExamMethodologyOpen}
+        onClose={() => setIsExamMethodologyOpen(false)}
         experiment={activeExp}
         lang={lang}
       />
