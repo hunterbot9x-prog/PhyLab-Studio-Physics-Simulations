@@ -210,9 +210,10 @@ export default function SphericalMirrorSimulator({ lang, params = {}, onParamCha
     const dxObj = mirrorX - objX;
 
     if (isRealImage) {
-      // Reflected Ray 2 passes below axis directly through imgA'(imgX, imgY)
+      // Reflected Ray 2 reflects symmetrically at pole O and passes directly through imgA'(imgX, imgY)
+      const slope2 = (imgY - axisY) / (imgX - mirrorX);
       const endX = 20;
-      const endY = axisY + (axisY - imgY) * (20 - mirrorX) / (imgX - mirrorX);
+      const endY = axisY + slope2 * (endX - mirrorX);
       ctx.beginPath();
       ctx.moveTo(mirrorX, axisY);
       ctx.lineTo(endX, endY);
