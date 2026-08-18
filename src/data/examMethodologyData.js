@@ -518,7 +518,7 @@ export const EXAM_METHODOLOGY_DATA = {
 
   // 10. HOOKE'S LAW & LÒ XO ĐÀN HỒI (Cambridge IGCSE 0625 / AS Level)
   "igcse-hooke": {
-    topic: "Cambridge IGCSE: Hooke's Law, Spring Constant k & Elastic Limit",
+    topic: "Cambridge IGCSE: Định Luật Hooke, Hằng Số Đàn Hồi Lò Xo k & Giới Hạn Đàn Hồi",
     mindset: {
       steps: [
         "Bước 1: Phân biệt giữa Chiều dài ban đầu l_0, Chiều dài khi dãn l, và Độ dãn (Extension) x = l - l_0.",
@@ -536,38 +536,38 @@ export const EXAM_METHODOLOGY_DATA = {
     problemTypes: [
       {
         id: "type1",
-        name: "Type 1: Calculating Spring Constant k & Extension (Cambridge Core/Extended)",
-        description: "Apply F = k · x to find extension or mass hung on spring.",
+        name: "Dạng 1: Tính Độ cứng k & Độ dãn của lò xo (Nhận biết - Thông hiểu)",
+        description: "Áp dụng công thức F = k · x để tìm độ dãn hoặc khối lượng treo vào lò xo.",
         formulaSummary: "k = F / x = (m · g) / (l - l_0)",
-        traps: "⚠️ Trap: Using total length l instead of extension x = l - l_0 in F = kx."
+        traps: "⚠️ Bẫy phổ biến: Lấy nhầm chiều dài tổng l thay vì độ dãn x = l - l_0 khi thay vào F = kx."
       },
       {
         id: "type2",
-        name: "Type 2: Elastic Limit & Work Done / Energy Stored (Extended / A Level)",
-        description: "Calculate elastic strain energy as area under Force-Extension graph.",
-        formulaSummary: "E_p = Area = (1/2) · F · x = (1/2) · k · x²",
-        traps: "⚠️ Beyond the limit of proportionality, spring suffers permanent deformation (plastic deformation) and Hooke's law no longer applies."
+        name: "Dạng 2: Giới hạn đàn hồi & Công / Thế năng đàn hồi (Vận dụng)",
+        description: "Tính thế năng biến dạng đàn hồi bằng diện tích hình phẳng dưới đồ thị Lực - Độ dãn.",
+        formulaSummary: "E_p = Diện tích = (1/2) · F · x = (1/2) · k · x²",
+        traps: "⚠️ Vượt quá giới hạn tỉ lệ, lò xo bị biến dạng vĩnh viễn (biến dạng dẻo) và định luật Hooke không còn đúng."
       },
       {
         id: "type3",
-        name: "Type 3: Series & Parallel Combinations of Springs",
-        description: "Determine equivalent spring constant for spring systems.",
-        formulaSummary: "1/k_series = 1/k1 + 1/k2 | k_parallel = k1 + k2",
-        traps: "⚠️ Springs in series share the same tension force F, but total extension x_total = x1 + x2."
+        name: "Dạng 3: Ghép lò xo nối tiếp và song song (Vận dụng cao)",
+        description: "Xác định độ cứng tương đương của hệ nhiều lò xo ghép.",
+        formulaSummary: "1/k_nt = 1/k1 + 1/k2 | k_ss = k1 + k2",
+        traps: "⚠️ Hai lò xo ghép nối tiếp cùng chịu lực căng F, nhưng độ dãn tổng bằng tổng độ dãn từng lò xo: x_tong = x1 + x2."
       }
     ],
     workedExample: {
-      question: "A spring of unstretched length 12.0 cm hangs vertically. When a load of 4.0 N is attached, its length becomes 20.0 cm. (a) Calculate the spring constant k. (b) Calculate the elastic strain energy stored in the spring.",
-      thinkingAnalysis: "1) Calculate extension x = length - original length = 20.0 - 12.0 = 8.0 cm = 0.08 m.\n2) Use Hooke's law: k = F / x = 4.0 / 0.08 = 50 N/m.\n3) Calculate energy stored: E_p = 0.5 · k · x² = 0.5 · 50 · 0.08² = 0.16 J.",
-      solution: "1. Extension of the spring:\n   x = l - l_0 = 20.0 cm - 12.0 cm = 8.0 cm = 0.08 m.\n2. Spring constant k:\n   k = F / x = 4.0 N / 0.08 m = 50.0 N/m.\n3. Elastic strain energy stored:\n   E_p = (1/2) · k · x² = (1/2) · 50.0 · (0.08)² = 0.16 Joules (J).",
-      examTrapWarning: "⚠️ Cambridge Exam Trap: Leaving x in cm (8.0 cm) results in E_p = 0.5 · 50 · 8² = 1600 J (WRONG by factor of 10,000!). Always convert extension to METRES (m)."
+      question: "Một lò xo có chiều dài tự nhiên 12.0 cm treo thẳng đứng. Khi treo quả nặng có trọng lượng 4.0 N, chiều dài của lò xo là 20.0 cm. (a) Tính độ cứng k của lò xo. (b) Tính thế năng đàn hồi tích trữ trong lò xo.",
+      thinkingAnalysis: "1) Tính độ dãn x = l - l_0 = 20.0 - 12.0 = 8.0 cm = 0.08 m.\n2) Theo định luật Hooke: k = F / x = 4.0 / 0.08 = 50 N/m.\n3) Thế năng đàn hồi: E_p = 0.5 · k · x² = 0.5 · 50 · 0.08² = 0.16 J.",
+      solution: "1. Độ dãn của lò xo:\n   x = l - l_0 = 20.0 cm - 12.0 cm = 8.0 cm = 0.08 m.\n2. Độ cứng k của lò xo:\n   k = F / x = 4.0 N / 0.08 m = 50.0 N/m.\n3. Thế năng đàn hồi tích trữ trong lò xo:\n   E_p = (1/2) · k · x² = (1/2) · 50.0 · (0.08)² = 0.16 Joules (J).",
+      examTrapWarning: "⚠️ Bẫy thi Cambridge: Để x theo đơn vị cm (8.0 cm) sẽ tính ra E_p = 0.5 · 50 · 8² = 1600 J (SAI lệch 10.000 lần!). Luôn đổi độ dãn sang MÉT (m)."
     },
     practiceQuiz: {
-      question: "A spring has spring constant k = 200 N/m. How much work is done in extending the spring from an extension of 0.02 m to 0.04 m?",
+      question: "Một lò xo có độ cứng k = 200 N/m. Công cần thực hiện để kéo lò xo dãn từ 0.02 m đến 0.04 m là bao nhiêu?",
       options: ["0.12 J", "0.16 J", "0.04 J", "0.08 J"],
       correctIndex: 0,
-      hint1: "Work done equals the change in elastic potential energy: W = ΔE_p = (1/2) · k · (x2² - x1²).",
-      hint2: "Do NOT calculate (1/2)·k·(x2 - x1)². You must square the extensions separately: (0.04² - 0.02²) = 0.0016 - 0.0004 = 0.0012 m².",
+      hint1: "Công thực hiện bằng độ biến thiên thế năng đàn hồi: W = ΔE_p = (1/2) · k · (x2² - x1²).",
+      hint2: "KHÔNG tính (1/2)·k·(x2 - x1)². Phải bình phương từng độ dãn riêng biệt: (0.04² - 0.02²) = 0.0016 - 0.0004 = 0.0012 m².",
       explanation: "W = 0.5 · 200 · (0.04² - 0.02²) = 100 · (0.0016 - 0.0004) = 100 · 0.0012 = 0.12 J."
     }
   },
@@ -591,38 +591,38 @@ export const EXAM_METHODOLOGY_DATA = {
     problemTypes: [
       {
         id: "type1",
-        name: "Type 1: Calculating Refractive Index n & Angles of Refraction (IGCSE / AS Level)",
-        description: "Apply Snell's law when light enters a glass block or water.",
+        name: "Dạng 1: Tính Chiết suất n & Góc khúc xạ r (Nhận biết - Thông hiểu)",
+        description: "Áp dụng định luật Snell khi ánh sáng truyền vào khối thủy tinh hoặc nước.",
         formulaSummary: "n = sin i / sin r | v = c / n",
-        traps: "⚠️ Always measure angles i and r from the NORMAL (perpendicular to surface), not from the boundary surface."
+        traps: "⚠️ Luôn đo góc tới i và góc khúc xạ r so với PHÁP TUYẾN (đường vuông góc với mặt phân cách), không đo so với mặt phân cách."
       },
       {
         id: "type2",
-        name: "Type 2: Total Internal Reflection & Critical Angle c (Optical Fibres & Prisms)",
-        description: "Determine whether light reflects totally or refracts out.",
-        formulaSummary: "sin c = n2 / n1 (where n1 > n2)",
-        traps: "⚠️ TIR can NEVER happen when light travels from air into glass (less dense to more dense). It only occurs from high n to low n."
+        name: "Dạng 2: Phản xạ toàn phần & Góc tới giới hạn c (Vận dụng)",
+        description: "Xác định góc tới giới hạn để tia sáng phản xạ toàn phần hay ló ra ngoài.",
+        formulaSummary: "sin c = n2 / n1 (với n1 > n2)",
+        traps: "⚠️ Phản xạ toàn phần KHÔNG BAO GIỜ xảy ra khi ánh sáng truyền từ không khí vào thủy tinh. Chỉ xảy ra khi truyền từ môi trường chiết quang hơn sang kém."
       },
       {
         id: "type3",
-        name: "Type 3: Light through Rectangular Block / Triangular Prism",
-        description: "Parallel emergent ray from rectangular block with lateral displacement d.",
-        formulaSummary: "Lateral shift d = t · sin(i - r) / cos(r)",
-        traps: "⚠️ For rectangular block, emergent angle equals incident angle (i_emergent = i_incident)."
+        name: "Dạng 3: Bản mặt song song & Lăng kính (Vận dụng cao)",
+        description: "Tia ló khỏi bản mặt song song luôn song song với tia tới và bị dời ngang một đoạn d.",
+        formulaSummary: "Độ dời ngang d = e · sin(i - r) / cos(r)",
+        traps: "⚠️ Với bản mặt song song, góc ló luôn bằng góc tới (i_lo = i_toi)."
       }
     ],
     workedExample: {
-      question: "A ray of light in air strikes a glass block (refractive index n = 1.50) at an angle of incidence of 45°. (a) Calculate the angle of refraction r in the glass. (b) Calculate the critical angle c for the glass-air boundary.",
-      thinkingAnalysis: "1) Apply Snell's law: 1.0 · sin(45°) = 1.50 · sin(r).\n2) sin(r) = sin(45°) / 1.50 = 0.7071 / 1.50 = 0.4714 => r = arcsin(0.4714) = 28.1°.\n3) Critical angle formula: sin c = 1 / n = 1 / 1.50 = 0.6667 => c = arcsin(0.6667) = 41.8°.",
-      solution: "1. Angle of refraction r:\n   sin i / sin r = n\n   => sin r = sin(45°) / 1.50 = 0.7071 / 1.50 = 0.4714\n   => r = 28.1°.\n2. Critical angle c:\n   sin c = 1 / n = 1 / 1.50 = 0.6667\n   => c = 41.8°.",
-      examTrapWarning: "⚠️ Cambridge Marking Scheme Trap: Stating critical angle as a ratio (sin c = 0.667) instead of calculating the actual ANGLE in degrees (c = 41.8°). Always evaluate the inverse sine!"
+      question: "Một tia sáng trong không khí chiếu tới một khối thủy tinh (chiết suất n = 1.50) với góc tới i = 45°. (a) Tính góc khúc xạ r trong thủy tinh. (b) Tính góc tới giới hạn phản xạ toàn phần c ở mặt phân cách thủy tinh - không khí.",
+      thinkingAnalysis: "1) Áp dụng định luật Snell: 1.0 · sin(45°) = 1.50 · sin(r).\n2) sin(r) = sin(45°) / 1.50 = 0.7071 / 1.50 = 0.4714 => r = arcsin(0.4714) = 28.1°.\n3) Công thức góc giới hạn: sin c = 1 / n = 1 / 1.50 = 0.6667 => c = arcsin(0.6667) = 41.8°.",
+      solution: "1. Tính góc khúc xạ r:\n   sin i / sin r = n\n   => sin r = sin(45°) / 1.50 = 0.7071 / 1.50 = 0.4714\n   => r = 28.1°.\n2. Tính góc giới hạn phản xạ toàn phần c:\n   sin c = 1 / n = 1 / 1.50 = 0.6667\n   => c = 41.8°.",
+      examTrapWarning: "⚠️ Bẫy thi Cambridge / THPTQG: Chỉ viết sin c = 0.667 mà quên bấm hàm arcsin để ra góc c = 41.8°."
     },
     practiceQuiz: {
-      question: "Light travels from diamond (n = 2.42) into water (n = 1.33). What is the critical angle for total internal reflection?",
+      question: "Ánh sáng truyền từ kim cương (n = 2.42) vào nước (n = 1.33). Góc tới giới hạn để xảy ra phản xạ toàn phần là bao nhiêu?",
       options: ["33.3°", "41.8°", "48.8°", "24.4°"],
       correctIndex: 0,
-      hint1: "Use the general critical angle equation: sin c = n_less / n_dense = n_water / n_diamond.",
-      hint2: "sin c = 1.33 / 2.42 = 0.5496. Take arcsin(0.5496).",
+      hint1: "Áp dụng công thức tổng quát: sin c = n_nhỏ / n_lớn = n_nước / n_kim_cương.",
+      hint2: "sin c = 1.33 / 2.42 = 0.5496. Bấm arcsin(0.5496).",
       explanation: "sin c = 1.33 / 2.42 = 0.5496 => c = arcsin(0.5496) = 33.34° ≈ 33.3°."
     }
   },
@@ -647,38 +647,38 @@ export const EXAM_METHODOLOGY_DATA = {
     problemTypes: [
       {
         id: "type1",
-        name: "Type 1: Calculating Period T & Acceleration of Free Fall g (A Level AS)",
-        description: "Apply T = 2π√(L/g) for pendulum oscillations.",
+        name: "Dạng 1: Tính Chu kỳ T & Gia tốc Trọng trường g (A Level AS / Lớp 12)",
+        description: "Áp dụng công thức T = 2π√(L/g) cho dao động con lắc đơn góc nhỏ.",
         formulaSummary: "T = 2π√(L/g) | g = 4π²·L / T²",
-        traps: "⚠️ Length L must be measured from suspension point to the CENTRE OF GRAVITY of the pendulum bob (L = length of string + radius of bob)."
+        traps: "⚠️ Chiều dài L bắt buộc phải đo từ điểm treo đến TRỌNG TÂM của quả nặng (L = chiều dài dây + bán kính quả cầu)."
       },
       {
         id: "type2",
-        name: "Type 2: Paper 5 Graphical Analysis & Gradient Determination",
-        description: "Plot T² against L, find gradient and calculate percentage uncertainty.",
-        formulaSummary: "Gradient = 4π² / g => g = 4π² / m | %Uncertainty in g = %ΔL + 2·%ΔT",
-        traps: "⚠️ In calculating uncertainty for T², remember to DOUBLE the percentage uncertainty of T (since power is 2)."
+        name: "Dạng 2: Xử lý Đồ thị Thực nghiệm Paper 5 & Xác định Hệ số góc Gradient",
+        description: "Vẽ đồ thị T² theo L, tìm hệ số góc m và tính phần trăm sai số của g.",
+        formulaSummary: "Gradient = 4π² / g => g = 4π² / m | %Sai số của g = %ΔL + 2·%ΔT",
+        traps: "⚠️ Khi tính sai số cho T², nhớ phải NHÂN ĐÔI phần trăm sai số của T (%Δ(T²) = 2·%ΔT do có số mũ 2)."
       },
       {
         id: "type3",
-        name: "Type 3: Small-angle Approximation & Energy Transformations",
-        description: "Conservation of energy between highest point and lowest point.",
+        name: "Dạng 3: Gần đúng Góc nhỏ & Bảo toàn Năng lượng (Vận dụng cao)",
+        description: "Bảo toàn cơ năng giữa vị trí cao nhất (biên độ góc θ_0) và vị trí thấp nhất (VTCB).",
         formulaSummary: "v_max = √(2 · g · L · (1 - cos θ_0))",
-        traps: "⚠️ Maximum tension in string occurs at lowest point: T_max = m·g · (3 - 2 cos θ_0)."
+        traps: "⚠️ Lực căng dây cực đại xuất hiện tại vị trí thấp nhất (VTCB): T_max = m·g · (3 - 2 cos θ_0)."
       }
     ],
     workedExample: {
-      question: "In a Cambridge A Level Physics experiment, a student measures the period T for various pendulum lengths L. The gradient of the linear graph of T² (s²) against L (m) is found to be 4.02 s²/m. (a) Calculate experimental value of g. (b) If the percentage uncertainty in T is 1.5% and in L is 1.0%, calculate the percentage uncertainty in g.",
-      thinkingAnalysis: "1) From formula T² = (4π² / g) · L, the gradient m = 4π² / g.\n2) Therefore, g = 4π² / m = 4π² / 4.02 = 9.82 m/s².\n3) Percentage uncertainty in g = %ΔL + 2 · %ΔT = 1.0% + 2 · 1.5% = 4.0%.",
-      solution: "1. Acceleration of free fall g:\n   g = 4 · π² / Gradient = 4 · (3.14159)² / 4.02 = 39.478 / 4.02 = 9.82 m/s².\n2. Percentage uncertainty in g:\n   %Δg = %ΔL + 2 · (%ΔT)\n   %Δg = 1.0% + 2 · (1.5%) = 1.0% + 3.0% = 4.0%.\n3. Absolute uncertainty:\n   Δg = 4.0% · 9.82 = 0.39 m/s² => g = (9.8 ± 0.4) m/s².",
-      examTrapWarning: "⚠️ Cambridge Paper 5 Trap: Forgetting to double the uncertainty of T when dealing with T²."
+      question: "Trong một bài thi thực hành Vật lý Cambridge A Level, một học sinh đo chu kỳ T ứng với các chiều dài dây L khác nhau của con lắc đơn. Hệ số góc của đồ thị đường thẳng biểu diễn T² (s²) theo L (m) đo được là 4.02 s²/m. (a) Tính giá trị thực nghiệm của gia tốc trọng trường g. (b) Nếu phần trăm sai số trong phép đo T là 1.5% và trong phép đo L là 1.0%, hãy tính phần trăm sai số của g.",
+      thinkingAnalysis: "1) Từ phương trình chu kỳ T² = (4π² / g) · L, hệ số góc của đồ thị tuyến tính là m = 4π² / g.\n2) Từ đó suy ra gia tốc g = 4π² / m = 4π² / 4.02 = 9.82 m/s².\n3) Phần trăm sai số của g: Vì g = 4π²·L / T² nên %Δg = %ΔL + 2 · %ΔT = 1.0% + 2 · 1.5% = 4.0%.",
+      solution: "1. Tính gia tốc trọng trường thực nghiệm g:\n   g = 4 · π² / Gradient = 4 · (3.14159)² / 4.02 = 39.478 / 4.02 = 9.82 m/s².\n2. Tính phần trăm sai số của g:\n   %Δg = %ΔL + 2 · (%ΔT)\n   %Δg = 1.0% + 2 · (1.5%) = 1.0% + 3.0% = 4.0%.\n3. Sai số tuyệt đối và kết quả đo:\n   Δg = 4.0% · 9.82 = 0.39 m/s² => g = (9.8 ± 0.4) m/s².",
+      examTrapWarning: "⚠️ Bẫy thi Cambridge Paper 5: Quên nhân đôi sai số của T khi tính sai số cho T² dẫn đến tính ra %Δg = 2.5% (SAI)."
     },
     practiceQuiz: {
-      question: "A simple pendulum has a period T = 1.60 s on Earth. If the length of the pendulum is quadrupled (4L), what is the new period?",
+      question: "Một con lắc đơn có chu kỳ dao động T = 1.60 s trên Trái Đất. Nếu chiều dài của con lắc tăng gấp 4 lần (4L), chu kỳ dao động mới của con lắc là bao nhiêu?",
       options: ["3.20 s", "6.40 s", "0.80 s", "4.00 s"],
       correctIndex: 0,
-      hint1: "Period is proportional to the square root of length: T ∝ √L.",
-      hint2: "When length increases by factor of 4, period increases by factor of √4 = 2. New T' = 2 · 1.60 s.",
+      hint1: "Chu kỳ tỉ lệ thuận với căn bậc hai của chiều dài: T ∝ √L.",
+      hint2: "Khi chiều dài L tăng 4 lần thì chu kỳ tăng √4 = 2 lần. Chu kỳ mới: T' = 2 · 1.60 s = 3.20 s.",
       explanation: "T' = 2π√(4L / g) = 2 · (2π√(L/g)) = 2 · 1.60 s = 3.20 s."
     }
   },
@@ -703,39 +703,39 @@ export const EXAM_METHODOLOGY_DATA = {
     problemTypes: [
       {
         id: "type1",
-        name: "Type 1: Calculating EMF E, Internal Resistance r & Lost Volts (A Level AS)",
-        description: "Apply E = V + Ir for different load resistances R.",
+        name: "Dạng 1: Tính Suất điện động E, Điện trở trong r & Độ sụt thế Lost Volts (Thông hiểu)",
+        description: "Áp dụng định luật Ohm toàn mạch E = V + I·r cho các điện trở tải R khác nhau.",
         formulaSummary: "E = I1·(R1 + r) = I2·(R2 + r) => r = (I1·R1 - I2·R2) / (I2 - I1)",
-        traps: "⚠️ Voltmeter connected directly across battery terminals measures V = E - Ir, NOT EMF E (unless circuit is open I=0)."
+        traps: "⚠️ Vôn kế mắc trực tiếp vào 2 cực của nguồn khi mạch kín đo hiệu điện thế V = E - Ir, KHÔNG PHẢI suất điện động E (trừ khi mạch hở I = 0)."
       },
       {
         id: "type2",
-        name: "Type 2: V against I Graphical Analysis (Cambridge Paper 3/5 Core Practical)",
-        description: "Find E from y-intercept and r from magnitude of gradient.",
-        formulaSummary: "V = -r · I + E => y-intercept = E; gradient = -r",
-        traps: "⚠️ Gradient is NEGATIVE (m = -r). The internal resistance r is the magnitude |m| (resistance is always positive)."
+        name: "Dạng 2: Khai thác Đồ thị V theo I (Bài thi Thực hành Cambridge Paper 3/5)",
+        description: "Tìm E từ điểm cắt trục tung và r từ độ lớn hệ số góc.",
+        formulaSummary: "V = -r · I + E => Điểm cắt trục tung = E; Hệ số góc = -r",
+        traps: "⚠️ Hệ số góc m mang dấu ÂM (m = -r). Điện trở trong r là độ lớn tuyệt đối |m| (điện trở luôn dương)."
       },
       {
         id: "type3",
-        name: "Type 3: Maximum Power Transfer Theorem",
-        description: "Find load resistance R for maximum power output from battery.",
-        formulaSummary: "P_out_max = E² / (4r) when R_load = r",
-        traps: "⚠️ At maximum power transfer (R = r), the efficiency of the battery is only 50% (half the power is wasted as heat in internal resistance)."
+        name: "Dạng 3: Định lý Truyền công suất cực đại (Vận dụng cao)",
+        description: "Tìm điện trở tải R để công suất tiêu thụ mạch ngoài đạt giá trị cực đại.",
+        formulaSummary: "P_ngoai_max = E² / (4r) khi R_tai = r",
+        traps: "⚠️ Tại điểm công suất cực đại (R = r), hiệu suất của nguồn điện chỉ đạt đúng 50% (một nửa công suất bị tiêu hao thành nhiệt trên r)."
       }
     ],
     workedExample: {
-      question: "A battery of EMF E and internal resistance r is connected across a variable resistor R. When R = 5.0 Ω, the current is 1.20 A. When R = 11.0 Ω, the current drops to 0.60 A. Calculate (a) the internal resistance r, and (b) the EMF E of the battery.",
-      thinkingAnalysis: "1) Write loop equation E = I · (R + r) for both cases:\n   Case 1: E = 1.20 · (5.0 + r)\n   Case 2: E = 0.60 · (11.0 + r)\n2) Equate the two expressions to solve for r:\n   1.20 · (5.0 + r) = 0.60 · (11.0 + r)\n   6.0 + 1.20r = 6.6 + 0.60r => 0.60r = 0.6 => r = 1.0 Ω.\n3) Substitute r = 1.0 Ω back to find E = 1.20 · (5.0 + 1.0) = 7.2 V.",
-      solution: "1. Setting up simultaneous equations:\n   E = 1.20 · (5.0 + r)  --- (1)\n   E = 0.60 · (11.0 + r) --- (2)\n2. Equating (1) and (2):\n   1.20 · (5.0 + r) = 0.60 · (11.0 + r)\n   6.0 + 1.20r = 6.6 + 0.60r\n   0.60r = 0.60 => r = 1.0 Ω.\n3. Calculating EMF E:\n   E = 1.20 · (5.0 + 1.0) = 7.20 V.",
-      examTrapWarning: "⚠️ Common Exam Mistake: Assuming V is constant when R changes. Voltage across terminals V changes as current I changes because lost volts Ir changes."
+      question: "Một nguồn điện có suất điện động E và điện trở trong r được nối với biến trở R. Khi R = 5.0 Ω, dòng điện trong mạch là 1.20 A. Khi R = 11.0 Ω, dòng điện giảm xuống còn 0.60 A. Tính: (a) Điện trở trong r. (b) Suất điện động E của nguồn điện.",
+      thinkingAnalysis: "1) Viết phương trình định luật Ohm toàn mạch cho 2 trường hợp:\n   Trường hợp 1: E = 1.20 · (5.0 + r)\n   Trường hợp 2: E = 0.60 · (11.0 + r)\n2) Cho 2 biểu thức bằng nhau để giải r:\n   1.20 · (5.0 + r) = 0.60 · (11.0 + r)\n   6.0 + 1.20r = 6.6 + 0.60r => 0.60r = 0.60 => r = 1.0 Ω.\n3) Thay r = 1.0 Ω vào tìm E: E = 1.20 · (5.0 + 1.0) = 7.20 V.",
+      solution: "1. Thiết lập hệ phương trình:\n   E = 1.20 · (5.0 + r)  --- (1)\n   E = 0.60 · (11.0 + r) --- (2)\n2. Giải hệ phương trình tìm r:\n   1.20 · (5.0 + r) = 0.60 · (11.0 + r)\n   6.0 + 1.20r = 6.6 + 0.60r\n   0.60r = 0.60 => r = 1.0 Ω.\n3. Tính suất điện động E:\n   E = 1.20 · (5.0 + 1.0) = 7.20 V.",
+      examTrapWarning: "⚠️ Sai lầm phổ biến: Cho rằng hiệu điện thế 2 đầu nguồn V không đổi khi R thay đổi. Thực tế V biến đổi theo I vì độ sụt thế Ir thay đổi."
     },
     practiceQuiz: {
-      question: "A battery with EMF E = 9.0 V and internal resistance r = 2.0 Ω is connected to a 10.0 Ω resistor. What is the terminal potential difference V across the battery?",
+      question: "Một nguồn điện có suất điện động E = 9.0 V và điện trở trong r = 2.0 Ω nối với điện trở R = 10.0 Ω. Hiệu điện thế giữa hai đầu cực nguồn V là bao nhiêu?",
       options: ["7.5 V", "9.0 V", "1.5 V", "6.0 V"],
       correctIndex: 0,
-      hint1: "Calculate circuit current first: I = E / (R + r) = 9.0 / (10.0 + 2.0).",
-      hint2: "Terminal voltage is V = I · R = E - I · r.",
-      explanation: "I = 9.0 / (10 + 2) = 0.75 A. Terminal p.d. V = I · R = 0.75 · 10.0 = 7.5 V (or V = 9.0 - 0.75 · 2.0 = 7.5 V)."
+      hint1: "Tính cường độ dòng điện trong mạch: I = E / (R + r) = 9.0 / (10.0 + 2.0).",
+      hint2: "Hiệu điện thế mạch ngoài: V = I · R = E - I · r.",
+      explanation: "I = 9.0 / (10 + 2) = 0.75 A. Hiệu điện thế V = I · R = 0.75 · 10.0 = 7.5 V (hoặc V = 9.0 - 0.75 · 2.0 = 7.5 V)."
     }
   },
 
@@ -759,37 +759,37 @@ export const EXAM_METHODOLOGY_DATA = {
     problemTypes: [
       {
         id: "type1",
-        name: "Type 1: Calculating Wavelength λ & Angular Deviation θ (Cambridge AS Level)",
-        description: "Apply d·sin θ = n·λ to find wavelength or grating spacing d.",
+        name: "Dạng 1: Tính Bước Sóng λ & Góc Nhiễu Xạ θ (Thông hiểu)",
+        description: "Áp dụng phương trình cách tử d · sin θ = n · λ để tìm bước sóng hoặc hằng số cách tử d.",
         formulaSummary: "λ = (d · sin θ) / n",
-        traps: "⚠️ Convert lines/mm to spacing d in METRES: e.g. 500 lines/mm => d = 10⁻³ / 500 = 2.0 · 10⁻⁶ m."
+        traps: "⚠️ Đổi số vạch/mm sang hằng số cách tử d tính bằng MÉT (m): ví dụ 500 vạch/mm => d = 10⁻³ / 500 = 2.0 · 10⁻⁶ m."
       },
       {
         id: "type2",
-        name: "Type 2: Maximum Observable Order n_max & Total Bright Fringes",
-        description: "Find highest order visible using sin θ ≤ 1.",
-        formulaSummary: "n_max = ⌊d / λ⌋ | Total fringes = 2·n_max + 1",
-        traps: "⚠️ Always ROUND DOWN to the nearest integer. If d/λ = 3.8, then n_max = 3 (order 4 requires sin θ > 1 which is impossible)."
+        name: "Dạng 2: Bậc nhiễu xạ cực đại n_max & Tổng số vạch sáng quan sát được (Vận dụng)",
+        description: "Tìm bậc cực đại nhìn thấy được sử dụng điều kiện sin θ ≤ 1.",
+        formulaSummary: "n_max = ⌊d / λ⌋ | Tổng số vạch sáng = 2·n_max + 1",
+        traps: "⚠️ Luôn LẤY PHẦN NGUYÊN (làm tròn xuống). Nếu d/λ = 3.8 thì n_max = 3 (bậc 4 đòi hỏi sin θ > 1 là vô lý)."
       },
       {
         id: "type3",
-        name: "Type 3: White Light Continuous Spectra & Spectral Overlapping",
-        description: "Analyze overlapping of 2nd order and 3rd order spectra.",
-        formulaSummary: "θ_overlap when n1 · λ_red = (n1 + 1) · λ_violet",
-        traps: "⚠️ In diffraction grating, RED light is diffracted by a LARGER angle than BLUE light (opposite to prism dispersion where blue bends more!)."
+        name: "Dạng 3: Quang phổ liên tục của Ánh sáng trắng & Chồng lấn phổ (Vận dụng cao)",
+        description: "Phân tích sự chồng lấn giữa quang phổ bậc 2 và bậc 3.",
+        formulaSummary: "Bắt đầu chồng lấn khi: (n + 1) · λ_tím ≤ n · λ_đỏ",
+        traps: "⚠️ Trong cách tử nhiễu xạ, ánh sáng ĐỎ bị lệch góc LỚN HƠN ánh sáng LAM (ngược lại với hiện tượng tán sắc qua lăng kính nơi tia tím bị lệch nhiều nhất!)."
       }
     ],
     workedExample: {
-      question: "Monochromatic laser light of wavelength λ = 632.8 nm is incident normally on a diffraction grating with 400 lines per millimetre. (a) Calculate the angle of diffraction for the second-order maximum (n = 2). (b) Determine the maximum number of bright maxima that can be observed.",
-      thinkingAnalysis: "1) Calculate grating spacing d = (1 · 10⁻³ m) / 400 = 2.50 · 10⁻⁶ m.\n2) For n = 2: d · sin θ = 2 · λ => sin θ = (2 · 632.8 · 10⁻⁹) / (2.50 · 10⁻⁶) = 0.50624.\n   => θ = arcsin(0.50624) = 30.41°.\n3) For max order: n_max = ⌊d / λ⌋ = ⌊(2.50 · 10⁻⁶) / (632.8 · 10⁻⁹)⌋ = ⌊3.95⌋ = 3.\n   Total observable maxima = 2 · n_max + 1 = 2 · 3 + 1 = 7.",
-      solution: "1. Grating spacing d:\n   d = 10⁻³ m / 400 = 2.50 · 10⁻⁶ m.\n2. Angle for second-order maximum (n = 2):\n   d · sin θ_2 = 2 · λ\n   sin θ_2 = (2 · 632.8 · 10⁻⁹ m) / (2.50 · 10⁻⁶ m) = 0.50624\n   => θ_2 = 30.4°.\n3. Maximum order visible:\n   n_max = d / λ = (2.50 · 10⁻⁶) / (632.8 · 10⁻⁹) = 3.95 => n_max = 3.\n4. Total number of observable bright maxima:\n   N_total = 2 · n_max + 1 = 2 · 3 + 1 = 7 (n = -3, -2, -1, 0, +1, +2, +3).",
-      examTrapWarning: "⚠️ Cambridge Exam Trap: Stating total maxima as 3 instead of 7 (must include central maximum n=0 and negative order maxima on opposite side!)."
+      question: "Chiếu một chùm tia laser đơn sắc có bước sóng λ = 632.8 nm vuông góc với một cách tử nhiễu xạ có mật độ 400 vạch/mm. (a) Tính góc nhiễu xạ ứng với cực đại bậc 2 (n = 2). (b) Xác định tổng số cực đại sáng có thể quan sát được trên màn.",
+      thinkingAnalysis: "1) Tính khoảng cách giữa 2 vạch liên tiếp d = (1 · 10⁻³ m) / 400 = 2.50 · 10⁻⁶ m.\n2) Với n = 2: d · sin θ = 2 · λ => sin θ = (2 · 632.8 · 10⁻⁹) / (2.50 · 10⁻⁶) = 0.50624 => θ = arcsin(0.50624) = 30.41°.\n3) Bậc cực đại: n_max = ⌊d / λ⌋ = ⌊(2.50 · 10⁻⁶) / (632.8 · 10⁻⁹)⌋ = ⌊3.95⌋ = 3.\n   Tổng số cực đại quan sát được = 2 · n_max + 1 = 2 · 3 + 1 = 7.",
+      solution: "1. Hằng số cách tử d:\n   d = 10⁻³ m / 400 = 2.50 · 10⁻⁶ m.\n2. Góc nhiễu xạ bậc 2 (n = 2):\n   d · sin θ_2 = 2 · λ\n   sin θ_2 = (2 · 632.8 · 10⁻⁹ m) / (2.50 · 10⁻⁶ m) = 0.50624\n   => θ_2 = 30.4°.\n3. Bậc nhiễu xạ cực đại:\n   n_max = ⌊d / λ⌋ = ⌊(2.50 · 10⁻⁶) / (632.8 · 10⁻⁹)⌋ = 3.\n4. Tổng số vạch sáng cực đại quan sát được:\n   N_tong = 2 · n_max + 1 = 2 · 3 + 1 = 7 vạch (gồm n = -3, -2, -1, 0, +1, +2, +3).",
+      examTrapWarning: "⚠️ Bẫy phòng thi: Chỉ trả lời có 3 cực đại (quên tính cực đại trung tâm n=0 và các cực đại đối xứng âm n = -1, -2, -3 ở phía đối diện!)."
     },
     practiceQuiz: {
-      question: "A diffraction grating has spacing d = 2.0 μm. A light source produces a first-order maximum at θ = 17.5°. What is the wavelength of the light?",
+      question: "Một cách tử nhiễu xạ có khoảng cách giữa 2 vạch d = 2.0 μm. Một nguồn sáng tạo ra cực đại bậc 1 ở góc θ = 17.5°. Bước sóng của nguồn sáng là bao nhiêu?",
       options: ["601 nm", "500 nm", "450 nm", "650 nm"],
       correctIndex: 0,
-      hint1: "Use grating equation for n = 1: λ = d · sin θ.",
+      hint1: "Áp dụng phương trình cách tử với n = 1: λ = d · sin θ.",
       hint2: "λ = (2.0 · 10⁻⁶ m) · sin(17.5°) = 2.0 · 10⁻⁶ · 0.3007 = 6.01 · 10⁻⁷ m = 601 nm.",
       explanation: "λ = d · sin θ / 1 = 2.0 · 10⁻⁶ · sin(17.5°) = 6.01 · 10⁻⁷ m = 601 nm."
     }
@@ -815,39 +815,39 @@ export const EXAM_METHODOLOGY_DATA = {
     problemTypes: [
       {
         id: "type1",
-        name: "Type 1: Calculating Resistivity ρ & Wire Resistance R (A Level AS)",
-        description: "Apply R = ρ·L/A with micrometer diameter measurements.",
+        name: "Dạng 1: Tính Điện trở suất ρ & Điện trở dây kim loại (Thông hiểu)",
+        description: "Áp dụng R = ρ·L/A kết hợp số liệu đo đường kính dây bằng thước panme.",
         formulaSummary: "ρ = (R · π · d²) / (4 · L)",
-        traps: "⚠️ Convert wire diameter d from mm to metres (m) before squaring! E.g. d = 0.40 mm = 0.40 · 10⁻³ m."
+        traps: "⚠️ Đổi đường kính d từ mm sang mét (m) trước khi bình phương! Ví dụ d = 0.40 mm = 0.40 · 10⁻³ m."
       },
       {
         id: "type2",
-        name: "Type 2: Wire Stretching & Re-shaping (Volume Invariance)",
-        description: "When wire is stretched to twice its length, find new resistance.",
-        formulaSummary: "R' = n² · R (since Volume V = A·L is constant)",
-        traps: "⚠️ Do not assume area A remains constant when a wire is stretched. As length increases, area decreases."
+        name: "Dạng 2: Kéo dãn dây kim loại & Bảo toàn thể tích (Vận dụng)",
+        description: "Khi kéo dãn dây làm chiều dài tăng gấp đôi, tính điện trở mới của dây.",
+        formulaSummary: "R' = n² · R (vì thể tích V = A·L không đổi)",
+        traps: "⚠️ Không được coi tiết diện A không đổi. Khi chiều dài tăng n lần thì tiết diện giảm n lần."
       },
       {
         id: "type3",
-        name: "Type 3: Cambridge Paper 5 Uncertainty Analysis in Resistivity",
-        description: "Evaluate percentage and absolute uncertainty in resistivity ρ.",
+        name: "Dạng 3: Phân tích sai số thực nghiệm trong phép đo điện trở suất (Vận dụng cao)",
+        description: "Đánh giá phần trăm sai số và sai số tuyệt đối của điện trở suất ρ.",
         formulaSummary: "%Δρ = %ΔR + %ΔL + 2·%Δd",
-        traps: "⚠️ The largest source of uncertainty is usually the diameter d measured by micrometer, and its contribution is doubled."
+        traps: "⚠️ Nguồn sai số lớn nhất thường đến từ phép đo đường kính d bằng panme, và sai số này bị nhân đôi."
       }
     ],
     workedExample: {
-      question: "A uniform constantan wire of length L = 1.50 m and diameter d = 0.50 mm has a resistance of R = 3.75 Ω. Calculate (a) the resistivity ρ of constantan, (b) the resistance of another constantan wire of length 3.00 m and diameter 1.00 mm.",
-      thinkingAnalysis: "1) Calculate cross-sectional area A = π · (d/2)² = π · (0.25 · 10⁻³)² = 1.963 · 10⁻⁷ m².\n2) Calculate resistivity ρ = R · A / L = (3.75 · 1.963 · 10⁻⁷) / 1.50 = 4.91 · 10⁻⁷ Ω·m.\n3) For second wire: Length doubled (×2), diameter doubled => Area quadrupled (×4) => R2 = R1 · (2 / 4) = 3.75 / 2 = 1.88 Ω.",
-      solution: "1. Cross-sectional area A:\n   A = π · (d / 2)² = π · (0.50 · 10⁻³ / 2)² = 1.9635 · 10⁻⁷ m².\n2. Electrical resistivity ρ:\n   ρ = (R · A) / L = (3.75 · 1.9635 · 10⁻⁷) / 1.50 = 4.91 · 10⁻⁷ Ω·m.\n3. Resistance of second wire:\n   R2 = ρ · L2 / A2 = R1 · (L2 / L1) · (d1 / d2)²\n   R2 = 3.75 · (3.00 / 1.50) · (0.50 / 1.00)² = 3.75 · 2 · (0.25) = 1.88 Ω.",
-      examTrapWarning: "⚠️ Paper 3 Trap: Using diameter d in formula π·r² instead of radius r = d/2. Area A = π·(d/2)² = π·d² / 4."
+      question: "Một đoạn dây constantan đồng chất dài L = 1.50 m có đường kính d = 0.50 mm đo được điện trở R = 3.75 Ω. Tính: (a) Điện trở suất ρ của constantan. (b) Điện trở của một đoạn dây constantan khác dài 3.00 m và có đường kính 1.00 mm.",
+      thinkingAnalysis: "1) Tiết diện dây: A = π · (d/2)² = π · (0.25 · 10⁻³)² = 1.963 · 10⁻⁷ m².\n2) Điện trở suất: ρ = R · A / L = (3.75 · 1.963 · 10⁻⁷) / 1.50 = 4.91 · 10⁻⁷ Ω·m.\n3) Với dây thứ hai: Chiều dài tăng gấp đôi (×2), đường kính tăng gấp đôi => Tiết diện tăng gấp 4 (×4) => R2 = R1 · (2 / 4) = 3.75 / 2 = 1.88 Ω.",
+      solution: "1. Tiết diện của dây dẫn A:\n   A = π · (d / 2)² = π · (0.50 · 10⁻³ / 2)² = 1.9635 · 10⁻⁷ m².\n2. Điện trở suất của constantan ρ:\n   ρ = (R · A) / L = (3.75 · 1.9635 · 10⁻⁷) / 1.50 = 4.91 · 10⁻⁷ Ω·m.\n3. Điện trở của đoạn dây thứ hai:\n   R2 = ρ · L2 / A2 = R1 · (L2 / L1) · (d1 / d2)²\n   R2 = 3.75 · (3.00 / 1.50) · (0.50 / 1.00)² = 3.75 · 2 · 0.25 = 1.88 Ω.",
+      examTrapWarning: "⚠️ Bẫy Paper 3: Nhầm đường kính d vào công thức π·r² thay vì bán kính r = d/2. Tiết diện A = π·(d/2)² = π·d² / 4."
     },
     practiceQuiz: {
-      question: "A wire of resistance R is stretched uniformly until its length is tripled (3L). What is its new resistance?",
+      question: "Một sợi dây dẫn có điện trở R được kéo dãn đều sao cho chiều dài tăng gấp 3 lần (3L). Điện trở mới của sợi dây là bao nhiêu?",
       options: ["9R", "3R", "R/3", "R/9"],
       correctIndex: 0,
-      hint1: "Because volume V = A · L remains constant, tripling the length (3L) causes the cross-sectional area to become A/3.",
-      hint2: "New resistance R' = ρ · (3L) / (A/3) = 9 · (ρL/A) = 9R.",
-      explanation: "R' = ρ · (3L) / (A/3) = 3 / (1/3) · (ρL/A) = 9R."
+      hint1: "Do thể tích V = A · L không đổi, khi chiều dài tăng 3 lần (3L) thì tiết diện A giảm 3 lần (A/3).",
+      hint2: "Điện trở mới R' = ρ · (3L) / (A/3) = 9 · (ρL/A) = 9R.",
+      explanation: "R' = ρ · (3L) / (A/3) = 9 · (ρL / A) = 9R."
     }
   },
 
@@ -871,31 +871,31 @@ export const EXAM_METHODOLOGY_DATA = {
     problemTypes: [
       {
         id: "type1",
-        name: "Type 1: Finding Unknown EMF E_x from Balance Length L_x (A Level AS)",
-        description: "Apply E_x = E_driver · (L_x / 100) on a 1-metre potentiometer wire.",
-        formulaSummary: "E_x = E_driver · (L_x / L_total)",
-        traps: "⚠️ If Galvanometer deflects in the SAME direction along the whole wire, check if driver EMF is less than test cell EMF (E_driver < E_test) or if positive terminals are not connected together."
+        name: "Dạng 1: Xác định Suất điện động chưa biết E_x từ Chiều dài cân bằng L_x (Thông hiểu)",
+        description: "Áp dụng công thức E_x = E_driver · (L_x / 100) trên dây cầu 1 mét.",
+        formulaSummary: "E_x = E_driver · (L_x / L_tong)",
+        traps: "⚠️ Nếu điện kế G chỉ lệch về 1 phía trên toàn bộ chiều dài dây: kiểm tra xem suất điện động nguồn chính có nhỏ hơn nguồn cần đo không (E_driver < E_test) hoặc cực dương 2 nguồn chưa đấu chung."
       },
       {
         id: "type2",
-        name: "Type 2: Comparing Two Cells EMF (E1 / E2 = L1 / L2)",
-        description: "Determine ratio of EMFs without knowing driver voltage.",
+        name: "Dạng 2: So sánh Suất điện động 2 nguồn (E1 / E2 = L1 / L2)",
+        description: "Xác định tỉ số suất điện động mà không cần biết chính xác điện áp nguồn chính.",
         formulaSummary: "E1 / E2 = L1 / L2",
-        traps: "⚠️ Balance length is independent of internal resistance r of the test cell (because at balance I_G = 0, so Ir = 0)."
+        traps: "⚠️ Chiều dài cân bằng KHÔNG PHỤ THUỘC vào điện trở trong r của pin cần đo (vì khi cân bằng I_G = 0 nên Ir = 0)."
       },
       {
         id: "type3",
-        name: "Type 3: Measuring Internal Resistance r using Potentiometer",
-        description: "Measure open-circuit balance L1 and loaded balance L2 across shunt resistor R.",
+        name: "Dạng 3: Đo Điện trở trong r của pin bằng Potentiometer (Vận dụng cao)",
+        description: "Đo chiều dài cân bằng mạch hở L1 và mạch kín L2 khi mắc điện trở shunt R.",
         formulaSummary: "r = R · [(L1 - L2) / L2]",
-        traps: "⚠️ L1 is balance length on open circuit (E), L2 is balance length on closed circuit with load R (terminal p.d. V)."
+        traps: "⚠️ L1 là chiều dài cân bằng khi hở mạch (đo E), L2 là chiều dài cân bằng khi đóng mạch qua điện trở tải R (đo V)."
       }
     ],
     workedExample: {
-      question: "A potentiometer wire AB of length 100.0 cm is connected to a 2.00 V driver cell of negligible internal resistance. A standard cell of EMF 1.48 V gives a balance point at length L_x = 74.0 cm. Another unknown cell gives a balance point at L_x = 60.0 cm. Calculate (a) the potential gradient along the wire, and (b) the EMF of the unknown cell.",
-      thinkingAnalysis: "1) Potential gradient k = V_wire / L_total = 2.00 V / 100.0 cm = 0.020 V/cm (or 2.00 V/m).\n2) Use ratio of balance lengths: E_unknown / E_standard = L_unknown / L_standard.\n3) E_unknown = E_standard · (L_unknown / L_standard) = 1.48 · (60.0 / 74.0) = 1.20 V.",
-      solution: "1. Potential gradient k along wire AB:\n   k = E_driver / L_total = 2.00 V / 100.0 cm = 0.020 V/cm = 2.00 V/m.\n2. EMF of the unknown cell:\n   E_unknown = k · L_x = 0.020 V/cm · 60.0 cm = 1.20 V.\n   (Alternatively: E_unknown / 1.48 = 60.0 / 74.0 => E_unknown = 1.20 V).",
-      examTrapWarning: "⚠️ Cambridge Exam Question: 'Why does a potentiometer measure EMF more accurately than a digital voltmeter?' => Answer: At the balance point, no current is drawn from the cell (I = 0), so there is no potential drop across its internal resistance (lost volts = 0)."
+      question: "Một dây cầu điện thế AB dài 100.0 cm được nối với nguồn điện chính 2.00 V có điện trở trong không đáng kể. Một pin chuẩn có suất điện động 1.48 V cho điểm cân bằng tại L_x = 74.0 cm. Một pin chưa biết khác cho điểm cân bằng tại L_x = 60.0 cm. Tính: (a) Độ dốc điện thế dọc theo dây. (b) Suất điện động của pin chưa biết.",
+      thinkingAnalysis: "1) Độ dốc điện thế k = V_day / L_tong = 2.00 V / 100.0 cm = 0.020 V/cm (hoặc 2.00 V/m).\n2) Áp dụng tỉ lệ chiều dài cân bằng: E_x / E_chuan = L_x / L_chuan.\n3) E_x = E_chuan · (L_x / L_chuan) = 1.48 · (60.0 / 74.0) = 1.20 V.",
+      solution: "1. Độ dốc điện thế k dọc theo dây AB:\n   k = E_driver / L_tong = 2.00 V / 100.0 cm = 0.020 V/cm = 2.00 V/m.\n2. Suất điện động của pin chưa biết E_x:\n   E_x = k · L_x = 0.020 V/cm · 60.0 cm = 1.20 V.\n   (Hoặc: E_x / 1.48 = 60.0 / 74.0 => E_x = 1.20 V).",
+      examTrapWarning: "⚠️ Câu hỏi lý thuyết Cambridge: 'Tại sao Potentiometer đo suất điện động chính xác hơn vôn kế số?' => Trả lời: Tại điểm cân bằng, mạch đo không rút dòng điện nào từ nguồn (I = 0), do đó không có sụt áp trên điện trở trong (lost volts = 0)."
     },
   },
 
@@ -1362,38 +1362,38 @@ export const EXAM_METHODOLOGY_DATA = {
     problemTypes: [
       {
         id: "type1",
-        name: "Type 1: Boyle's Law Calculations & P against 1/V Linear Graphs (Cambridge AS/A2)",
-        description: "Apply P1·V1 = P2·V2 to find final pressure or volume.",
+        name: "Dạng 1: Áp dụng Định luật Boyle & Đồ thị tuyến tính P theo 1/V (Thông hiểu)",
+        description: "Áp dụng P1·V1 = P2·V2 để tìm áp suất hoặc thể tích lúc sau trong quá trình đẳng nhiệt.",
         formulaSummary: "P2 = P1 · V1 / V2",
-        traps: "⚠️ Ensure volume and pressure units match on both sides (e.g. cm³ and cm³, kPa and kPa)."
+        traps: "⚠️ Đồng nhất đơn vị áp suất và thể tích ở 2 vế phương trình (ví dụ cùng dùng cm³ và kPa)."
       },
       {
         id: "type2",
-        name: "Type 2: Ideal Gas Law & Number of Moles / Molecules (Chapter 19)",
-        description: "Calculate pressure P, mass m, or molecular count N using PV = nRT.",
+        name: "Dạng 2: Phương trình trạng thái khí lý tưởng & Số mol / Số phân tử (Vận dụng)",
+        description: "Tính áp suất P, khối lượng m, hoặc số hạt phân tử N bằng phương trình P·V = n·R·T.",
         formulaSummary: "P · V = (N / N_A) · R · T | N = P·V / (k_B · T)",
-        traps: "⚠️ Temperature T MUST be in KELVIN (K = °C + 273). Using Celsius will result in total calculation failure."
+        traps: "⚠️ Nhiệt độ T BẮT BUỘC PHẢI TÍNH THEO KELVIN (K = °C + 273). Dùng độ Celsius sẽ dẫn đến sai toàn bộ bài toán."
       },
       {
         id: "type3",
-        name: "Type 3: Root-Mean-Square Speed c_rms & Thermal Energy",
-        description: "Calculate speed of gas molecules at absolute temperature T.",
-        formulaSummary: "c_rms = √(3·R·T / M_kg) | E_total = (3/2) · n · R · T",
-        traps: "⚠️ Molar mass M MUST be in kg/mol (e.g. Helium M = 4 g/mol = 4 · 10⁻³ kg/mol)."
+        name: "Dạng 3: Tốc độ căn quân phương c_rms & Năng lượng nhiệt (Vận dụng cao)",
+        description: "Tính tốc độ phân tử khí ở nhiệt độ tuyệt đối T.",
+        formulaSummary: "c_rms = √(3·R·T / M_kg) | E_tong = (3/2) · n · R · T",
+        traps: "⚠️ Khối lượng mol M BẮT BUỘC tính bằng kg/mol (ví dụ Heli M = 4 g/mol = 4 · 10⁻³ kg/mol)."
       }
     ],
     workedExample: {
-      question: "A cylinder contains 0.050 m³ of ideal gas at a pressure of 2.0 · 10⁵ Pa and temperature 27°C. The gas is compressed isothermally (at constant temperature) until its volume is reduced to 0.020 m³. (a) Calculate the final pressure of the gas. (b) Calculate the number of moles n of gas in the cylinder.",
-      thinkingAnalysis: "1) Since temperature is constant, apply Boyle's law: P1 · V1 = P2 · V2.\n   P2 = (P1 · V1) / V2 = (2.0 · 10⁵ · 0.050) / 0.020 = 5.0 · 10⁵ Pa.\n2) Convert temperature to Kelvin: T = 27 + 273 = 300 K.\n3) Apply ideal gas equation: P1 · V1 = n · R · T => n = (P1 · V1) / (R · T).\n   n = (2.0 · 10⁵ · 0.050) / (8.314 · 300) = 10000 / 2494.2 = 4.01 moles.",
-      solution: "1. Final pressure P2 using Boyle's Law:\n   P1 · V1 = P2 · V2\n   P2 = (2.0 · 10⁵ Pa · 0.050 m³) / 0.020 m³ = 5.0 · 10⁵ Pa (500 kPa).\n2. Absolute temperature in Kelvin:\n   T = 27 + 273.15 = 300.15 K ≈ 300 K.\n3. Number of moles n:\n   P · V = n · R · T\n   => n = (P · V) / (R · T) = (2.0 · 10⁵ · 0.050) / (8.314 · 300) = 4.01 mol.",
-      examTrapWarning: "⚠️ Cambridge Paper 4 Trap: Forgetting to convert temperature to Kelvin (dividing by 27 instead of 300 K yields n = 44.5 mol, which loses all accuracy marks)."
+      question: "Một xilanh chứa 0.050 m³ khí lý tưởng ở áp suất 2.0 · 10⁵ Pa và nhiệt độ 27°C. Khí bị nén đẳng nhiệt (nhiệt độ không đổi) cho đến khi thể tích giảm còn 0.020 m³. (a) Tính áp suất cuối cùng của khối khí. (b) Tính số mol khí n chứa trong xilanh.",
+      thinkingAnalysis: "1) Vì nhiệt độ không đổi, áp dụng định luật Boyle: P1 · V1 = P2 · V2.\n   P2 = (P1 · V1) / V2 = (2.0 · 10⁵ · 0.050) / 0.020 = 5.0 · 10⁵ Pa.\n2) Đổi nhiệt độ sang Kelvin: T = 27 + 273 = 300 K.\n3) Áp dụng phương trình khí lý tưởng: P1 · V1 = n · R · T => n = (P1 · V1) / (R · T).\n   n = (2.0 · 10⁵ · 0.050) / (8.314 · 300) = 10000 / 2494.2 = 4.01 mol.",
+      solution: "1. Áp suất cuối cùng P2 theo định luật Boyle:\n   P1 · V1 = P2 · V2\n   P2 = (2.0 · 10⁵ Pa · 0.050 m³) / 0.020 m³ = 5.0 · 10⁵ Pa (500 kPa).\n2. Nhiệt độ tuyệt đối theo thang Kelvin:\n   T = 27 + 273.15 = 300.15 K ≈ 300 K.\n3. Số mol khí n trong xilanh:\n   P · V = n · R · T\n   => n = (P · V) / (R · T) = (2.0 · 10⁵ · 0.050) / (8.314 · 300) = 4.01 mol.",
+      examTrapWarning: "⚠️ Bẫy phòng thi: Quên đổi nhiệt độ sang Kelvin (lấy 27 thay vào mẫu số sẽ tính ra n = 44.5 mol, sai hoàn toàn)."
     },
     practiceQuiz: {
-      question: "An ideal gas has pressure P at volume V. If the volume is decreased by 25% at constant temperature, what is the new pressure?",
+      question: "Một lượng khí lý tưởng có áp suất P ở thể tích V. Nếu thể tích của khối khí giảm đi 25% ở nhiệt độ không đổi, áp suất mới của khối khí là bao nhiêu?",
       options: ["1.33 P (4/3 P)", "1.25 P", "0.75 P", "1.50 P"],
       correctIndex: 0,
-      hint1: "Decreased by 25% means new volume V' = V - 0.25V = 0.75V = (3/4)V.",
-      hint2: "By Boyle's Law: P' · V' = P · V => P' = P · V / (0.75V) = P / 0.75 = 4/3 P ≈ 1.33 P.",
+      hint1: "Thể tích giảm 25% nghĩa là thể tích mới V' = V - 0.25V = 0.75V = (3/4)V.",
+      hint2: "Theo định luật Boyle: P' · V' = P · V => P' = P · V / (0.75V) = P / 0.75 = 4/3 P ≈ 1.33 P.",
       explanation: "V' = 0.75 V => P' = P · V / (0.75 V) = 1 / 0.75 P = 4/3 P ≈ 1.33 P."
     }
   },
@@ -1418,30 +1418,30 @@ export const EXAM_METHODOLOGY_DATA = {
     problemTypes: [
       {
         id: "type1",
-        name: "Type 1: Determining Speed of Sound v from Resonance Lengths L1 and L2 (Paper 3)",
-        description: "Apply v = 2f(L2 - L1) to eliminate end correction c.",
+        name: "Dạng 1: Xác định Tốc độ truyền âm v từ 2 vị trí cộng hưởng liên tiếp L1 và L2 (Paper 3)",
+        description: "Áp dụng công thức v = 2f(L2 - L1) để triệt tiêu hiệu chỉnh miệng ống c.",
         formulaSummary: "v = 2 · f · (L2 - L1)",
-        traps: "⚠️ Convert lengths L1, L2 from cm to METRES (m) before computing speed v in m/s."
+        traps: "⚠️ Đổi chiều dài L1, L2 từ cm sang MÉT (m) trước khi tính tốc độ âm v theo m/s."
       },
       {
         id: "type2",
-        name: "Type 2: Calculating End Correction c & Tube Radius r",
-        description: "Find displacement of antinode beyond open end of tube.",
+        name: "Dạng 2: Tính Hiệu chỉnh miệng ống c & Bán kính trong của ống r",
+        description: "Tìm độ dịch chuyển của bụng sóng ra phía ngoài miệng ống.",
         formulaSummary: "c = (L2 - 3·L1) / 2 | r = c / 0.6",
-        traps: "⚠️ The antinode does not form exactly at the open mouth of the tube, but slightly outside by end correction c."
+        traps: "⚠️ Bụng sóng không hình thành chính xác ngay tại miệng ống mà hơi nhô ra ngoài một đoạn c."
       }
     ],
     workedExample: {
-      question: "In a resonance tube experiment using a tuning fork of frequency f = 512 Hz, the first resonance occurs at an air column length L1 = 15.5 cm and the second resonance occurs at L2 = 49.0 cm. (a) Calculate the speed of sound in air. (b) Calculate the end correction c of the tube.",
-      thinkingAnalysis: "1) Use wavelength formula without end correction: λ = 2 · (L2 - L1) = 2 · (49.0 - 15.5) = 2 · 33.5 cm = 67.0 cm = 0.670 m.\n2) Speed of sound: v = f · λ = 512 · 0.670 = 343.04 m/s.\n3) End correction: c = (L2 - 3·L1) / 2 = (49.0 - 3 · 15.5) / 2 = (49.0 - 46.5) / 2 = 2.5 / 2 = 1.25 cm = 0.0125 m.",
-      solution: "1. Wavelength of sound wave:\n   λ = 2 · (L2 - L1) = 2 · (0.490 m - 0.155 m) = 2 · (0.335 m) = 0.670 m.\n2. Speed of sound in air v:\n   v = f · λ = 512 Hz · 0.670 m = 343.0 m/s.\n3. End correction c of the tube:\n   c = (L2 - 3 · L1) / 2 = (49.0 cm - 3 · 15.5 cm) / 2 = (49.0 - 46.5) / 2 = 1.25 cm.",
-      examTrapWarning: "⚠️ Cambridge Paper 3 Practical Trap: Using v = 4 · f · L1 directly assumes c = 0, which gives v = 4 · 512 · 0.155 = 317.4 m/s (an error of ~8% due to neglecting end correction). Always use 2-resonance subtraction v = 2f(L2 - L1)!"
+      question: "Trong một thí nghiệm đo tốc độ âm thanh bằng ống cộng hưởng dùng âm thoa có tần số f = 512 Hz, vị trí cộng hưởng thứ nhất xảy ra khi cột khí dài L1 = 15.5 cm và vị trí cộng hưởng thứ hai xảy ra khi L2 = 49.0 cm. (a) Tính tốc độ truyền âm trong không khí. (b) Tính hiệu chỉnh miệng ống c của ống nghiệm.",
+      thinkingAnalysis: "1) Tính bước sóng âm không phụ thuộc vào hiệu chỉnh miệng ống: λ = 2 · (L2 - L1) = 2 · (49.0 - 15.5) = 2 · 33.5 cm = 67.0 cm = 0.670 m.\n2) Tốc độ truyền âm: v = f · λ = 512 · 0.670 = 343.04 m/s.\n3) Hiệu chỉnh miệng ống: c = (L2 - 3·L1) / 2 = (49.0 - 3 · 15.5) / 2 = (49.0 - 46.5) / 2 = 2.5 / 2 = 1.25 cm = 0.0125 m.",
+      solution: "1. Bước sóng của sóng âm λ:\n   λ = 2 · (L2 - L1) = 2 · (0.490 m - 0.155 m) = 2 · (0.335 m) = 0.670 m.\n2. Tốc độ truyền âm trong không khí v:\n   v = f · λ = 512 Hz · 0.670 m = 343.0 m/s.\n3. Hiệu chỉnh miệng ống c của ống cộng hưởng:\n   c = (L2 - 3 · L1) / 2 = (49.0 cm - 3 · 15.5 cm) / 2 = (49.0 - 46.5) / 2 = 1.25 cm.",
+      examTrapWarning: "⚠️ Bẫy thi thực hành: Dùng trực tiếp v = 4 · f · L1 coi như c = 0 sẽ cho v = 4 · 512 · 0.155 = 317.4 m/s (sai số ~8% do bỏ qua hiệu chỉnh miệng ống). Luôn dùng phép trừ 2 lần cộng hưởng v = 2f(L2 - L1)!"
     },
     practiceQuiz: {
-      question: "A tuning fork of frequency 400 Hz resonates with a tube at L1 = 20 cm and L2 = 62.5 cm. What is the experimental speed of sound?",
+      question: "Một âm thoa có tần số 400 Hz gây ra cộng hưởng trong một ống khí ở 2 vị trí L1 = 20 cm và L2 = 62.5 cm. Tốc độ truyền âm đo được trong thí nghiệm là bao nhiêu?",
       options: ["340 m/s", "320 m/s", "360 m/s", "300 m/s"],
       correctIndex: 0,
-      hint1: "Apply v = 2 · f · (L2 - L1).",
+      hint1: "Áp dụng công thức: v = 2 · f · (L2 - L1).",
       hint2: "L2 - L1 = 62.5 cm - 20 cm = 42.5 cm = 0.425 m. v = 2 · 400 · 0.425 = 340 m/s.",
       explanation: "v = 2 · 400 · (0.625 - 0.200) = 800 · 0.425 = 340 m/s."
     }
@@ -1614,31 +1614,31 @@ export const EXAM_METHODOLOGY_DATA = {
     problemTypes: [
       {
         id: "type1",
-        name: "Type 1: Echo Reflection & Distance Measurement (IGCSE Core/Extended)",
-        description: "Apply v = 2d / t to find distance to reflecting wall or water depth (Sonar).",
+        name: "Dạng 1: Phản xạ Tiếng Vang & Đo Khoảng Cách / Độ Sâu Biển (Thông hiểu)",
+        description: "Áp dụng v = 2d / t để tìm khoảng cách tới vách đá hoặc độ sâu đáy biển (máy Sonar).",
         formulaSummary: "d = (v · t) / 2",
-        traps: "⚠️ Remember to DIVIDE by 2 because the sound pulse travels to the wall and back (two-way distance = 2d)."
+        traps: "⚠️ Nhớ CHIA 2 vì xung âm thanh phải đi tới đáy rồi dội ngược lại (quãng đường 2 chiều = 2d)."
       },
       {
         id: "type2",
-        name: "Type 2: Oscilloscope CRO Screen Waveform Analysis (Cambridge Paper 2/4)",
-        description: "Calculate period T and frequency f from timebase setting.",
-        formulaSummary: "T = number of divisions · Timebase setting | f = 1 / T",
-        traps: "⚠️ Convert timebase units (e.g. 5 ms/div = 5 · 10⁻³ s/div; 200 μs/div = 200 · 10⁻⁶ s/div) before calculating frequency f in Hz."
+        name: "Dạng 2: Đọc Tín Hiệu Sóng Âm Trên Màn Dao Động Ký CRO (Vận dụng)",
+        description: "Tính chu kỳ T và tần số f từ cài đặt thang đo thời gian Timebase.",
+        formulaSummary: "T = số ô ngang · Giá trị Timebase | f = 1 / T",
+        traps: "⚠️ Đổi đơn vị Timebase (ví dụ 5 ms/div = 5 · 10⁻³ s/div; 200 μs/div = 200 · 10⁻⁶ s/div) trước khi tính tần số f theo Hz."
       }
     ],
     workedExample: {
-      question: "A ship uses an echo-sounder (Sonar) to measure the ocean depth. An ultrasound pulse is sent downwards into the seawater and the reflected echo is detected by the receiver 0.60 seconds later. The speed of sound in seawater is 1500 m/s. (a) Calculate the depth of the sea at that location. (b) If the ultrasound frequency is 50 kHz, calculate its wavelength in seawater.",
-      thinkingAnalysis: "1) The pulse travels down to the seabed and back up, so total distance = 2 · depth = v · t.\n   Depth d = (v · t) / 2 = (1500 · 0.60) / 2 = 900 / 2 = 450 m.\n2) Frequency f = 50 kHz = 50,000 Hz = 5.0 · 10⁴ Hz.\n3) Wavelength λ = v / f = 1500 / 50,000 = 0.030 m = 3.0 cm.",
-      solution: "1. Ocean depth d:\n   Total distance travelled = 2 · d = v · t\n   => d = (v · t) / 2 = (1500 m/s · 0.60 s) / 2 = 900 / 2 = 450 metres.\n2. Wavelength in seawater λ:\n   λ = v / f = 1500 m/s / 50000 Hz = 0.030 m = 3.0 cm.",
-      examTrapWarning: "⚠️ Cambridge Marking Scheme Trap: Forgetting to divide time/distance by 2 in echo problems gives 900 m (WRONG, which is the double distance!)."
+      question: "Một con tàu dùng máy phát siêu âm (Sonar) để đo độ sâu đáy biển. Một xung sóng siêu âm được phát thẳng xuống nước biển và thu được tín hiệu phản xạ sau 0.60 giây. Biết tốc độ truyền âm trong nước biển là 1500 m/s. (a) Tính độ sâu của đáy biển tại vị trí đó. (b) Nếu tần số của sóng siêu âm là 50 kHz, hãy tính bước sóng của nó trong nước biển.",
+      thinkingAnalysis: "1) Sóng truyền xuống đáy rồi phản xạ lên, nên quãng đường tổng cộng = 2 · độ sâu = v · t.\n   Độ sâu d = (v · t) / 2 = (1500 · 0.60) / 2 = 900 / 2 = 450 m.\n2) Tần số f = 50 kHz = 50,000 Hz = 5.0 · 10⁴ Hz.\n3) Bước sóng λ = v / f = 1500 / 50,000 = 0.030 m = 3.0 cm.",
+      solution: "1. Độ sâu đáy biển d:\n   Tổng quãng đường sóng đi = 2 · d = v · t\n   => d = (v · t) / 2 = (1500 m/s · 0.60 s) / 2 = 900 / 2 = 450 mét.\n2. Bước sóng trong nước biển λ:\n   λ = v / f = 1500 m/s / 50000 Hz = 0.030 m = 3.0 cm.",
+      examTrapWarning: "⚠️ Bẫy thi kinh điển: Quên chia đôi thời gian trong bài toán phản xạ tiếng vang dẫn đến tính ra độ sâu 900 m (SAI gấp đôi!)."
     },
     practiceQuiz: {
-      question: "On an oscilloscope screen, one complete wave cycle of a sound wave occupies 4 horizontal divisions. The timebase setting is 2.5 ms/div. What is the frequency of the sound wave?",
+      question: "Trên màn hình dao động ký, một chu kỳ hoàn chỉnh của sóng âm chiếm 4 ô theo phương ngang. Cài đặt thang đo thời gian là 2.5 ms/ô. Tần số của sóng âm này là bao nhiêu?",
       options: ["100 Hz", "250 Hz", "50 Hz", "400 Hz"],
       correctIndex: 0,
-      hint1: "Calculate period T = 4 divisions · 2.5 ms/div = 10 ms = 0.010 s.",
-      hint2: "Frequency f = 1 / T = 1 / 0.010 s = 100 Hz.",
+      hint1: "Tính chu kỳ T = 4 ô · 2.5 ms/ô = 10 ms = 0.010 s.",
+      hint2: "Tần số f = 1 / T = 1 / 0.010 s = 100 Hz.",
       explanation: "T = 4 · 2.5 ms = 10 ms = 0.01 s => f = 1 / 0.01 = 100 Hz."
     }
   },
@@ -1712,30 +1712,30 @@ export const EXAM_METHODOLOGY_DATA = {
     problemTypes: [
       {
         id: "type1",
-        name: "Type 1: Calculating Lorentz Force & Orbit Radius r (Cambridge A Level AS/A2)",
-        description: "Apply r = mv / (qB) for electron or proton in magnetic field.",
+        name: "Dạng 1: Tính Độ lớn Lực Lorentz & Bán kính Quỹ đạo r (Thông hiểu)",
+        description: "Áp dụng r = mv / (|q|B) cho electron, proton hoặc hạt alpha trong từ trường đều.",
         formulaSummary: "r = (m · v) / (|q| · B) | T = 2πm / (|q| · B)",
-        traps: "⚠️ Electron has negative charge (q = -1.6 · 10⁻¹⁹ C), force is in OPPOSITE direction to thumb of left-hand rule."
+        traps: "⚠️ Electron mang điện tích âm (q = -1.6 · 10⁻¹⁹ C), lực Lorentz có chiều NGƯỢC LẠI với chiều ngón cái trong quy tắc bàn tay trái."
       },
       {
         id: "type2",
-        name: "Type 2: Velocity Selector & Mass Spectrometry (Paper 4 Core Topic)",
-        description: "Charged particle passes undeflected when electric and magnetic forces balance.",
-        formulaSummary: "v = E / B | m = (q · B · r) / v",
-        traps: "⚠️ In a velocity selector, the condition v = E/B is independent of the mass and charge of the particle (all particles with speed v pass straight through)."
+        name: "Dạng 2: Bộ chọn lọc vận tốc & Khối phổ kế (Vận dụng cao)",
+        description: "Hạt mang điện đi thẳng không bị lệch khi lực điện và lực từ cân bằng nhau.",
+        formulaSummary: "v = E / B | m = (|q| · B · r) / v",
+        traps: "⚠️ Trong bộ chọn lọc vận tốc, điều kiện v = E/B hoàn toàn không phụ thuộc vào khối lượng m và điện tích q của hạt (tất cả các hạt có cùng tốc độ v đều bay thẳng)."
       }
     ],
     workedExample: {
-      question: "An electron (mass m = 9.11 · 10⁻³¹ kg, charge q = -1.60 · 10⁻¹⁹ C) enters a uniform magnetic field B = 2.0 · 10⁻³ T perpendicular to the field lines with a speed v = 4.0 · 10⁶ m/s. Calculate: (a) The magnitude of the magnetic force acting on the electron. (b) The radius of the circular path. (c) The period of one revolution.",
-      thinkingAnalysis: "1) Magnetic force f_L = |q| · v · B · sin(90°) = 1.6 · 10⁻¹⁹ · 4.0 · 10⁶ · 2.0 · 10⁻³ = 1.28 · 10⁻¹⁵ N.\n2) Radius r = (m · v) / (|q| · B) = (9.11 · 10⁻³¹ · 4.0 · 10⁶) / (1.6 · 10⁻¹⁹ · 2.0 · 10⁻³) = 3.644 · 10⁻²⁴ / 3.2 · 10⁻²² = 0.0114 m = 1.14 cm.\n3) Period T = 2π · r / v = 2π · 0.01139 / 4.0 · 10⁶ = 1.79 · 10⁻⁸ s = 17.9 ns.",
-      solution: "1. Magnitude of magnetic force f_L:\n   f_L = |q| · v · B · sin 90° = (1.60 · 10⁻¹⁹ C) · (4.0 · 10⁶ m/s) · (2.0 · 10⁻³ T) = 1.28 · 10⁻¹⁵ N.\n2. Radius of circular orbit r:\n   r = (m · v) / (|q| · B) = (9.11 · 10⁻³¹ kg · 4.0 · 10⁶ m/s) / (1.60 · 10⁻¹⁹ C · 2.0 · 10⁻³ T) = 0.0114 m = 1.14 cm.\n3. Period of one revolution T:\n   T = (2π · m) / (|q| · B) = (2 · 3.14159 · 9.11 · 10⁻³¹) / (3.20 · 10⁻²²) = 1.79 · 10⁻⁸ s = 17.9 ns.",
-      examTrapWarning: "⚠️ Paper 4 Trap: Magnetic force changes DIRECTION of velocity, but NEVER changes SPEED or KINETIC ENERGY because f_L is always perpendicular to velocity (Work done W = 0)."
+      question: "Một electron (khối lượng m = 9.11 · 10⁻³¹ kg, điện tích q = -1.60 · 10⁻¹⁹ C) bay vào một từ trường đều B = 2.0 · 10⁻³ T theo phương vuông góc với các đường sức từ với vận tốc v = 4.0 · 10⁶ m/s. Tính: (a) Độ lớn lực từ Lorentz tác dụng lên electron. (b) Bán kính quỹ đạo tròn của electron. (c) Chu kỳ quay của electron trong từ trường.",
+      thinkingAnalysis: "1) Độ lớn lực từ Lorentz: f_L = |q| · v · B · sin(90°) = 1.6 · 10⁻¹⁹ · 4.0 · 10⁶ · 2.0 · 10⁻³ = 1.28 · 10⁻¹⁵ N.\n2) Bán kính quỹ đạo: r = (m · v) / (|q| · B) = (9.11 · 10⁻³¹ · 4.0 · 10⁶) / (1.6 · 10⁻¹⁹ · 2.0 · 10⁻³) = 3.644 · 10⁻²⁴ / 3.2 · 10⁻²² = 0.0114 m = 1.14 cm.\n3) Chu kỳ quay: T = 2π · r / v = (2π · m) / (|q| · B) = (2 · 3.14159 · 9.11 · 10⁻³¹) / (3.2 · 10⁻²²) = 1.79 · 10⁻⁸ s = 17.9 ns.",
+      solution: "1. Độ lớn lực từ Lorentz f_L:\n   f_L = |q| · v · B · sin 90° = (1.60 · 10⁻¹⁹ C) · (4.0 · 10⁶ m/s) · (2.0 · 10⁻³ T) = 1.28 · 10⁻¹⁵ N.\n2. Bán kính quỹ đạo tròn r:\n   r = (m · v) / (|q| · B) = (9.11 · 10⁻³¹ kg · 4.0 · 10⁶ m/s) / (1.60 · 10⁻¹⁹ C · 2.0 · 10⁻³ T) = 0.0114 m = 1.14 cm.\n3. Chu kỳ quay T:\n   T = (2π · m) / (|q| · B) = (2 · 3.14159 · 9.11 · 10⁻³¹) / (3.20 · 10⁻²²) = 1.79 · 10⁻⁸ s = 17.9 ns.",
+      examTrapWarning: "⚠️ Bẫy bản chất vật lý: Lực từ Lorentz chỉ làm đổi HƯỚNG của vận tốc, KHÔNG BAO GIỜ làm thay đổi TỐC ĐỘ hay ĐỘNG NĂNG của hạt vì lực luôn vuông góc với vận tốc (Công của lực Lorentz A = 0)."
     },
     practiceQuiz: {
-      question: "A proton (charge +e) and an alpha particle (charge +2e, mass 4m) enter a uniform magnetic field with the same velocity perpendicular to B. What is the ratio of their orbit radii r_alpha / r_proton?",
+      question: "Một hạt proton (điện tích +e) và một hạt alpha (điện tích +2e, khối lượng 4m) cùng bay vào một từ trường đều với cùng vận tốc theo phương vuông góc với B. Tỉ số bán kính quỹ đạo r_alpha / r_proton là bao nhiêu?",
       options: ["2", "1", "4", "0.5"],
       correctIndex: 0,
-      hint1: "Orbit radius formula: r = (m · v) / (q · B).",
+      hint1: "Công thức bán kính quỹ đạo: r = (m · v) / (q · B).",
       hint2: "r_alpha / r_proton = (m_alpha / m_proton) · (q_proton / q_alpha) = (4 / 1) · (1 / 2) = 2.",
       explanation: "r_alpha / r_proton = (4m · v / 2eB) / (m · v / eB) = 4 / 2 = 2."
     }
@@ -1811,17 +1811,17 @@ export const EXAM_METHODOLOGY_DATA = {
     problemTypes: [
       {
         id: "type1",
-        name: "Type 1: Binding Energy per Nucleon & Nuclear Stability (Cambridge Paper 4 / THPTQG)",
-        description: "Calculate Δm and binding energy per nucleon to compare stability.",
+        name: "Dạng 1: Năng lượng Liên kết riêng & Độ bền vững Hạt nhân (Thông hiểu)",
+        description: "Tính độ hụt khối Δm và năng lượng liên kết riêng ε để so sánh độ bền vững giữa các hạt nhân.",
         formulaSummary: "ε = [Z·m_p + (A-Z)·m_n - m_X] · 931.5 / A",
-        traps: "⚠️ More binding energy W_lk does NOT always mean more stable! Stability is determined solely by BINDING ENERGY PER NUCLEON ε = W_lk / A."
+        traps: "⚠️ Năng lượng liên kết W_lk lớn hơn KHÔNG CÓ NGHĨA là hạt nhân bền vững hơn! Độ bền vững chỉ được quyết định bởi NĂNG LƯỢNG LIÊN KẾT RIÊNG ε = W_lk / A."
       },
       {
         id: "type2",
-        name: "Type 2: Energy Released in Fission / Fusion Nuclear Reactions",
-        description: "Calculate Q-value using masses or binding energies.",
-        formulaSummary: "Q = (m_reactants - m_products) · c² = W_lk(products) - W_lk(reactants)",
-        traps: "⚠️ Note the reverse order: When using masses: Q = m_before - m_after. When using binding energy: Q = W_lk_after - W_lk_before."
+        name: "Dạng 2: Năng lượng Tỏa ra / Thu vào trong Phản ứng Hạt nhân (Vận dụng cao)",
+        description: "Tính năng lượng phản ứng Q bằng độ hụt khối hoặc năng lượng liên kết.",
+        formulaSummary: "Q = (m_truoc - m_sau) · c² = W_lk_sau - W_lk_truoc",
+        traps: "⚠️ Chú ý thứ tự tính ngược nhau: Nếu dùng khối lượng nghỉ: Q = m_trước - m_sau. Nếu dùng năng lượng liên kết: Q = W_lk_sau - W_lk_trước."
       }
     ],
     workedExample: {
