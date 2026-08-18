@@ -32,6 +32,7 @@ const CircuitSimulator = lazy(() => import('./components/Simulators/CircuitSimul
 const ProjectileSimulator = lazy(() => import('./components/Simulators/ProjectileSimulator'));
 const LensSimulator = lazy(() => import('./components/Simulators/LensSimulator'));
 const RLCSimulator = lazy(() => import('./components/Simulators/RLCSimulator'));
+const LCOscillatorSimulator = lazy(() => import('./components/Simulators/LCOscillatorSimulator'));
 const HookeSimulator = lazy(() => import('./components/Simulators/HookeSimulator'));
 const YoungInterferenceSimulator = lazy(() => import('./components/Simulators/YoungInterferenceSimulator'));
 const PhotoelectricSimulator = lazy(() => import('./components/Simulators/PhotoelectricSimulator'));
@@ -45,6 +46,10 @@ const DiffractionGratingSimulator = lazy(() => import('./components/Simulators/D
 const ResistivityWireSimulator = lazy(() => import('./components/Simulators/ResistivityWireSimulator'));
 const PotentiometerSimulator = lazy(() => import('./components/Simulators/PotentiometerSimulator'));
 const ResonanceTubeSimulator = lazy(() => import('./components/Simulators/ResonanceTubeSimulator'));
+const BohrAtomSimulator = lazy(() => import('./components/Simulators/BohrAtomSimulator'));
+const LorentzForceSimulator = lazy(() => import('./components/Simulators/LorentzForceSimulator'));
+const CircularMotionSimulator = lazy(() => import('./components/Simulators/CircularMotionSimulator'));
+const Thermodynamics1stSimulator = lazy(() => import('./components/Simulators/Thermodynamics1stSimulator'));
 
 // PhET Simulators
 const Newton2Simulator = lazy(() => import('./components/Simulators/Newton2Simulator'));
@@ -199,6 +204,8 @@ export default function App() {
       case 'g11-capacitor': comp = <CapacitorSimulator {...commonProps} />; break;
       case 'g12-rlc':
       case 'g11-rlc': comp = <RLCSimulator {...commonProps} />; break;
+      case 'g12-lc-oscillator':
+      case 'g12-lc': comp = <LCOscillatorSimulator {...commonProps} />; break;
       case 'g12-standingwave':
       case 'g11-standingwave': comp = <StandingWaveSimulator {...commonProps} />; break;
       case 'igcse-hooke':
@@ -224,6 +231,10 @@ export default function App() {
       case 'alevel-resistivity': comp = <ResistivityWireSimulator {...commonProps} />; break;
       case 'alevel-potentiometer': comp = <PotentiometerSimulator {...commonProps} />; break;
       case 'alevel-resonance-tube': comp = <ResonanceTubeSimulator {...commonProps} />; break;
+      case 'g12-bohr-atom': comp = <BohrAtomSimulator {...commonProps} />; break;
+      case 'g11-lorentz-force': comp = <LorentzForceSimulator {...commonProps} />; break;
+      case 'g10-circular-motion': comp = <CircularMotionSimulator {...commonProps} />; break;
+      case 'g12-thermodynamics-1st': comp = <Thermodynamics1stSimulator {...commonProps} />; break;
       default: comp = <ArchimedesSimulator {...commonProps} />; break;
     }
 

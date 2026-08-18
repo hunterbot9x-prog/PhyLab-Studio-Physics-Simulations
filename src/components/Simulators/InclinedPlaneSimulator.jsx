@@ -7,6 +7,7 @@ export default function InclinedPlaneSimulator({ lang, params = {}, onParamChang
   const animRef = useRef(null);
 
   const mode = params.mode || 'slide_down'; // 'slide_down' | 'pull_up' | 'spring_oscillator'
+  const springPosition = params.springPosition || 'top'; // 'top' (Lò xo ở đỉnh dốc kéo vật) | 'bottom' (Lò xo ở chân dốc đỡ vật)
   const angleDeg = params.angleDeg || 30; // Góc nghiêng θ (độ)
   const massKg = params.massKg || 5; // Khối lượng vật m (kg)
   const frictionCoeff = params.frictionCoeff || 0.15; // Hệ số ma sát μ
@@ -128,7 +129,7 @@ export default function InclinedPlaneSimulator({ lang, params = {}, onParamChang
     } else if (mode === 'pull_up') {
       posDistanceRatio = 0.15 + animProgress * 0.7; // pulled from bottom to top
     } else if (mode === 'spring_oscillator') {
-      const amplitude = 0.2;
+      const amplitude = 0.18;
       posDistanceRatio = 0.5 + amplitude * Math.sin(animProgress * 4);
     }
 
@@ -139,12 +140,19 @@ export default function InclinedPlaneSimulator({ lang, params = {}, onParamChang
     const boxW = 56;
     const boxH = 42;
 
-    // Center of box front face & Top anchor for cable/spring
+    // Center of box front face (Top side) & Top anchor for cable/spring
     const boxAttachX = boxCenterX + (boxW / 2) * Math.cos(angleRad) - (boxH / 2) * Math.sin(angleRad);
     const boxAttachY = boxCenterY - (boxW / 2) * Math.sin(angleRad) - (boxH / 2) * Math.cos(angleRad);
 
     const topAnchorX = rampEndX - (boxH / 2) * Math.sin(angleRad);
     const topAnchorY = rampEndY - (boxH / 2) * Math.cos(angleRad);
+
+    // Center of box back face (Bottom side) & Bottom anchor for spring under object
+    const boxBottomAttachX = boxCenterX - (boxW / 2) * Math.cos(angleRad) - (boxH / 2) * Math.sin(angleRad);
+    const boxBottomAttachY = boxCenterY + (boxW / 2) * Math.sin(angleRad) - (boxH / 2) * Math.cos(angleRad);
+
+    const bottomAnchorX = rampOriginX - (boxH / 2) * Math.sin(angleRad);
+    const bottomAnchorY = rampOriginY - (boxH / 2) * Math.cos(angleRad);
 
     // Render Cable for Pull Up Mode
     if (mode === 'pull_up') {
@@ -168,29 +176,79 @@ export default function InclinedPlaneSimulator({ lang, params = {}, onParamChang
       ctx.stroke();
     }
 
-    // Render Spring for Oscillator Mode
+    // Render Spring for Oscillator Mode (Supports Top & Bottom Anchor)
     if (mode === 'spring_oscillator') {
-      ctx.save();
-      ctx.translate(topAnchorX, topAnchorY);
-      ctx.rotate(Math.PI - angleRad);
+      if (springPosition === 'bottom') {
+        // --- CASE 2: SPRING AT BOTTOM OF INCLINED PLANE (UNDER OBJECT) ---
+        // Render Bottom Stopper / Bracket
+        ctx.save();
+        ctx.translate(bottomAnchorX, bottomAnchorY);
+        ctx.rotate(-angleRad);
+        ctx.fillStyle = '#475569';
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 3;
+        ctx.fillRect(-6, -boxH, 12, boxH);
+        ctx.strokeRect(-6, -boxH, 12, boxH);
+        ctx.restore();
 
-      const springLength = Math.hypot(boxAttachX - topAnchorX, boxAttachY - topAnchorY);
-      const coils = 14;
-      ctx.strokeStyle = '#ec4899';
-      ctx.lineWidth = 3;
-      ctx.shadowColor = '#ec4899';
-      ctx.shadowBlur = 8;
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
+        // Render Spring from Bottom Anchor to Box Bottom Face
+        ctx.save();
+        ctx.translate(bottomAnchorX, bottomAnchorY);
+        ctx.rotate(-angleRad);
 
-      for (let i = 0; i <= coils; i++) {
-        const x = (i / coils) * springLength;
-        const y = (i % 2 === 0 ? 1 : -1) * 8;
-        ctx.lineTo(x, y);
+        const springLength = Math.hypot(boxBottomAttachX - bottomAnchorX, boxBottomAttachY - bottomAnchorY);
+        const coils = 14;
+        ctx.strokeStyle = '#ec4899';
+        ctx.lineWidth = 3.5;
+        ctx.shadowColor = '#ec4899';
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.moveTo(0, -boxH / 2);
+
+        for (let i = 0; i <= coils; i++) {
+          const x = (i / coils) * springLength;
+          const y = -boxH / 2 + (i % 2 === 0 ? 1 : -1) * 8;
+          ctx.lineTo(x, y);
+        }
+        ctx.lineTo(springLength, -boxH / 2);
+        ctx.stroke();
+        ctx.restore();
+      } else {
+        // --- CASE 1: SPRING AT TOP OF INCLINED PLANE (ABOVE OBJECT) ---
+        // Top Stopper / Anchor
+        ctx.save();
+        ctx.translate(topAnchorX, topAnchorY);
+        ctx.rotate(-angleRad);
+        ctx.fillStyle = '#475569';
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 3;
+        ctx.fillRect(-6, -boxH, 12, boxH);
+        ctx.strokeRect(-6, -boxH, 12, boxH);
+        ctx.restore();
+
+        // Render Spring from Top Anchor to Box Top Face
+        ctx.save();
+        ctx.translate(topAnchorX, topAnchorY);
+        ctx.rotate(Math.PI - angleRad);
+
+        const springLength = Math.hypot(boxAttachX - topAnchorX, boxAttachY - topAnchorY);
+        const coils = 14;
+        ctx.strokeStyle = '#ec4899';
+        ctx.lineWidth = 3.5;
+        ctx.shadowColor = '#ec4899';
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+
+        for (let i = 0; i <= coils; i++) {
+          const x = (i / coils) * springLength;
+          const y = (i % 2 === 0 ? 1 : -1) * 8;
+          ctx.lineTo(x, y);
+        }
+        ctx.lineTo(springLength, 0);
+        ctx.stroke();
+        ctx.restore();
       }
-      ctx.lineTo(springLength, 0);
-      ctx.stroke();
-      ctx.restore();
     }
 
     // Helper to transform box local coordinates to screen coordinates
@@ -261,39 +319,41 @@ export default function InclinedPlaneSimulator({ lang, params = {}, onParamChang
     const pParX = -pParallelN * vectorScale;
     drawVectorArrow(0, originY, pParX, originY, '#f59e0b');
 
-    // 2. Perpendicular Weight Component P⊥ (Purple - Into Ramp along +y)
+    // 2. Perpendicular Weight Component P⊥ (Purple - Into surface along +y)
     const pNormY = pNormalN * vectorScale;
     drawVectorArrow(0, originY, 0, originY + pNormY, '#a855f7');
 
-    // 3. Weight Vector P (Red - VERTICAL DOWNWARDS IN WORLD FRAME!)
-    const pVecX = -pParallelN * vectorScale;
-    const pVecY = originY + pNormalN * vectorScale;
+    // 3. Complete Gravity Vector P (Red - Truly Vertical Downwards)
+    const pVecX = -weightN * Math.sin(angleRad) * vectorScale;
+    const pVecY = originY + weightN * Math.cos(angleRad) * vectorScale;
     drawVectorArrow(0, originY, pVecX, pVecY, '#ef4444');
 
-    // Dashed Parallelogram Projection Lines for P = P∥ + P⊥
-    ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)';
-    ctx.lineWidth = 1.5;
+    // Parallelogram Dashed Projection Guidelines
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.lineWidth = 1.2;
     ctx.setLineDash([3, 3]);
-    ctx.beginPath(); ctx.moveTo(pParX, originY); ctx.lineTo(pVecX, pVecY); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(0, originY + pNormY); ctx.lineTo(pVecX, pVecY); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(pParX, originY);
+    ctx.lineTo(pVecX, pVecY);
+    ctx.lineTo(0, originY + pNormY);
+    ctx.stroke();
     ctx.setLineDash([]);
 
-    // 4. Normal Force N (Green - Out of Ramp along -y)
+    // 4. Normal Reaction Force N (Green - Perpendicular away from surface along -y)
     const nY = -pNormalN * vectorScale;
     drawVectorArrow(0, originY, 0, originY + nY, '#10b981');
 
-    // 5. Friction Force Fms (Amber - Opposing Motion)
+    // 5. Friction Force F_ms (Amber)
     let fFrictX = 0;
     if (frictionN > 0.1 && mode !== 'spring_oscillator') {
-      const fDir = mode === 'slide_down' ? 1 : -1;
-      fFrictX = fDir * frictionN * 2.0;
+      fFrictX = mode === 'slide_down' ? frictionN * vectorScale : -frictionN * vectorScale;
       drawVectorArrow(0, originY, fFrictX, originY, '#d97706');
     }
 
     // 6. Pulling Force F_kéo (Cyan - Up-slope along +x)
     let pullX = 0;
     if (mode === 'pull_up') {
-      pullX = pullForceN * 1.6;
+      pullX = pullForceN * vectorScale;
       drawVectorArrow(0, originY, pullX, originY, '#00f2fe');
     }
 
@@ -380,24 +440,25 @@ export default function InclinedPlaneSimulator({ lang, params = {}, onParamChang
     ctx.fillStyle = '#a855f7'; ctx.fillText('🟣 P⊥: Thành phần P vuông góc', width - 162, height - 44);
     ctx.fillStyle = '#39ff14'; ctx.fillText('🟢 F_th: Lực tổng hợp', width - 162, height - 28);
 
-    // Title HUD
+    // Title HUD - Fixed Typo 'TÊN' -> 'TRÊN'
     ctx.fillStyle = '#38bdf8';
     ctx.font = 'bold 13px Inter';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'alphabetic';
     ctx.fillText(
       isEn
-        ? `INCLINED PLANE SIMULATOR: ${mode === 'slide_down' ? 'SLIDING DOWN (Free Motion)' : mode === 'pull_up' ? 'PULLING UP (Force & Efficiency)' : 'SPRING OSCILLATOR (Harmonic Motion)'}`
-        : `MÔ PHỎNG MẶT PHẲNG NGHIÊNG: ${mode === 'slide_down' ? 'VẬT TRƯỢT XUỐNG (Chuyển động tự do)' : mode === 'pull_up' ? 'KÉO VẬT LÊN (Công & Hiệu suất)' : 'DAO ĐỘNG LÒ XO TÊN MẶT PHẲNG NGHIÊNG'}`,
+        ? `INCLINED PLANE: ${mode === 'slide_down' ? 'SLIDING DOWN' : mode === 'pull_up' ? 'PULLING UP' : `SPRING OSCILLATOR (${springPosition === 'bottom' ? 'UNDER OBJECT' : 'ABOVE OBJECT'})`}`
+        : `MÔ PHỎNG MẶT PHẲNG NGHIÊNG: ${mode === 'slide_down' ? 'VẬT TRƯỢT XUỐNG' : mode === 'pull_up' ? 'KÉO VẬT LÊN' : `DAO ĐỘNG LÒ XO ${springPosition === 'bottom' ? 'Ở CHÂN DỐC (BÊN DƯỚI VẬT)' : 'Ở ĐỈNH DỐC (BÊN TRÊN VẬT)'}`}`,
       width * 0.5,
       22
     );
 
-  }, [mode, angleDeg, massKg, frictionCoeff, springK, animProgress, angleRad, weightN, pParallelN, pNormalN, frictionN, slideAccel, pullForceN, netForceSlideN, isEn]);
+  }, [mode, springPosition, angleDeg, massKg, frictionCoeff, springK, animProgress, angleRad, weightN, pParallelN, pNormalN, frictionN, slideAccel, pullForceN, netForceSlideN, isEn]);
 
   const recordPoint = () => {
     onDataRecorded?.({
-      mode: mode === 'slide_down' ? (isEn ? 'Sliding Down' : 'Vật trượt xuống') : mode === 'pull_up' ? (isEn ? 'Pulling Up' : 'Kéo vật lên') : (isEn ? 'Spring Oscillator' : 'Dao động Lò xo'),
+      mode: mode === 'slide_down' ? (isEn ? 'Sliding Down' : 'Vật trượt xuống') : mode === 'pull_up' ? (isEn ? 'Pulling Up' : 'Kéo vật lên') : (isEn ? `Spring (${springPosition})` : `Lò xo (${springPosition === 'bottom' ? 'dưới' : 'trên'})`),
+      springPosition: mode === 'spring_oscillator' ? (springPosition === 'bottom' ? (isEn ? 'Bottom (Under)' : 'Chân dốc (Dưới)') : (isEn ? 'Top (Above)' : 'Đỉnh dốc (Trên)')) : 'N/A',
       angleDeg: `${angleDeg}°`,
       massKg: `${massKg} kg`,
       weightN: `${weightN.toFixed(1)} N`,
@@ -476,6 +537,42 @@ export default function InclinedPlaneSimulator({ lang, params = {}, onParamChang
               </button>
             </div>
           </div>
+
+          {/* Spring Position Selector when in Spring Oscillator Mode */}
+          {mode === 'spring_oscillator' && (
+            <div className="p-2.5 rounded-xl bg-pink-950/30 border border-pink-500/30 flex flex-col gap-1.5">
+              <label className="text-xs font-bold text-pink-300 block">
+                {isEn ? '📍 Spring Placement Position:' : '📍 Vị trí gắn Lò xo:'}
+              </label>
+              <div className="grid grid-cols-2 gap-1.5">
+                <button
+                  onClick={() => { onParamChange('springPosition', 'top'); handleReset(); }}
+                  className={`py-1.5 px-2 rounded-lg text-[11px] font-bold transition-all ${
+                    springPosition === 'top'
+                      ? 'bg-pink-500 text-white shadow-md shadow-pink-500/20'
+                      : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  {isEn ? '🔺 Top (Above Object)' : '🔺 Ở Đỉnh Dốc (Trên)'}
+                </button>
+                <button
+                  onClick={() => { onParamChange('springPosition', 'bottom'); handleReset(); }}
+                  className={`py-1.5 px-2 rounded-lg text-[11px] font-bold transition-all ${
+                    springPosition === 'bottom'
+                      ? 'bg-pink-500 text-white shadow-md shadow-pink-500/20'
+                      : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  {isEn ? '🔻 Bottom (Under Object)' : '🔻 Ở Chân Dốc (Dưới)'}
+                </button>
+              </div>
+              <p className="text-[10px] text-pink-200/80 italic mt-0.5">
+                {springPosition === 'bottom'
+                  ? (isEn ? '• Equilibrium state: Spring is COMPRESSED by Δl0 = (mg sinθ)/k.' : '• Tại VTCB: Lò xo bị NÉN một đoạn Δl0 = (mg sinθ)/k.')
+                  : (isEn ? '• Equilibrium state: Spring is STRETCHED by Δl0 = (mg sinθ)/k.' : '• Tại VTCB: Lò xo bị DÃN một đoạn Δl0 = (mg sinθ)/k.')}
+              </p>
+            </div>
+          )}
 
           {/* Angle Slider */}
           <div>
@@ -575,7 +672,11 @@ export default function InclinedPlaneSimulator({ lang, params = {}, onParamChang
             {mode === 'spring_oscillator' && (
               <>
                 <div className="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                  <span className="text-slate-400 block text-[11px]">{isEn ? 'Eq. Stretch Δl0:' : 'Độ giãn CB Δl0:'}</span>
+                  <span className="text-slate-400 block text-[11px]">
+                    {springPosition === 'bottom'
+                      ? (isEn ? 'Eq. Compression Δl0:' : 'Độ NÉN CB Δl0:')
+                      : (isEn ? 'Eq. Stretch Δl0:' : 'Độ DÃN CB Δl0:')}
+                  </span>
                   <span className="text-pink-400 font-bold text-sm">{(deltaL0m * 100).toFixed(1)} cm</span>
                 </div>
                 <div className="bg-slate-950 p-2.5 rounded-lg border border-slate-800">

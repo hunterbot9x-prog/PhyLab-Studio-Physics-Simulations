@@ -12,8 +12,21 @@ export default function ExamMethodologyModal({ isOpen, experiment, onClose, lang
   const [showHint2, setShowHint2] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const methodology = getExamMethodologyForExp(experiment.id, experiment.category, experiment.grade);
+  const getCategoryEn = (cat) => {
+    switch (cat) {
+      case 'Cơ học': return 'Mechanics';
+      case 'Nhiệt học': return 'Thermodynamics';
+      case 'Điện - Từ': return 'Electricity & Magnetism';
+      case 'Quang học': return 'Optics';
+      case 'Vật lý Hiện đại': return 'Modern Physics';
+      default: return cat;
+    }
+  };
+
+  const methodology = getExamMethodologyForExp(experiment.id, experiment.category, experiment.grade, lang);
   const displayTitle = isEn ? (experiment.titleEn || experiment.title) : experiment.title;
+  const displayCategory = isEn ? getCategoryEn(experiment.category) : experiment.category;
+  const displayGrade = isEn ? (experiment.grade === 'IGCSE' || experiment.grade === 'A Level' ? experiment.grade : `Grade ${experiment.grade}`) : experiment.gradeLabel;
 
   const handleResetQuiz = () => {
     setSelectedQuizOption(null);
@@ -38,7 +51,7 @@ export default function ExamMethodologyModal({ isOpen, experiment, onClose, lang
                   {isEn ? 'EXAM STRATEGY & METHODOLOGY' : 'CHUYÊN ĐỀ PHƯƠNG PHÁP GIẢI ĐỀ THI'}
                 </span>
                 <span className="px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 text-[10px] font-bold border border-cyan-500/20">
-                  {experiment.gradeLabel} - {experiment.category}
+                  {displayGrade} - {displayCategory}
                 </span>
               </div>
               <h3 className="text-base font-bold text-slate-100 mt-0.5 flex items-center gap-2">

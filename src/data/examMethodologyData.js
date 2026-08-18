@@ -337,12 +337,12 @@ export const EXAM_METHODOLOGY_DATA = {
       examTrapWarning: "⚠️ Lỗi dấu độ lệch pha: φ = φ_u - φ_i => φ_i = φ_u - φ. Vì φ = -π/4 nên φ_i = 0 - (-π/4) = +π/4 rad (dòng điện sớm pha hơn điện áp π/4)."
     },
     practiceQuiz: {
-      question: "Đoạn mạch RLC nối tiếp có R = 50 Ω, L = 0.5/π H và C = 10⁻⁴/π F mắc vào mạng điện xoay chiều có f = 50 Hz. Hệ số công suất cos φ của mạch là bao nhiêu?",
+      question: "Đoạn mạch RLC nối tiếp có R = 50 Ω, L = 0.5/π H và C = 2·10⁻⁴/π F mắc vào mạng điện xoay chiều có f = 50 Hz. Hệ số công suất cos φ của mạch là bao nhiêu?",
       options: ["1.0 (Cộng hưởng)", "0.5", "0.707 (√2/2)", "0.866 (√3/2)"],
       correctIndex: 0,
       hint1: "Tính ω = 2πf = 100π rad/s. Sau đó tính Z_L = ωL và Z_C = 1/(ωC).",
       hint2: "So sánh Z_L và Z_C. Nếu Z_L = Z_C thì mạch xảy ra hiện tượng cộng hưởng và cos φ = 1.",
-      explanation: "Z_L = 100π · (0.5/π) = 50 Ω; Z_C = 1 / [100π · 10⁻⁴/π] = 100 Ω... Ơ, Z_L = 50Ω, Z_C = 100Ω => Nếu C = 2·10⁻⁴/π thì Z_C = 50Ω => Z_L = Z_C = 50Ω => cos φ = R/Z = 50/50 = 1.0."
+      explanation: "ω = 2πf = 100π rad/s => Z_L = 100π · (0.5/π) = 50 Ω; Z_C = 1 / [100π · (2·10⁻⁴/π)] = 50 Ω. Vì Z_L = Z_C = 50 Ω nên mạch xảy ra hiện tượng cộng hưởng điện => Tổng trở Z = R = 50 Ω => cos φ = R / Z = 50 / 50 = 1.0."
     }
   },
 
@@ -1939,64 +1939,425 @@ export const EXAM_METHODOLOGY_DATA = {
   }
 };
 
-// Smart fallback generator for all experiments
-export const getExamMethodologyForExp = (expId, category = "Cơ học", grade = "10") => {
-  if (EXAM_METHODOLOGY_DATA[expId]) {
-    return EXAM_METHODOLOGY_DATA[expId];
-  }
-
-  return {
-    topic: `Chuyên Đề Trọng Tâm & Phương Pháp Giải Bài Tập: ${category}`,
+// Comprehensive English translation dictionary for all core physics experiments
+const EXAM_METHODOLOGY_DATA_EN = {
+  "g12-photoelectric": {
+    topic: "Photoelectric Effect, Einstein's Quantum Theory & Stopping Potential",
     mindset: {
       steps: [
-        "Bước 1: Đọc kỹ đề bài, tóm tắt các đại lượng cho trước và đổi tất cả đơn vị về chuẩn hệ SI (m, kg, s, A, V, J...).",
-        "Bước 2: Vẽ sơ đồ biểu diễn hiện tượng vật lý (Sơ đồ lực phân tích Vectơ, sơ đồ mạch điện, đường truyền tia sáng, đồ thị hàm số).",
-        "Bước 3: Xác định Định luật và Định lý vật lý chi phối bài toán (Định luật Bảo toàn Năng lượng, Bảo toàn Động lượng, Định luật II Newton, Định luật Ohm, Định lý Động năng).",
-        "Bước 4: Thiết lập hệ phương trình liên hệ giữa các đại lượng đã biết và đại lượng cần tìm, giải đại số và kiểm tra tính hợp lý của kết quả."
+        "Step 1: Understand photon energy: E = h · f = (h · c) / λ (with h = 6.626 · 10⁻³⁴ J·s, c = 3 · 10⁸ m/s, 1 eV = 1.6 · 10⁻¹⁹ J).",
+        "Step 2: Photoelectric Condition: Incident photon energy must be at least equal to the metal work function Φ: E ≥ Φ <=> λ ≤ λ_0 (where λ_0 = hc/Φ is the threshold wavelength).",
+        "Step 3: Einstein's Photoelectric Equation: h · f = Φ + K_max (Energy of incoming photon = Work function + Maximum kinetic energy of photoelectrons).",
+        "Step 4: Stopping Potential (Retarding Potential V_s): e · |V_s| = K_max = (1/2) · m · v_max² => |V_s| = (h · f - Φ) / e."
       ],
-      coreLaw: "Phương pháp Tọa độ, Phương pháp Bảo toàn Năng lượng & Phân tích Đồ thị Vật lý",
+      coreLaw: "h · f = Φ + (1/2) m v_max² | e · |V_s| = K_max | λ_0 = (h · c) / Φ",
       shortcuts: [
-        "Phương pháp Lập Tỉ Số: X1 / X2 để triệt tiêu các hằng số khi một tham số thay đổi.",
-        "Phương pháp Đánh Giá Cực Trị: Áp dụng Bất đẳng thức Cauchy a + b ≥ 2√(ab) khi tích a·b không đổi.",
-        "Phương pháp Đồ Thị: Độ dốc (Slope) = Δy / Δx (thể hiện đạo hàm/tốc độ biến thiên); Diện tích dưới đường cong (Area) = Tích tích phân (công A, quãng đường s, điện lượng q)."
+        "Quick calculation: h · c ≈ 1242 eV·nm => λ_0 (nm) = 1242 / Φ (eV)",
+        "Kinetic energy in eV: K_max (eV) = E (eV) - Φ (eV) => Stopping potential V_s (Volts) = K_max (eV)",
+        "Linear graph of V_s vs f: V_s = (h/e) · f - (Φ/e) (Gradient = h/e, y-intercept = -Φ/e, x-intercept = f_0)"
       ]
     },
     problemTypes: [
       {
-        id: "gen1",
-        name: "Dạng 1: Bài toán Cơ bản - Áp dụng trực tiếp công thức định luật (Nhận biết - Thông hiểu)",
-        description: "Thay số trực tiếp sau khi đã đồng nhất đơn vị SI.",
-        formulaSummary: "Đồng nhất thứ nguyên đại lượng",
-        traps: "⚠️ Bẫy đơn vị: km/h sang m/s (chia 3.6), cm sang m (chia 100), gam sang kg (chia 1000)."
+        id: "type1",
+        name: "Type 1: Photoelectric Condition & Work Function Φ (Core Understanding)",
+        description: "Calculate threshold wavelength λ_0 = hc/Φ and compare with incident wavelength λ.",
+        formulaSummary: "λ_0 = h·c / Φ | Emission condition: λ ≤ λ_0",
+        traps: "⚠️ Convert 1 eV = 1.6 · 10⁻¹⁹ J into Joules before calculating λ_0 in metres."
       },
       {
-        id: "gen2",
-        name: "Dạng 2: Bài toán Biến đổi Tham số & Lập Tỉ Số (Vận dụng)",
-        description: "Khi một hoặc nhiều đại lượng thay đổi (tăng n lần, giảm m lần), tìm tỉ lệ thay đổi của đại lượng đích.",
-        formulaSummary: "Lập phương trình trạng thái (1) và (2) => Lập tỉ số (1) / (2)",
-        traps: "⚠️ Chú ý phân biệt 'tăng THÊM n đơn vị' (X' = X + n) và 'tăng LÊN n lần' (X' = n · X)."
+        id: "type2",
+        name: "Type 2: Stopping Potential V_s & Maximum Initial Velocity v_max (Application)",
+        description: "Apply Einstein equation: e · |V_s| = hc/λ - Φ.",
+        formulaSummary: "e·|V_s| = h·c/λ - Φ | v_max = √(2 · e · |V_s| / m_e)",
+        traps: "⚠️ Electron mass m_e = 9.1 · 10⁻³¹ kg, charge |e| = 1.6 · 10⁻¹⁹ C."
       },
       {
-        id: "gen3",
-        name: "Dạng 3: Bài toán Khai thác Đồ thị & Xử lý Số liệu Thực nghiệm (Vận dụng cao)",
-        description: "Đọc điểm giao, độ dốc slope và diện tích hình phẳng dưới đồ thị.",
-        formulaSummary: "Slope = Δy / Δx | Area = ∫ y dx",
-        traps: "⚠️ Bẫy đọc sai tỉ lệ chia trên các trục tọa độ hoặc bỏ sót số nhân lũy thừa 10^k ở đầu trục."
+        id: "type3",
+        name: "Type 3: Determining Planck's Constant h from V_s vs f Graph (Advanced / Cambridge Paper 4)",
+        description: "Straight line graph intercepts frequency axis at threshold f_0 with gradient = h/e.",
+        formulaSummary: "h = gradient · e",
+        traps: "⚠️ Check frequency axis scale multiplier (e.g. 10¹⁴ Hz) when calculating slope."
       }
     ],
     workedExample: {
-      question: "Một vật có khối lượng m chuyển động từ trạng thái nghỉ dưới tác dụng của một lực không đổi F trong khoảng thời gian t thì đạt vận tốc v và đi được quãng đường s. Nếu lực tác dụng tăng gấp đôi (2F) trong cùng khoảng thời gian t thì quãng đường đi được s' bằng bao nhiêu?",
-      thinkingAnalysis: "1) Theo Định luật II Newton: Gia tốc a = F / m.\n2) Khi lực tăng lên 2F thì gia tốc mới a' = 2F / m = 2a (gia tốc tăng gấp đôi).\n3) Quãng đường đi được từ trạng thái nghỉ: s = (1/2) · a · t².\n4) Vì t không đổi và a' = 2a nên s' = (1/2) · a' · t² = (1/2) · (2a) · t² = 2s.",
-      solution: "1. Gia tốc ban đầu của vật:\n   a = F / m.\n   Quãng đường ban đầu: s = (1/2) · a · t² = (1/2) · (F / m) · t².\n2. Khi lực tác dụng là F' = 2F:\n   a' = F' / m = 2F / m = 2a.\n   Quãng đường lúc sau:\n   s' = (1/2) · a' · t² = (1/2) · (2a) · t² = 2 · [(1/2) · a · t²] = 2s.\n3. Kết luận: Quãng đường đi được tăng gấp đôi (s' = 2s).",
-      examTrapWarning: "⚠️ Cảnh báo: Nếu đề bài cho 'cùng QUÃNG ĐƯỜNG s' và hỏi vận tốc thì lại dùng công thức v² = 2as => v' = √2 · v. Cần chú ý điều kiện cố định là thời gian t hay quãng đường s."
+      question: "Light of wavelength λ = 350 nm is incident on a metal surface with work function Φ = 2.20 eV. Given h = 6.626 · 10⁻³⁴ J·s, c = 3 · 10⁸ m/s, m_e = 9.1 · 10⁻³¹ kg, and 1 eV = 1.6 · 10⁻¹⁹ J. (a) Determine if photoelectric emission occurs. (b) Calculate the maximum kinetic energy of emitted photoelectrons in eV and Joules. (c) Calculate the stopping potential V_s and maximum initial velocity v_max.",
+      thinkingAnalysis: "1) Threshold wavelength λ_0 = hc/Φ = (1.9878 · 10⁻²⁵) / (2.20 · 1.6 · 10⁻¹⁹) = 5.647 · 10⁻⁷ m = 565 nm.\n2) Since λ = 350 nm < λ_0 = 565 nm (or E_photon = 3.55 eV > Φ = 2.20 eV), photoelectric emission DOES occur.\n3) Max kinetic energy: K_max = E_photon - Φ = 3.55 eV - 2.20 eV = 1.35 eV = 1.35 · 1.6 · 10⁻¹⁹ = 2.16 · 10⁻¹⁹ J.\n4) Stopping potential |V_s| = K_max / e = 1.35 V.\n5) Max velocity v_max = √(2 · K_max / m_e) = √(2 · 2.16 · 10⁻¹⁹ / 9.1 · 10⁻³¹) = √(4.747 · 10¹²) = 6.89 · 10⁵ m/s.",
+      solution: "1. Threshold wavelength λ_0:\n   λ_0 = (h · c) / Φ = (6.626 · 10⁻³⁴ J·s · 3 · 10⁸ m/s) / (2.20 · 1.6 · 10⁻¹⁹ J) = 5.65 · 10⁻⁷ m = 565 nm.\n   Since incident λ = 350 nm ≤ 565 nm, photoelectric emission occurs.\n2. Maximum kinetic energy K_max:\n   Photon energy E = (h · c) / λ = 1.9878 · 10⁻²⁵ / (350 · 10⁻⁹) = 5.679 · 10⁻¹⁹ J = 3.55 eV.\n   K_max = E - Φ = 3.55 eV - 2.20 eV = 1.35 eV = 2.16 · 10⁻¹⁹ Joules.\n3. Stopping potential and maximum speed:\n   Stopping potential: |V_s| = 1.35 V.\n   Max velocity: v_max = √(2 · K_max / m_e) = √(2 · 2.16 · 10⁻¹⁹ / 9.1 · 10⁻³¹) = 6.89 · 10⁵ m/s.",
+      examTrapWarning: "⚠️ Common Exam Trap: Forgetting to subtract the work function Φ when calculating kinetic energy, or mixing up units of Joules and eV."
     },
     practiceQuiz: {
-      question: "Một vật chuyển động thẳng nhanh dần đều không vận tốc đầu, đi được quãng đường s trong giây thứ nhất. Quãng đường vật đi được trong giây thứ hai là bao nhiêu?",
-      options: ["3s", "2s", "4s", "1.5s"],
+      question: "Monochromatic light of wavelength 400 nm falls on a metal with work function 2.0 eV. What is the stopping potential required to reduce the photocurrent to zero?",
+      options: ["1.11 V", "3.11 V", "2.00 V", "0.55 V"],
       correctIndex: 0,
-      hint1: "Quãng đường đi được sau t giây: s(t) = (1/2) · a · t².",
-      hint2: "Trong giây thứ nhất: s_1 = s(1) = 0.5 a. Sau 2 giây: s(2) = (1/2) · a · 2² = 2 a = 4 s_1. Quãng đường trong giây thứ hai = s(2) - s(1).",
-      explanation: "s(1) = 0.5 a = s. s(2) = 0.5 a · 2² = 2 a = 4s. Quãng đường đi được riêng trong giây thứ 2: Δs_2 = s(2) - s(1) = 4s - s = 3s."
+      hint1: "Photon energy E = 1242 / 400 = 3.105 eV.",
+      hint2: "Stopping potential |V_s| = (E - Φ) / e = (3.105 - 2.0) = 1.105 V ≈ 1.11 V.",
+      explanation: "E = hc / λ = (1.988 · 10⁻²⁵) / (4 · 10⁻⁷) = 4.97 · 10⁻¹⁹ J = 3.106 eV. Stopping potential V_s = 3.106 - 2.0 = 1.11 V."
+    }
+  },
+
+  "g12-spring": {
+    topic: "Simple Harmonic Motion (SHM) of Horizontal & Vertical Spring Oscillators",
+    mindset: {
+      steps: [
+        "Step 1: Write the displacement equation: x(t) = A · cos(ωt + φ) (m or cm).",
+        "Step 2: Angular frequency ω = √(k/m), Period T = 2π√(m/k), Frequency f = 1/T = (1/2π)√(k/m).",
+        "Step 3: Velocity and acceleration relationships: v(t) = x'(t) = -ωA sin(ωt + φ), a(t) = v'(t) = -ω²x. Max velocity v_max = ωA, Max acceleration a_max = ω²A.",
+        "Step 4: Conservation of Mechanical Energy: E = E_k + E_p = (1/2) m v² + (1/2) k x² = (1/2) k A² = (1/2) m ω² A² = const."
+      ],
+      coreLaw: "T = 2π √(m/k) | E = (1/2) k A² = const | a = -ω² x",
+      shortcuts: [
+        "Time-independent equation: x² + (v/ω)² = A² <=> (x/A)² + (v/v_max)² = 1",
+        "When kinetic energy equals n times potential energy (E_k = n · E_p): x = ± A / √(n + 1)",
+        "When potential energy equals n times kinetic energy (E_p = n · E_k): v = ± v_max / √(n + 1)"
+      ]
+    },
+    problemTypes: [
+      {
+        id: "type1",
+        name: "Type 1: Fundamental SHM Quantities (Period T, Frequency f, Energy E)",
+        description: "Direct calculation from mass m, spring constant k, and amplitude A.",
+        formulaSummary: "T = 2π√(m/k) | E = (1/2) k A²",
+        traps: "⚠️ Convert mass m to kg (100 g = 0.1 kg) and amplitude A to metres (4 cm = 0.04 m) before computing energy in Joules."
+      },
+      {
+        id: "type2",
+        name: "Type 2: Instantaneous Position, Velocity and Acceleration Relationships",
+        description: "Find velocity at position x or find position at velocity v using Pythagorean relation.",
+        formulaSummary: "v = ± ω · √(A² - x²)",
+        traps: "⚠️ Note the ± sign for velocity (positive when moving in +x direction, negative when moving in -x direction)."
+      }
+    ],
+    workedExample: {
+      question: "A spring oscillator with mass m = 200 g and stiffness k = 50 N/m oscillates with amplitude A = 4 cm. (a) Calculate the period T and total mechanical energy E. (b) Calculate the maximum speed v_max. (c) What is the speed of the mass when its displacement is x = 2 cm?",
+      thinkingAnalysis: "1) Convert units: m = 0.2 kg, A = 0.04 m, x = 0.02 m.\n2) Angular frequency ω = √(k/m) = √(50/0.2) = √250 = 5√10 rad/s ≈ 15.81 rad/s.\n3) Period T = 2π / ω = 2π / (5√10) ≈ 0.397 s ≈ 0.40 s.\n4) Mechanical energy E = (1/2) k A² = 0.5 · 50 · 0.04² = 0.04 J = 40 mJ.\n5) Max speed v_max = ω · A = 15.81 · 0.04 = 0.632 m/s = 63.2 cm/s.\n6) Speed at x = 2 cm: |v| = ω · √(A² - x²) = 15.81 · √(0.04² - 0.02²) = 15.81 · 0.03464 = 0.548 m/s = 54.8 cm/s.",
+      solution: "1. Period and mechanical energy:\n   ω = √(50 / 0.2) = 15.81 rad/s => T = 2π / 15.81 = 0.40 s.\n   E = (1/2) · k · A² = 0.5 · 50 · (0.04)² = 0.040 J (40 mJ).\n2. Maximum speed:\n   v_max = ω · A = 15.81 rad/s · 0.04 m = 0.632 m/s (63.2 cm/s).\n3. Speed at x = 2 cm:\n   |v| = ω · √(A² - x²) = 15.81 · √(0.04² - 0.02²) = 0.548 m/s (54.8 cm/s).",
+      examTrapWarning: "⚠️ Never use cm when computing energy in Joules (using 4² gives 400 J, which is off by 10,000x!)."
+    },
+    practiceQuiz: {
+      question: "An object undergoes SHM with amplitude A. At what displacement x is the potential energy equal to 3 times the kinetic energy (E_p = 3 E_k)?",
+      options: ["x = ± A · (√3 / 2)", "x = ± A / 2", "x = ± A / √3", "x = ± A / 4"],
+      correctIndex: 0,
+      hint1: "Total energy E = E_k + E_p = (1/3) E_p + E_p = (4/3) E_p.",
+      hint2: "Substitute (1/2) k A² = (4/3) · (1/2) k x² => x² = (3/4) A² => |x| = A · (√3 / 2).",
+      explanation: "E_p = 3 E_k => E = (4/3) E_p => (1/2) k A² = (4/3) (1/2) k x² => x = ± A · √3 / 2."
+    }
+  },
+
+  "g12-rlc": {
+    topic: "Series AC RLC Circuits, Phasor Diagrams & Electrical Resonance",
+    mindset: {
+      steps: [
+        "Step 1: Calculate inductive reactance Z_L = ωL = 2πfL and capacitive reactance Z_C = 1/(ωC) = 1/(2πfC).",
+        "Step 2: Calculate total circuit impedance: Z = √[R² + (Z_L - Z_C)²].",
+        "Step 3: Determine RMS and peak currents: I = U / Z; I_0 = U_0 / Z.",
+        "Step 4: Phase difference between voltage u and current i: tan φ = (Z_L - Z_C) / R (where φ = φ_u - φ_i)."
+      ],
+      coreLaw: "Z = √[R² + (Z_L - Z_C)²] | tan φ = (Z_L - Z_C) / R | P = U · I · cos φ",
+      shortcuts: [
+        "Resonance Condition: Z_L = Z_C <=> ω² L C = 1 <=> f = 1 / (2π√LC)",
+        "At Resonance: Z_min = R, I_max = U / R, Power factor cos φ = 1, P_max = U² / R",
+        "Two frequencies giving equal current: Resonance frequency f_0 = √(f_1 · f_2)"
+      ]
+    },
+    problemTypes: [
+      {
+        id: "type1",
+        name: "Type 1: Impedance Z, RMS Current I and Phase Angle φ",
+        description: "Calculate circuit impedance, current magnitude, and phase angle.",
+        formulaSummary: "Z = √[R² + (Z_L - Z_C)²] | cos φ = R / Z",
+        traps: "⚠️ Distinguish peak values (U_0, I_0) from RMS values (U = U_0/√2, I = I_0/√2)."
+      },
+      {
+        id: "type2",
+        name: "Type 2: Electrical Resonance Phenomena",
+        description: "Adjust frequency f, inductance L, or capacitance C to maximize current I.",
+        formulaSummary: "ω = 1 / √(LC) | P_max = U² / R",
+        traps: "⚠️ At resonance, voltages across L and C (U_L, U_C) can be significantly larger than supply voltage U."
+      }
+    ],
+    workedExample: {
+      question: "An AC voltage u = 200√2 cos(100πt) (V) is applied to a series RLC circuit with R = 100 Ω, L = 1/π H, and C = 10⁻⁴/(2π) F. Find the expression for instantaneous current i(t).",
+      thinkingAnalysis: "1) U_0 = 200√2 V, ω = 100π rad/s, φ_u = 0.\n2) Z_L = ωL = 100π · (1/π) = 100 Ω.\n3) Z_C = 1/(ωC) = 1 / [100π · 10⁻⁴/(2π)] = 200 Ω.\n4) Z = √[100² + (100 - 200)²] = 100√2 Ω.\n5) I_0 = U_0 / Z = 200√2 / (100√2) = 2.0 A.\n6) tan φ = (100 - 200) / 100 = -1 => φ = -π/4 => φ_i = φ_u - φ = +π/4 rad.",
+      solution: "1. Inductive and capacitive reactances:\n   Z_L = 100 Ω, Z_C = 200 Ω.\n2. Circuit impedance:\n   Z = √[100² + (100 - 200)²] = 100√2 Ω (141.4 Ω).\n3. Peak current:\n   I_0 = 200√2 / 100√2 = 2.0 A.\n4. Phase angle:\n   φ = -π/4 rad => φ_i = +π/4 rad.\n5. Instantaneous current:\n   i(t) = 2 cos(100πt + π/4) (A).",
+      examTrapWarning: "⚠️ Note the phase sign: φ = φ_u - φ_i => φ_i = φ_u - φ. Negative φ means current leads voltage by π/4."
+    },
+    practiceQuiz: {
+      question: "A series RLC circuit has R = 50 Ω, L = 0.5/π H, and C = 2 · 10⁻⁴/π F with supply frequency f = 50 Hz. What is the power factor cos φ of the circuit?",
+      options: ["1.0 (Resonance)", "0.50", "0.707", "0.866"],
+      correctIndex: 0,
+      hint1: "Calculate ω = 2π · 50 = 100π rad/s. Z_L = 50 Ω and Z_C = 50 Ω.",
+      hint2: "Since Z_L = Z_C, the circuit is in resonance and cos φ = R/Z = 50/50 = 1.0.",
+      explanation: "Z_L = 100π · 0.5/π = 50 Ω; Z_C = 1 / (100π · 2·10⁻⁴/π) = 50 Ω => Z_L = Z_C => cos φ = 1.0."
+    }
+  },
+
+  "g12-lc-oscillator": {
+    topic: "Electromagnetic LC Oscillations, Energy Conservation & Radio Waves",
+    mindset: {
+      steps: [
+        "Step 1: Understand Thomson natural oscillation formula: Angular frequency ω = 1/√(LC), Natural period T = 2π√(LC), Frequency f = 1 / (2π√(LC)).",
+        "Step 2: Instantaneous charge and current equations: q(t) = Q_0 cos(ωt + φ), i(t) = q'(t) = -I_0 sin(ωt + φ) = I_0 cos(ωt + φ + π/2) with I_0 = ω · Q_0.",
+        "Step 3: Phase relationship: Current i(t) leads charge q(t) and capacitor voltage u(t) by a phase angle of π/2 rad (90°).",
+        "Step 4: Total Electromagnetic Energy Conservation: W = W_C + W_L = (1/2) (q²/C) + (1/2) L i² = (1/2) C U_0² = (1/2) L I_0² = const."
+      ],
+      coreLaw: "T = 2π √(LC) | W = (1/2) C U_0² = (1/2) L I_0² = const | λ = 2π c √(LC)",
+      shortcuts: [
+        "Peak current relation: I_0 = ω · Q_0 = U_0 · √(C / L)",
+        "Instantaneous Pythagorean relation: (q / Q_0)² + (i / I_0)² = 1 <=> (u / U_0)² + (i / I_0)² = 1",
+        "When electric field energy equals magnetic field energy (W_C = W_L): |q| = Q_0 / √2, |i| = I_0 / √2, |u| = U_0 / √2",
+        "Broadcast Wavelength: λ = c · T = 3 · 10⁸ · 2π · √(LC)"
+      ]
+    },
+    problemTypes: [
+      {
+        id: "type1",
+        name: "Type 1: Thomson Period T, Frequency f and Wavelength λ (Core Recall & Understanding)",
+        description: "Direct calculation from inductance L and capacitance C.",
+        formulaSummary: "T = 2π√(LC) | f = 1/(2π√(LC)) | λ = c · T",
+        traps: "⚠️ Convert units: L (mH to H by ×10⁻³, µH by ×10⁻⁶), C (µF by ×10⁻⁶, nF by ×10⁻⁹, pF by ×10⁻¹²)."
+      },
+      {
+        id: "type2",
+        name: "Type 2: Instantaneous Quantities & Pythagorean Phase Relations (Application)",
+        description: "Find current i when charge q (or voltage u) is given using (q/Q_0)² + (i/I_0)² = 1.",
+        formulaSummary: "i = ± I_0 · √[1 - (u / U_0)²] | I_0 = U_0 · √(C / L)",
+        traps: "⚠️ Distinguish between energy frequency (f_energy = 2f) and charge/current frequency f."
+      },
+      {
+        id: "type3",
+        name: "Type 3: Tuning Variable Capacitors & Radio Receiver Resonance (Advanced)",
+        description: "Variable capacitor C_min to C_max tuning wavelength band λ_min to λ_max.",
+        formulaSummary: "λ_max / λ_min = √(C_max / C_min)",
+        traps: "⚠️ Proportionality relation: λ ∝ √C. Quadrupling C doubles wavelength λ (not 4 times)."
+      }
+    ],
+    workedExample: {
+      question: "An ideal LC circuit consists of an inductor L = 4.0 µH and capacitor C = 9.0 nF with peak capacitor voltage U_0 = 6.0 V. (a) Calculate the natural period T, frequency f, and electromagnetic wavelength λ. (b) Calculate peak current I_0. (c) When instantaneous voltage u = 3.0 V, what is the instantaneous current i?",
+      thinkingAnalysis: "1) Convert units: L = 4 · 10⁻⁶ H, C = 9 · 10⁻⁹ F, U_0 = 6.0 V.\n2) Natural period: T = 2π√(LC) = 2π√(4·10⁻⁶ · 9·10⁻⁹) = 2π√(36·10⁻¹⁵) = 2π · 6 · 10⁻⁷ · √0.1 ≈ 1.192 · 10⁻⁶ s = 1.19 µs.\n3) Frequency f = 1 / T = 839 kHz. Wavelength λ = c · T = 3 · 10⁸ · 1.192 · 10⁻⁶ = 357.7 m.\n4) Peak current: I_0 = U_0 · √(C/L) = 6.0 · √(9·10⁻⁹ / 4·10⁻⁶) = 6.0 · √(2.25 · 10⁻³) = 6.0 · 0.04743 = 0.2846 A = 284.6 mA.\n5) When u = 3.0 V (half of U_0): |i| = I_0 · √[1 - (u/U_0)²] = 284.6 · √[1 - 0.5²] = 284.6 · (√3/2) = 246.5 mA.",
+      solution: "1. Natural period, frequency, and wavelength:\n   T = 2π · √(L · C) = 2π · √(4.0 × 10⁻⁶ × 9.0 × 10⁻⁹) = 1.19 × 10⁻⁶ s (1.19 µs).\n   f = 1 / T = 8.39 × 10⁵ Hz (839 kHz).\n   λ = c · T = 3.0 × 10⁸ m/s × 1.19 × 10⁻⁶ s = 358 meters.\n2. Peak current I_0:\n   I_0 = U_0 · √(C / L) = 6.0 × √(9.0 × 10⁻⁹ / 4.0 × 10⁻⁶) = 0.285 A (285 mA).\n3. Current at instantaneous voltage u = 3.0 V:\n   |i| = I_0 · √[1 - (u / U_0)²] = 0.285 × √[1 - (3.0 / 6.0)²] = 0.285 × (√3 / 2) = 0.247 A (247 mA).",
+      examTrapWarning: "⚠️ Common Exam Trap: Electric and magnetic energies oscillate at twice the frequency: f_energy = 2f and T_energy = T / 2."
+    },
+    practiceQuiz: {
+      question: "In an ideal LC circuit with period T = 4.0 µs, what is the minimum time interval for the energy stored in the capacitor to convert completely into magnetic field energy in the inductor?",
+      options: ["1.0 µs (T/4)", "2.0 µs (T/2)", "4.0 µs (T)", "0.5 µs (T/8)"],
+      correctIndex: 0,
+      hint1: "Energy starts at W_C = W_max (q = Q_0, i = 0) and reaches W_L = W_max (q = 0, i = I_0).",
+      hint2: "The time to go from peak charge (q = Q_0) to zero charge (q = 0) is a quarter of a period: Δt = T / 4.",
+      explanation: "Δt = T / 4 = 4.0 µs / 4 = 1.0 µs."
+    }
+  }
+};
+
+// Universal translation function for Vietnamese -> English physics content
+const autoTranslateMethodology = (item) => {
+  if (!item) return item;
+
+  const replaceMap = [
+    [/Bước 1:/g, "Step 1:"],
+    [/Bước 2:/g, "Step 2:"],
+    [/Bước 3:/g, "Step 3:"],
+    [/Bước 4:/g, "Step 4:"],
+    [/Dạng 1:/g, "Type 1:"],
+    [/Dạng 2:/g, "Type 2:"],
+    [/Dạng 3:/g, "Type 3:"],
+    [/Dạng 4:/g, "Type 4:"],
+    [/\(Nhận biết - Thông hiểu\)/g, "(Core Understanding)"],
+    [/\(Thông hiểu\)/g, "(Core Understanding)"],
+    [/\(Nhận biết\)/g, "(Core Recall)"],
+    [/\(Vận dụng cao - A Level Practical\)/g, "(Advanced A Level Practical)"],
+    [/\(Vận dụng cao\)/g, "(Advanced Solving)"],
+    [/\(Vận dụng\)/g, "(Application)"],
+    [/Kiểm tra điều kiện quang điện & Tính công thoát/g, "Check Photoelectric Condition & Work Function"],
+    [/Tính Hiệu điện thế hãm U_h & Vận tốc ban đầu cực đại v_max/g, "Calculate Stopping Potential V_s & Max Speed v_max"],
+    [/Xác định hằng số Planck h từ đồ thị U_h - f/g, "Determine Planck Constant h from V_s vs f Graph"],
+    [/Tính giới hạn quang điện/g, "Calculate threshold wavelength"],
+    [/và so sánh với bước sóng kích thích/g, "and compare with incident wavelength"],
+    [/Áp dụng phương trình Einstein/g, "Apply Einstein's photoelectric equation"],
+    [/Đồ thị đường thẳng cắt trục hoành tại tần số ngưỡng f_0 và có hệ số góc slope = h\/e/g, "Linear graph intercepts f-axis at threshold f_0 with gradient slope = h/e"],
+    [/Chú ý đổi 1 eV = 1.6 · 10⁻¹⁹ J khi tính λ_0 theo mét \(m\)\./g, "Convert 1 eV = 1.6 · 10⁻¹⁹ J into Joules when calculating threshold wavelength λ_0 in metres."],
+    [/Khối lượng electron m_e = 9.1 · 10⁻³¹ kg, điện tích electron |e| = 1.6 · 10⁻¹⁹ C\./g, "Electron mass m_e = 9.1 · 10⁻³¹ kg, elementary charge |e| = 1.6 · 10⁻¹⁹ C."],
+    [/Đổi đúng trục f từ 10¹⁴ Hz sang Hz khi lấy hệ số góc\./g, "Convert frequency axis from 10¹⁴ Hz to Hz before taking gradient."],
+    [/Chuyên Đề Trọng Tâm & Phương Pháp Giải Bài Tập:/g, "Key Topic & Problem Solving Methodology:"],
+    [/Cơ học/g, "Mechanics"],
+    [/Nhiệt học/g, "Thermodynamics"],
+    [/Điện - Từ/g, "Electricity & Magnetism"],
+    [/Quang học/g, "Optics"],
+    [/Vật lý Hiện đại/g, "Modern Physics"]
+  ];
+
+  const translateText = (str) => {
+    if (typeof str !== 'string') return str;
+    let res = str;
+    for (const [pattern, repl] of replaceMap) {
+      res = res.replace(pattern, repl);
+    }
+    return res;
+  };
+
+  return {
+    topic: translateText(item.topic),
+    mindset: {
+      steps: item.mindset.steps.map(translateText),
+      coreLaw: translateText(item.mindset.coreLaw),
+      shortcuts: item.mindset.shortcuts.map(translateText)
+    },
+    problemTypes: item.problemTypes.map(pt => ({
+      ...pt,
+      name: translateText(pt.name),
+      description: translateText(pt.description),
+      formulaSummary: translateText(pt.formulaSummary),
+      traps: translateText(pt.traps)
+    })),
+    workedExample: {
+      question: translateText(item.workedExample.question),
+      thinkingAnalysis: translateText(item.workedExample.thinkingAnalysis),
+      solution: translateText(item.workedExample.solution),
+      examTrapWarning: translateText(item.workedExample.examTrapWarning)
+    },
+    practiceQuiz: {
+      question: translateText(item.practiceQuiz.question),
+      options: item.practiceQuiz.options.map(translateText),
+      correctIndex: item.practiceQuiz.correctIndex,
+      hint1: translateText(item.practiceQuiz.hint1),
+      hint2: translateText(item.practiceQuiz.hint2),
+      explanation: translateText(item.practiceQuiz.explanation)
     }
   };
 };
+
+// Smart fallback generator for all experiments with Full Bilingual Support
+export const getExamMethodologyForExp = (expId, category = "Cơ học", grade = "10", lang = "vi") => {
+  const isEn = lang === 'en';
+
+  let rawData = EXAM_METHODOLOGY_DATA[expId];
+
+  // If English is selected and a dedicated English entry exists, use it directly
+  if (isEn && EXAM_METHODOLOGY_DATA_EN[expId]) {
+    return EXAM_METHODOLOGY_DATA_EN[expId];
+  }
+
+  // If no experiment entry exists, generate smart fallback
+  if (!rawData) {
+    if (isEn) {
+      const catName = category === "Cơ học" ? "Mechanics" : category === "Nhiệt học" ? "Thermodynamics" : category === "Điện - Từ" ? "Electricity & Magnetism" : category === "Quang học" ? "Optics" : "Modern Physics";
+      return {
+        topic: `Core Exam Topic & Problem Solving Methodology: ${catName}`,
+        mindset: {
+          steps: [
+            "Step 1: Read the problem carefully, list given quantities and convert all units to standard SI units (m, kg, s, A, V, J...).",
+            "Step 2: Draw a clear physics diagram (Free-body vector diagram, electrical circuit, light ray tracing, or graph).",
+            "Step 3: Identify governing physical laws (Conservation of Energy, Conservation of Momentum, Newton's 2nd Law, Ohm's Law, Work-Energy Theorem).",
+            "Step 4: Establish algebraic equations relating known and unknown variables, solve systematically, and verify physical reasonableness."
+          ],
+          coreLaw: "Coordinate Method, Energy Conservation & Physical Graph Linearization",
+          shortcuts: [
+            "Ratio Method: X1 / X2 to cancel invariant constants when a single parameter changes.",
+            "Extreme Value Evaluation: Apply AM-GM inequality a + b ≥ 2√(ab) when product a·b is constant.",
+            "Graph Analysis: Gradient (Slope) = Δy / Δx (representing derivative/rate of change); Area under curve = Integral product (Work W, Distance s, Charge q)."
+          ]
+        },
+        problemTypes: [
+          {
+            id: "gen1",
+            name: "Type 1: Fundamental Direct Law Application (Core Understanding)",
+            description: "Direct parameter substitution after converting to standard SI units.",
+            formulaSummary: "Dimensional analysis & SI homogeneity",
+            traps: "⚠️ Unit conversion trap: km/h to m/s (divide by 3.6), cm to m (divide by 100), grams to kg (divide by 1000)."
+          },
+          {
+            id: "gen2",
+            name: "Type 2: Parameter Variation & Ratio Analysis (Application)",
+            description: "When parameters scale (increased by n times), determine the scaling factor of the target variable.",
+            formulaSummary: "Set up states (1) & (2) => Form ratio (1) / (2)",
+            traps: "⚠️ Differentiate between 'increased BY n units' (X' = X + n) and 'increased TO n times' (X' = n · X)."
+          },
+          {
+            id: "gen3",
+            name: "Type 3: Graph Interpretation & Experimental Uncertainty (Advanced)",
+            description: "Extract intercept, gradient slope, and area under the graph.",
+            formulaSummary: "Slope = Δy / Δx | Area = ∫ y dx",
+            traps: "⚠️ Check axis scale multipliers (e.g. 10^k prefix) before calculating numerical gradient."
+          }
+        ],
+        workedExample: {
+          question: "An object of mass m accelerates from rest under a constant net force F for a time duration t, reaching speed v and covering distance s. If the applied force is doubled to 2F for the same duration t, what is the new distance covered s'?",
+          thinkingAnalysis: "1) By Newton's 2nd Law: Acceleration a = F / m.\n2) When force doubles to 2F, acceleration doubles: a' = 2F / m = 2a.\n3) Distance from rest: s = (1/2) · a · t².\n4) Since duration t is constant and a' = 2a: s' = (1/2) · (2a) · t² = 2 · [(1/2) · a · t²] = 2s.",
+          solution: "1. Initial acceleration and distance:\n   a = F / m.\n   s = (1/2) · a · t² = (1/2) · (F / m) · t².\n2. When force is F' = 2F:\n   a' = 2F / m = 2a.\n   s' = (1/2) · a' · t² = (1/2) · (2a) · t² = 2s.\n3. Conclusion: The distance covered is doubled (s' = 2s).",
+          examTrapWarning: "⚠️ Note: If the question specifies 'for the same DISTANCE s' and asks for speed, use v² = 2as => v' = √2 · v."
+        },
+        practiceQuiz: {
+          question: "An object accelerates uniformly from rest, covering a distance s in the first second. What distance does it travel in the second second?",
+          options: ["3s", "2s", "4s", "1.5s"],
+          correctIndex: 0,
+          hint1: "Total distance after t seconds: s(t) = (1/2) · a · t².",
+          hint2: "In 1st second: s(1) = 0.5 a = s. Total distance in 2 seconds: s(2) = 0.5 a · 2² = 2 a = 4s. Distance in 2nd second alone = s(2) - s(1) = 3s.",
+          explanation: "s(1) = 0.5a = s; s(2) = 2a = 4s => Distance in 2nd second = s(2) - s(1) = 4s - s = 3s."
+        }
+      };
+    }
+
+    return {
+      topic: `Chuyên Đề Trọng Tâm & Phương Pháp Giải Bài Tập: ${category}`,
+      mindset: {
+        steps: [
+          "Bước 1: Đọc kỹ đề bài, tóm tắt các đại lượng cho trước và đổi tất cả đơn vị về chuẩn hệ SI (m, kg, s, A, V, J...).",
+          "Bước 2: Vẽ sơ đồ biểu diễn hiện tượng vật lý (Sơ đồ lực phân tích Vectơ, sơ đồ mạch điện, đường truyền tia sáng, đồ thị hàm số).",
+          "Bước 3: Xác định Định luật và Định lý vật lý chi phối bài toán (Định luật Bảo toàn Năng lượng, Bảo toàn Động lượng, Định luật II Newton, Định luật Ohm, Định lý Động năng).",
+          "Bước 4: Thiết lập hệ phương trình liên hệ giữa các đại lượng đã biết và đại lượng cần tìm, giải đại số và kiểm tra tính hợp lý của kết quả."
+        ],
+        coreLaw: "Phương pháp Tọa độ, Phương pháp Bảo toàn Năng lượng & Phân tích Đồ thị Vật lý",
+        shortcuts: [
+          "Phương pháp Lập Tỉ Số: X1 / X2 để triệt tiêu các hằng số khi một tham số thay đổi.",
+          "Phương pháp Đánh Giá Cực Trị: Áp dụng Bất đẳng thức Cauchy a + b ≥ 2√(ab) khi tích a·b không đổi.",
+          "Phương pháp Đồ Thị: Độ dốc (Slope) = Δy / Δx (thể hiện đạo hàm/tốc độ biến thiên); Diện tích dưới đường cong (Area) = Tích tích phân (công A, quãng đường s, điện lượng q)."
+        ]
+      },
+      problemTypes: [
+        {
+          id: "gen1",
+          name: "Dạng 1: Bài toán Cơ bản - Áp dụng trực tiếp công thức định luật (Nhận biết - Thông hiểu)",
+          description: "Thay số trực tiếp sau khi đã đồng nhất đơn vị SI.",
+          formulaSummary: "Đồng nhất thứ nguyên đại lượng",
+          traps: "⚠️ Bẫy đơn vị: km/h sang m/s (chia 3.6), cm sang m (chia 100), gam sang kg (chia 1000)."
+        },
+        {
+          id: "gen2",
+          name: "Dạng 2: Bài toán Biến đổi Tham số & Lập Tỉ Số (Vận dụng)",
+          description: "Khi một hoặc nhiều đại lượng thay đổi (tăng n lần, giảm m lần), tìm tỉ lệ thay đổi của đại lượng đích.",
+          formulaSummary: "Lập phương trình trạng thái (1) và (2) => Lập tỉ số (1) / (2)",
+          traps: "⚠️ Chú ý phân biệt 'tăng THÊM n đơn vị' (X' = X + n) và 'tăng LÊN n lần' (X' = n · X)."
+        },
+        {
+          id: "gen3",
+          name: "Dạng 3: Bài toán Khai thác Đồ thị & Xử lý Số liệu Thực nghiệm (Vận dụng cao)",
+          description: "Đọc điểm giao, độ dốc slope và diện tích hình phẳng dưới đồ thị.",
+          formulaSummary: "Slope = Δy / Δx | Area = ∫ y dx",
+          traps: "⚠️ Bẫy đọc sai tỉ lệ chia trên các trục tọa độ hoặc bỏ sót số nhân lũy thừa 10^k ở đầu trục."
+        }
+      ],
+      workedExample: {
+        question: "Một vật có khối lượng m chuyển động từ trạng thái nghỉ dưới tác dụng của một lực không đổi F trong khoảng thời gian t thì đạt vận tốc v và đi được quãng đường s. Nếu lực tác dụng tăng gấp đôi (2F) trong cùng khoảng thời gian t thì quãng đường đi được s' bằng bao nhiêu?",
+        thinkingAnalysis: "1) Theo Định luật II Newton: Gia tốc a = F / m.\n2) Khi lực tăng lên 2F thì gia tốc mới a' = 2F / m = 2a (gia tốc tăng gấp đôi).\n3) Quãng đường đi được từ trạng thái nghỉ: s = (1/2) · a · t².\n4) Vì t không đổi và a' = 2a nên s' = (1/2) · a' · t² = (1/2) · (2a) · t² = 2s.",
+        solution: "1. Gia tốc ban đầu của vật:\n   a = F / m.\n   Quãng đường ban đầu: s = (1/2) · a · t² = (1/2) · (F / m) · t².\n2. Khi lực tác dụng là F' = 2F:\n   a' = F' / m = 2F / m = 2a.\n   Quãng đường lúc sau:\n   s' = (1/2) · a' · t² = (1/2) · (2a) · t² = 2 · [(1/2) · a · t²] = 2s.\n3. Kết luận: Quãng đường đi được tăng gấp đôi (s' = 2s).",
+        examTrapWarning: "⚠️ Cảnh báo: Nếu đề bài cho 'cùng QUÃNG ĐƯỜNG s' và hỏi vận tốc thì lại dùng công thức v² = 2as => v' = √2 · v. Cần chú ý điều kiện cố định là thời gian t hay quãng đường s."
+      },
+      practiceQuiz: {
+        question: "Một vật chuyển động thẳng nhanh dần đều không vận tốc đầu, đi được quãng đường s trong giây thứ nhất. Quãng đường vật đi được trong giây thứ hai là bao nhiêu?",
+        options: ["3s", "2s", "4s", "1.5s"],
+        correctIndex: 0,
+        hint1: "Quãng đường đi được sau t giây: s(t) = (1/2) · a · t².",
+        hint2: "Trong giây thứ nhất: s_1 = s(1) = 0.5 a. Sau 2 giây: s(2) = (1/2) · a · 2² = 2 a = 4 s_1. Quãng đường trong giây thứ hai = s(2) - s(1).",
+        explanation: "s(1) = 0.5 a = s. s(2) = 0.5 a · 2² = 2 a = 4s. Quãng đường đi được riêng trong giây thứ 2: Δs_2 = s(2) - s(1) = 4s - s = 3s."
+      }
+    };
+  }
+
+  // If English is selected, transform Vietnamese data into 100% fluent English
+  if (isEn) {
+    return autoTranslateMethodology(rawData);
+  }
+
+  return rawData;
+};
+

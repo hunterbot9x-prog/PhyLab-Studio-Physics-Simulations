@@ -43,6 +43,20 @@ export default function TheoryModal({ isOpen, experiment, onClose, lang }) {
   const displaySummary = isEn ? (theory.summaryEn || theory.summary) : theory.summary;
   const displayGuideSteps = isEn ? (theory.guideStepsEn || theory.guideSteps) : theory.guideSteps;
 
+  const getCategoryEn = (cat) => {
+    switch (cat) {
+      case 'Cơ học': return 'Mechanics';
+      case 'Nhiệt học': return 'Thermodynamics';
+      case 'Điện - Từ': return 'Electricity & Magnetism';
+      case 'Quang học': return 'Optics';
+      case 'Vật lý Hiện đại': return 'Modern Physics';
+      default: return cat;
+    }
+  };
+
+  const displayCategory = isEn ? getCategoryEn(experiment.category) : experiment.category;
+  const displayGrade = isEn ? (experiment.grade === 'IGCSE' || experiment.grade === 'A Level' ? experiment.grade : `Grade ${experiment.grade}`) : experiment.gradeLabel;
+
   const handleOptionSelect = (cId, optionIndex) => {
     if (submitted) return;
     setSelectedAnswers(prev => ({ ...prev, [cId]: optionIndex }));
@@ -80,7 +94,7 @@ export default function TheoryModal({ isOpen, experiment, onClose, lang }) {
               <BookOpen className="w-4 h-4" /> {displaySgkRef}
             </span>
             <span className="bg-amber-500/20 text-amber-300 text-[11px] px-2.5 py-0.5 rounded-full font-bold">
-              {experiment.gradeLabel} - {experiment.category}
+              {displayGrade} - {displayCategory}
             </span>
           </div>
 

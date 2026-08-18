@@ -1185,6 +1185,86 @@ export const EXPERIMENTS_DATA = [
     ]
   },
   {
+    id: "g12-lc-oscillator",
+    grade: 12,
+    gradeLabel: "Grade 12",
+    curriculum: "VN",
+    category: "Điện - Từ",
+    title: "Mạch Dao Động Điện Từ LC & Sóng Điện Từ",
+    titleEn: "Electromagnetic LC Oscillator & EM Waves",
+    subtitle: "Khảo sát dao động điện tích q(t), dòng điện i(t) và chuyển hóa năng lượng điện - từ",
+    subtitleEn: "Investigate charge q(t), current i(t) and electric-magnetic energy exchange",
+    icon: "Radio",
+    description: "Mô phỏng nạp điện cho tụ C từ nguồn DC và đóng khóa sang cuộn cảm L. Khảo sát dao động điện từ điều hòa q(t), i(t) trên dao động ký CRO, chu kỳ Thomson T = 2π√(LC) và bước sóng λ = c·T.",
+    theory: {
+      objective: "Kiểm chứng sự biến thiên tuần hoàn của điện tích q(t), điện áp u(t) và dòng điện i(t) trong mạch dao động LC; khảo sát sự bảo toàn năng lượng điện từ.",
+      objectiveEn: "Verify periodic oscillation of charge q(t), voltage u(t) and current i(t) in an LC tank circuit; investigate total electromagnetic energy conservation.",
+      purpose: "Ứng dụng cốt lõi trong thu - phát sóng vô tuyến Radio, truyền hình TV, viễn thông 5G/Wifi, radar định vị và thẻ từ RFID.",
+      purposeEn: "Foundational application in radio/TV transmitters and receivers, 5G/Wi-Fi wireless communications, radar, and contactless RFID cards.",
+      summary: "Mạch LC gồm cuộn cảm thuần L mắc nối tiếp với tụ điện C tạo thành mạch dao động điện từ tự do. Điện tích và dòng điện biến thiên điều hòa lệch pha nhau π/2.",
+      summaryEn: "An ideal LC circuit consists of an inductor L connected in closed loop with a capacitor C, generating undamped sinusoidal electromagnetic oscillations with a π/2 phase difference between current and charge.",
+      formulas: [
+        {
+          label: "Chu kỳ & Tần số dao động riêng Thomson",
+          labelEn: "Thomson Natural Period & Frequency",
+          formula: "T = 2π · √(L · C),   f = 1 / (2π · √(L · C))",
+          symbols: [
+            { symbol: "T", name: "Chu kỳ dao động riêng", nameEn: "Oscillation period", unit: "s hoặc µs", unitEn: "s or µs" },
+            { symbol: "f", name: "Tần số dao động riêng", nameEn: "Natural frequency", unit: "Hz hoặc kHz", unitEn: "Hz or kHz" },
+            { symbol: "L", name: "Độ tự cảm cuộn dây", nameEn: "Inductance", unit: "H (Henry) hoặc mH", unitEn: "H or mH" },
+            { symbol: "C", name: "Điện dung của tụ điện", nameEn: "Capacitance", unit: "F (Farad) hoặc µF", unitEn: "F or µF" }
+          ]
+        },
+        {
+          label: "Bước sóng điện từ trong chân không",
+          labelEn: "Electromagnetic Wavelength in Vacuum",
+          formula: "λ = c · T = 2π · c · √(L · C)",
+          symbols: [
+            { symbol: "λ", name: "Bước sóng điện từ thu/phát", nameEn: "EM wavelength", unit: "m hoặc km", unitEn: "meters or km" },
+            { symbol: "c", name: "Tốc độ ánh sáng trong chân không", nameEn: "Speed of light", unit: "3 × 10⁸ m/s", unitEn: "3 × 10⁸ m/s" }
+          ]
+        },
+        {
+          label: "Bảo toàn Năng lượng Điện từ",
+          labelEn: "Conservation of Electromagnetic Energy",
+          formula: "W = W_C + W_L = (1/2) · (q² / C) + (1/2) · L · i² = const",
+          symbols: [
+            { symbol: "W", name: "Năng lượng điện từ toàn phần", nameEn: "Total EM energy", unit: "J (Joule) hoặc mJ", unitEn: "J or mJ" },
+            { symbol: "W_C", name: "Năng lượng điện trường trong tụ", nameEn: "Electric field energy", unit: "J (Joule) hoặc mJ", unitEn: "J or mJ" },
+            { symbol: "W_L", name: "Năng lượng từ trường trong cuộn cảm", nameEn: "Magnetic field energy", unit: "J (Joule) hoặc mJ", unitEn: "J or mJ" }
+          ]
+        }
+      ],
+      sgkRef: "SGK Vật lý 12 (Chuyên đề Mạch Dao Động Điện Từ LC & Sóng Điện Từ)",
+      sgkRefEn: "Grade 12 Physics & Cambridge A Level Physics (Topic: Electromagnetic Oscillations & Waves)",
+      guideSteps: [
+        "Bước 1: Bật khóa chuyển K sang vị trí '1. Nạp Điện (E)' để tích điện đầy cho tụ điện C.",
+        "Bước 2: Chuyển khóa K sang vị trí '2. Phóng LC' để đóng kín mạch LC và kích hoạt dao động điện từ.",
+        "Bước 3: Điều chỉnh L (mH), C (µF), U0 (V) và quan sát dạng sóng u(t), i(t) trên màn hình dao động ký Oscilloscope.",
+        "Bước 4: Tăng điện trở tiêu hao R để quan sát hiện tượng dao động tắt dần."
+      ],
+      guideStepsEn: [
+        "Step 1: Switch dual key K to position '1. DC Charge' to charge capacitor C from DC power supply.",
+        "Step 2: Flip key K to position '2. LC Oscillate' to close the LC loop and initiate electromagnetic oscillations.",
+        "Step 3: Adjust L (mH), C (µF), U0 (V) and observe the u(t) and i(t) waveforms on the CRT Oscilloscope.",
+        "Step 4: Increase damping resistance R to observe damped electromagnetic decay."
+      ]
+    },
+    defaultParams: { switchState: "oscillate", inductancemH: 5.0, capacitanceuF: 2.0, initialVoltage: 12.0, resistanceOhm: 0.0 },
+    challenges: [
+      {
+        id: "c1",
+        question: "Trong mạch dao động LC lý tưởng, khi điện tích trên bản tụ điện đạt giá trị cực đại q = Q0 thì cường độ dòng điện i trong mạch bằng bao nhiêu?",
+        questionEn: "In an ideal LC circuit, when capacitor charge reaches maximum q = Q0, what is the current i in the circuit?",
+        options: ["i = I0", "i = 0", "i = I0 / 2", "i = I0 / √2"],
+        optionsEn: ["i = I0", "i = 0", "i = I0 / 2", "i = I0 / √2"],
+        correctIndex: 1,
+        explanation: "Khi q = Q0, toàn bộ năng lượng tập trung ở điện trường tụ điện (W_C = W_max) nên năng lượng từ trường W_L = 0 => Dòng điện i = 0.",
+        explanationEn: "When q = Q0, all energy is stored in the electric field of capacitor (W_C = W_max), so magnetic energy W_L = 0, which means current i = 0."
+      }
+    ]
+  },
+  {
     id: "g12-standingwave",
     grade: 12,
     gradeLabel: "Grade 12",
@@ -2046,6 +2126,287 @@ export const EXPERIMENTS_DATA = [
         correctIndex: 0,
         explanation: "λ/4 = L1 + c = 16.75cm => λ = 0.67m. Tốc độ v = f · λ = 512 · 0.67 = 343 m/s.",
         explanationEn: "λ/4 = L1 + c = 16.75cm => λ = 0.67m. Speed v = f · λ = 512 · 0.67 = 343 m/s."
+      }
+    ]
+  },
+  {
+    id: "g12-bohr-atom",
+    grade: 12,
+    gradeLabel: "Grade 12",
+    curriculum: "VN",
+    category: "Vật lý Hiện đại",
+    title: "Mẫu Nguyên Tử Bohr & Quang Phổ Vạch Hydro",
+    titleEn: "Bohr Atomic Model & Hydrogen Spectral Lines",
+    subtitle: "Khảo sát mức năng lượng En = -13.6/n², chuyển mức lượng tử và các dãy Lyman, Balmer, Paschen",
+    subtitleEn: "Investigate energy levels En = -13.6/n², quantum transitions and Lyman, Balmer, Paschen series",
+    icon: "Sparkles",
+    description: "Mô phỏng quỹ đạo dừng K, L, M, N, O, P của electron quanh hạt nhân. Chuyển mức lượng tử phát xạ photon tạo các vạch quang phổ nhìn thấy Hα, Hβ, Hγ, Hδ và thang năng lượng.",
+    theory: {
+      objective: "Kiểm chứng tiên đề Bohr về các trạng thái dừng và sự phát xạ/hấp thụ photon khi nguyên tử chuyển mức năng lượng: hf = E_cao - E_thấp.",
+      objectiveEn: "Verify Bohr's postulates of stationary states and photon emission/absorption during energy level transitions: hf = E_high - E_low.",
+      purpose: "Giải thích quang phổ phát xạ của các nguyên tố, phân tích thành phần hóa học của các ngôi sao trong vũ trụ và chế tạo laser.",
+      purposeEn: "Explains elemental emission spectra, astrophysical stellar spectroscopy, and semiconductor laser design.",
+      summary: "Nguyên tử chỉ tồn tại trong các trạng thái dừng có năng lượng xác định En = -13.6 / n² (eV). Khi chuyển từ mức cao về mức thấp, nguyên tử phát xạ 1 photon có năng lượng đúng bằng độ chênh lệch: ε = h·f = hc/λ = E_cao - E_thấp.",
+      summaryEn: "Hydrogen atom exists only in discrete stationary energy states En = -13.6 / n² (eV). Transition from higher to lower state emits a photon with energy ε = hf = hc/λ = E_high - E_low.",
+      formulas: [
+        {
+          label: "Mức năng lượng nguyên tử Hydro",
+          labelEn: "Hydrogen Energy Levels",
+          formula: "E_n = -13.6 / n²   (eV)    (n = 1, 2, 3, 4, 5, 6...)",
+          symbols: [
+            { symbol: "E_n", name: "Năng lượng ở trạng thái dừng n", nameEn: "Stationary state energy", unit: "eV", unitEn: "eV" },
+            { symbol: "n", name: "Số lượng tử chính (1=K, 2=L, 3=M, 4=N, 5=O, 6=P)", nameEn: "Principal quantum number", unit: "nguyên", unitEn: "integer" }
+          ]
+        },
+        {
+          label: "Bước sóng photon phát xạ / hấp thụ",
+          labelEn: "Emitted Photon Wavelength",
+          formula: "λ = (h · c) / (E_cao - E_thấp) = 1242 / ΔE(eV)   (nm)",
+          symbols: [
+            { symbol: "λ", name: "Bước sóng vạch quang phổ phát xạ", nameEn: "Spectral line wavelength", unit: "nm", unitEn: "nm" },
+            { symbol: "h", name: "Hằng số Planck", nameEn: "Planck's constant", unit: "6.626 × 10⁻³⁴ J·s", unitEn: "6.626 × 10⁻³⁴ J·s" },
+            { symbol: "c", name: "Tốc độ ánh sáng", nameEn: "Speed of light", unit: "3 × 10⁸ m/s", unitEn: "3 × 10⁸ m/s" }
+          ]
+        }
+      ],
+      sgkRef: "SGK Vật lý 12 (Chuyên đề Mẫu nguyên tử Bohr & Quang phổ Hydro)",
+      sgkRefEn: "Grade 12 Physics & Cambridge A Level (Chapter: Quantum Physics - Bohr Model)",
+      guideSteps: [
+        "Bước 1: Chọn mức năng lượng ban đầu n_cao (n=2 đến 6).",
+        "Bước 2: Chọn mức năng lượng chuyển về n_thấp (n=1 đến 5).",
+        "Bước 3: Nhấn nút 'Kích hoạt chuyển mức' để quan sát electron nhảy quỹ đạo và phát xạ photon sóng.",
+        "Bước 4: Đọc bước sóng vạch quang phổ λ (nm) và đối chiếu với dãy Balmer (Hα, Hβ, Hγ, Hδ)."
+      ],
+      guideStepsEn: [
+        "Step 1: Select initial energy level n_high (n=2 to 6).",
+        "Step 2: Select destination level n_low (n=1 to 5).",
+        "Step 3: Click 'Trigger Quantum Jump' to observe electron transition and emitted photon wavepacket.",
+        "Step 4: Read emitted wavelength λ (nm) and compare with Balmer series visible lines."
+      ]
+    },
+    defaultParams: { initialOrbitN: 3, finalOrbitN: 2, autoRotate: true },
+    challenges: [
+      {
+        id: "c1",
+        question: "Khi electron trong nguyên tử Hydro chuyển từ quỹ đạo M (n=3, E3 = -1.51 eV) về quỹ đạo L (n=2, E2 = -3.40 eV), nguyên tử phát ra vạch quang phổ nào?",
+        questionEn: "When electron in Hydrogen transitions from orbit M (n=3, E3 = -1.51 eV) to orbit L (n=2, E2 = -3.40 eV), which spectral line is emitted?",
+        options: ["Vạch đỏ Hα (656 nm) trong dãy Balmer", "Vạch tím trong dãy Lyman", "Bức xạ hồng ngoại dãy Paschen", "Tia X"],
+        optionsEn: ["Red line Hα (656 nm) in Balmer series", "Violet line in Lyman series", "Infrared radiation in Paschen series", "X-ray"],
+        correctIndex: 0,
+        explanation: "ΔE = E3 - E2 = -1.51 - (-3.40) = 1.89 eV. Bước sóng λ = 1242 / 1.89 = 656 nm ứng với vạch đỏ Hα trong dãy Balmer.",
+        explanationEn: "ΔE = E3 - E2 = -1.51 - (-3.40) = 1.89 eV. Wavelength λ = 1242 / 1.89 = 656 nm which is red Hα line in Balmer series."
+      }
+    ]
+  },
+  {
+    id: "g11-lorentz-force",
+    grade: 11,
+    gradeLabel: "Grade 11",
+    curriculum: "VN",
+    category: "Điện - Từ",
+    title: "Lực Lorentz & Khối Phổ Kế Phân Tách Đồng Vị",
+    titleEn: "Lorentz Force & Mass Spectrometry",
+    subtitle: "Khảo sát quỹ đạo tròn bán kính R = mv/(qB) và phân tách đồng vị Carbon, Uranium",
+    subtitleEn: "Investigate circular trajectory radius R = mv/(qB) and separate Carbon, Uranium isotopes",
+    icon: "Compass",
+    description: "Mô phỏng súng bắn hạt điện tích (proton, alpha, electron, đồng vị C12/C14, U235/U238) bay vào từ trường đều B. Phân tích lực Lorentz FL = qvB, bán kính quỹ đạo R và điểm đập trên phim cảm biến.",
+    theory: {
+      objective: "Khảo sát chuyển động tròn đều của hạt mang điện trong từ trường đều dưới tác dụng của lực từ Lorentz: F_L = |q| · v · B.",
+      objectiveEn: "Investigate uniform circular motion of charged particles in a uniform magnetic field governed by Lorentz force: F_L = |q| · v · B.",
+      purpose: "Ứng dụng trong máy gia tốc hạt Cyclotron tại CERN, khối phổ kế định tuổi Carbon-14 và làm giàu Uranium-235 trong y tế/năng lượng.",
+      purposeEn: "Applications in CERN cyclotron particle accelerators, Carbon-14 archaeological mass spectrometry, and medical isotope enrichment.",
+      summary: "Khi hạt điện tích bay vuông góc vào từ trường đều B, lực Lorentz đóng vai trò lực hướng tâm làm hạt chuyển động tròn đều với bán kính R = (m · v) / (|q| · B).",
+      summaryEn: "When a charged particle enters perpendicular to uniform B-field, Lorentz force provides centripetal force resulting in circular motion of radius R = (m · v) / (|q| · B).",
+      formulas: [
+        {
+          label: "Bán kính quỹ đạo tròn trong từ trường",
+          labelEn: "Cyclotron Orbit Radius",
+          formula: "R = (m · v) / (|q| · B) = √[2 · m · U / (|q| · B²)]",
+          symbols: [
+            { symbol: "R", name: "Bán kính quỹ đạo tròn", nameEn: "Orbit radius", unit: "m hoặc cm", unitEn: "meters or cm" },
+            { symbol: "m", name: "Khối lượng của hạt điện tích", nameEn: "Particle mass", unit: "kg", unitEn: "kg" },
+            { symbol: "v", name: "Vận tốc của hạt", nameEn: "Particle velocity", unit: "m/s", unitEn: "m/s" },
+            { symbol: "q", name: "Điện tích của hạt", nameEn: "Particle charge", unit: "C (Coulomb)", unitEn: "Coulombs" },
+            { symbol: "B", name: "Cảm ứng từ của từ trường", nameEn: "Magnetic flux density", unit: "T (Tesla)", unitEn: "Teslas" }
+          ]
+        },
+        {
+          label: "Chu kỳ & Tần số Cyclotron",
+          labelEn: "Cyclotron Period & Frequency",
+          formula: "T = (2π · m) / (|q| · B),   f = (|q| · B) / (2π · m)",
+          symbols: [
+            { symbol: "T", name: "Chu kỳ quay của hạt (không phụ thuộc v)", nameEn: "Cyclotron period (independent of v)", unit: "s", unitEn: "seconds" },
+            { symbol: "f", name: "Tần số quay Cyclotron", nameEn: "Cyclotron frequency", unit: "Hz hoặc MHz", unitEn: "Hz or MHz" }
+          ]
+        }
+      ],
+      sgkRef: "SGK Vật lý 11 (Chuyên đề Lực Lorentz & Chuyển động hạt mang điện trong từ trường)",
+      sgkRefEn: "Grade 11 Physics & Cambridge A Level (Chapter 20: Magnetic Fields - Charged Particles)",
+      guideSteps: [
+        "Bước 1: Chọn loại hạt hoặc đồng vị (Proton, Alpha, C12, C14, U235, U238).",
+        "Bước 2: Chỉnh cảm ứng từ B (Tesla) và điện áp gia tốc U (kV).",
+        "Bước 3: Đổi chiều vectơ từ trường ⊗ (vào trong) hoặc ⊙ (ra ngoài).",
+        "Bước 4: Nhấn 'Bắn hạt' để theo dõi quỹ đạo vòng cung và vị trí đập trên màn hứng (khoảng cách 2R)."
+      ],
+      guideStepsEn: [
+        "Step 1: Select ion species (Proton, Alpha, C-12, C-14, U-235, U-238).",
+        "Step 2: Set magnetic field B (Tesla) and accelerating voltage U (kV).",
+        "Step 3: Toggle B-field direction ⊗ (into screen) or ⊙ (out of screen).",
+        "Step 4: Click 'Launch Ion' to observe circular trajectory and impact diameter (2R)."
+      ]
+    },
+    defaultParams: { ionType: "proton", magneticFieldB: 0.8, accelVoltageKV: 5.0, fieldDirection: "into" },
+    challenges: [
+      {
+        id: "c1",
+        question: "Hai ion có cùng điện tích q và cùng động năng bay vuông góc vào từ trường đều B. Ion nào có khối lượng m lớn hơn thì bán kính quỹ đạo R sẽ như thế nào?",
+        questionEn: "Two ions with equal charge q and equal kinetic energy enter a uniform B field. Which ion with larger mass m has what orbit radius R?",
+        options: ["Bán kính R lớn hơn (R tỉ lệ với √m)", "Bán kính R nhỏ hơn", "Bán kính R không đổi", "R bằng 0"],
+        optionsEn: ["Larger radius R (R proportional to √m)", "Smaller radius R", "Unchanged radius R", "Zero radius R"],
+        correctIndex: 0,
+        explanation: "R = mv / (qB) = √(2m·E_k) / (qB) => R tỉ lệ thuận với căn bậc 2 của khối lượng √m (đồng vị nặng hơn đập ở xa hơn).",
+        explanationEn: "R = mv / (qB) = √(2m·E_k) / (qB) => R is directly proportional to √m, so heavier isotopes curve with larger radius."
+      }
+    ]
+  },
+  {
+    id: "g10-circular-motion",
+    grade: 10,
+    gradeLabel: "Grade 10",
+    curriculum: "VN",
+    category: "Cơ học",
+    title: "Chuyển Động Tròn Đều & Lực Hướng Tâm",
+    titleEn: "Uniform Circular Motion & Centripetal Force",
+    subtitle: "Khảo sát lực hướng tâm F_ht = m·v²/r, gia tốc hướng tâm và góc nghiêng đường cong an toàn",
+    subtitleEn: "Investigate centripetal force F_ht = m·v²/r, centripetal acceleration and banked road angle",
+    icon: "RotateCw",
+    description: "Mô phỏng vật chuyển động tròn đều trên đĩa quay và xe chạy qua khúc cua nghiêng góc θ. Phân tích vectơ vận tốc tiếp tuyến v, vectơ lực hướng tâm F_ht và tính góc nghiêng thiết kế đường cong.",
+    theory: {
+      objective: "Kiểm chứng công thức lực hướng tâm F_ht = m·v²/r = m·ω²·r và khảo sát góc nghiêng an toàn tan θ = v²/(g·r) ở khúc cua đường bộ.",
+      objectiveEn: "Verify centripetal force equation F_ht = m·v²/r = m·ω²·r and investigate safe road banking angle tan θ = v²/(g·r).",
+      purpose: "Thiết kế góc nghiêng khúc cua đường cao tốc/đường đua F1, tàu lượn siêu tốc và tính toán quỹ đạo vệ tinh địa tĩnh.",
+      purposeEn: "Design of banked highway & F1 racetrack curves, roller coaster loops, and geostationary satellite orbital mechanics.",
+      summary: "Trong chuyển động tròn đều, gia tốc hướng tâm luôn hướng về tâm quỹ đạo và có độ lớn a_ht = v² / r. Hợp lực tác dụng lên vật đóng vai trò lực hướng tâm: F_ht = m · a_ht = m · v² / r.",
+      summaryEn: "In uniform circular motion, centripetal acceleration points towards orbit center with magnitude a_ht = v² / r. Net radial force provides centripetal force: F_ht = m · a_ht = m · v² / r.",
+      formulas: [
+        {
+          label: "Lực hướng tâm",
+          labelEn: "Centripetal Force Formula",
+          formula: "F_ht = m · a_ht = m · (v² / r) = m · ω² · r",
+          symbols: [
+            { symbol: "F_ht", name: "Lực hướng tâm", nameEn: "Centripetal force", unit: "N (Newton)", unitEn: "Newtons (N)" },
+            { symbol: "m", name: "Khối lượng của vật", nameEn: "Object mass", unit: "kg", unitEn: "kg" },
+            { symbol: "v", name: "Tốc độ dài", nameEn: "Linear speed", unit: "m/s", unitEn: "m/s" },
+            { symbol: "r", name: "Bán kính quỹ đạo tròn", nameEn: "Radius of circle", unit: "m", unitEn: "meters (m)" },
+            { symbol: "ω", name: "Tốc độ góc", nameEn: "Angular velocity", unit: "rad/s", unitEn: "rad/s" }
+          ]
+        },
+        {
+          label: "Góc nghiêng đường cong an toàn",
+          labelEn: "Safe Banking Angle for Curved Road",
+          formula: "tan θ = v² / (g · r)",
+          symbols: [
+            { symbol: "θ", name: "Góc nghiêng mặt đường so với phương ngang", nameEn: "Road banking incline angle", unit: "độ (°)", unitEn: "degrees (°)" },
+            { symbol: "g", name: "Gia tốc trọng trường", nameEn: "Gravitational acceleration", unit: "9.81 m/s²", unitEn: "9.81 m/s²" }
+          ]
+        }
+      ],
+      sgkRef: "SGK Vật lý 10 (Bài Lực hướng tâm & Chuyển động tròn đều)",
+      sgkRefEn: "Grade 10 Physics & Cambridge IGCSE / A Level (Topic: Circular Motion)",
+      guideSteps: [
+        "Bước 1: Chọn khối lượng vật m (kg) và bán kính quỹ đạo r (m).",
+        "Bước 2: Thay đổi tốc độ quay RPM (vòng/phút).",
+        "Bước 3: Chuyển đổi góc nhìn 'Mặt phẳng tròn' hoặc 'Góc nghiêng khúc cua θ'.",
+        "Bước 4: Ghi nhận lực hướng tâm F_ht (N) và góc nghiêng an toàn θ (°)."
+      ],
+      guideStepsEn: [
+        "Step 1: Set mass m (kg) and radius r (m).",
+        "Step 2: Adjust rotation speed RPM.",
+        "Step 3: Toggle view perspective 'Top Orbit View' or 'Banked Road θ'.",
+        "Step 4: Record centripetal force F_ht (N) and safe banking angle θ (°)."
+      ]
+    },
+    defaultParams: { massKg: 1.5, radiusM: 1.2, rpmSpeed: 30, viewMode: "top_disk" },
+    challenges: [
+      {
+        id: "c1",
+        question: "Một vật chuyển động tròn đều với bán kính r không đổi. Nếu tốc độ dài v tăng gấp 2 lần (v' = 2v) thì lực hướng tâm F_ht thay đổi như thế nào?",
+        questionEn: "An object moves in uniform circular motion with constant radius r. If linear speed v is doubled (v' = 2v), how does centripetal force F_ht change?",
+        options: ["Tăng gấp 4 lần (tỉ lệ với v²)", "Tăng gấp 2 lần", "Giảm 2 lần", "Không đổi"],
+        optionsEn: ["Quadrupled (proportional to v²)", "Doubled", "Halved", "Unchanged"],
+        correctIndex: 0,
+        explanation: "F_ht = m · v² / r. Khi v tăng 2 thì v² tăng 4 => F_ht tăng gấp 4 lần.",
+        explanationEn: "F_ht = m · v² / r. Since F_ht is proportional to v², doubling speed quadruples force."
+      }
+    ]
+  },
+  {
+    id: "g12-thermodynamics-1st",
+    grade: 12,
+    gradeLabel: "Grade 12",
+    curriculum: "VN",
+    category: "Nhiệt học",
+    title: "Định Luật I Nhiệt Động Lực Học & Giản Đồ P-V",
+    titleEn: "1st Law of Thermodynamics & P-V Indicator Cycles",
+    subtitle: "Khảo sát biểu thức ΔU = A + Q và 4 quá trình Đẳng nhiệt, Đẳng áp, Đẳng tích, Đoạn nhiệt",
+    subtitleEn: "Investigate ΔU = A + Q and 4 processes: Isothermal, Isobaric, Isochoric, Adiabatic",
+    icon: "Flame",
+    description: "Mô phỏng xilanh khí nén có piston di động, ngọn lửa gia nhiệt và đồ thị chỉ thị P-V. Khảo sát công A, nhiệt lượng Q và độ biến thiên nội năng ΔU.",
+    theory: {
+      objective: "Kiểm chứng nguyên lý bảo toàn năng lượng trong nhiệt học qua Định luật I Nhiệt động lực học: ΔU = A + Q.",
+      objectiveEn: "Verify the First Law of Thermodynamics energy balance equation: ΔU = A + Q across ideal gas processes.",
+      purpose: "Hiểu nguyên lý hoạt động của động cơ đốt trong ô tô (chu trình Otto), động cơ phản lực máy bay, tủ lạnh và điều hòa không khí.",
+      purposeEn: "Foundational in automobile internal combustion engines (Otto cycle), jet engines, heat pumps, and refrigeration.",
+      summary: "Độ biến thiên nội năng của hệ bằng tổng công và nhiệt lượng mà hệ nhận được: ΔU = A + Q. Quy ước dấu: Q > 0 (nhận nhiệt), Q < 0 (tỏa nhiệt), A > 0 (nhận công - bị nén), A < 0 (sinh công - dãn nở).",
+      summaryEn: "The change in internal energy equals net heat added plus net work done on the system: ΔU = A + Q. Sign conventions: Q > 0 (heat in), Q < 0 (heat out), A > 0 (work in / compression), A < 0 (work done by gas / expansion).",
+      formulas: [
+        {
+          label: "Định luật I Nhiệt động lực học",
+          labelEn: "First Law of Thermodynamics",
+          formula: "ΔU = A + Q",
+          symbols: [
+            { symbol: "ΔU", name: "Độ biến thiên nội năng của khối khí", nameEn: "Internal energy change", unit: "J (Joule)", unitEn: "Joules (J)" },
+            { symbol: "A", name: "Công mà khối khí nhận được (A = -P·ΔV)", nameEn: "Work done on gas", unit: "J (Joule)", unitEn: "Joules (J)" },
+            { symbol: "Q", name: "Nhiệt lượng mà khối khí nhận được", nameEn: "Heat added to gas", unit: "J (Joule)", unitEn: "Joules (J)" }
+          ]
+        },
+        {
+          label: "Nội năng khí lý tưởng đơn nguyên tử",
+          labelEn: "Ideal Gas Internal Energy",
+          formula: "U = (3/2) · n · R · T => ΔU = (3/2) · n · R · ΔT",
+          symbols: [
+            { symbol: "n", name: "Số mol khí", nameEn: "Amount of gas", unit: "mol", unitEn: "moles" },
+            { symbol: "R", name: "Hằng số khí lý tưởng", nameEn: "Ideal gas constant", unit: "8.314 J/(mol·K)", unitEn: "8.314 J/(mol·K)" },
+            { symbol: "T", name: "Nhiệt độ tuyệt đối", nameEn: "Absolute temperature", unit: "K (Kelvin)", unitEn: "Kelvins (K)" }
+          ]
+        }
+      ],
+      sgkRef: "SGK Vật lý 12 mới (Chuyên đề Khí lý tưởng & Định luật I Nhiệt động lực học)",
+      sgkRefEn: "Grade 12 Physics & Cambridge A Level (Chapter 15: Ideal Gases & Thermodynamics)",
+      guideSteps: [
+        "Bước 1: Chọn quá trình nhiệt động: Đẳng nhiệt (T), Đẳng áp (P), Đẳng tích (V) hoặc Đoạn nhiệt (Q=0).",
+        "Bước 2: Thay đổi nhiệt lượng truyền Q (J) và tỉ số nén thể tích V1/V2.",
+        "Bước 3: Quan sát chuyển động của piston và quỹ đạo biến đổi trên giản đồ P - V.",
+        "Bước 4: Kiểm tra sự cân bằng của biểu thức ΔU = A + Q."
+      ],
+      guideStepsEn: [
+        "Step 1: Select thermodynamic process: Isothermal (T), Isobaric (P), Isochoric (V) or Adiabatic (Q=0).",
+        "Step 2: Adjust heat added Q (J) and volume compression ratio V1/V2.",
+        "Step 3: Observe piston motion, flame heating, and state curve on P - V diagram.",
+        "Step 4: Verify energy balance equation ΔU = A + Q."
+      ]
+    },
+    defaultParams: { processType: "isothermal", gasMoles: 1.0, heatAddedJoules: 150.0, initialTempK: 300.0, compressionRatio: 1.5 },
+    challenges: [
+      {
+        id: "c1",
+        question: "Chất khí trong xilanh dãn nở đẩy piston sinh một công 80 J và nhận từ nguồn nhiệt một nhiệt lượng 120 J. Độ biến thiên nội năng ΔU của khí là bao nhiêu?",
+        questionEn: "Gas in a cylinder expands doing 80 J of work while absorbing 120 J of heat. What is the internal energy change ΔU?",
+        options: ["+40 J (Nội năng tăng 40 J)", "+200 J", "-40 J", "+80 J"],
+        optionsEn: ["+40 J (Internal energy increases by 40 J)", "+200 J", "-40 J", "+80 J"],
+        correctIndex: 0,
+        explanation: "Khí sinh công nên A = -80 J. Khí nhận nhiệt nên Q = +120 J. ΔU = A + Q = -80 + 120 = +40 J.",
+        explanationEn: "Gas expands doing work => A = -80 J. Gas absorbs heat => Q = +120 J. ΔU = A + Q = -80 + 120 = +40 J."
       }
     ]
   }

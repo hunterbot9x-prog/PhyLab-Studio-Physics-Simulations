@@ -7,6 +7,7 @@ export default function VerticalSpringSimulator({ lang, params = {}, onParamChan
   const animRef = useRef(null);
 
   const mode = params.mode || 'hooke_stretch'; // 'hooke_stretch' | 'oscillation' | 'energy'
+  const springMount = params.springMount || 'hanging'; // 'hanging' (Lò xo treo ở trên / dãn) | 'supported' (Lò xo đặt ở dưới / nén)
   const massKg = params.massKg || 2.0; // Khối lượng m (kg)
   const springK = params.springK || 80; // Độ cứng lò xo k (N/m)
   const naturalLenCm = params.naturalLenCm || 20; // Chiều dài tự nhiên l0 (cm)
@@ -19,10 +20,10 @@ export default function VerticalSpringSimulator({ lang, params = {}, onParamChan
   const g = 9.81; // m/s²
   const weightN = massKg * g; // P = m * g (N)
 
-  // Equilibrium Stretch Δl0 = (m * g) / k (m)
+  // Equilibrium Compression / Stretch Δl0 = (m * g) / k (m)
   const deltaL0m = weightN / springK;
   const deltaL0cm = deltaL0m * 100;
-  const totalEquilLenCm = naturalLenCm + deltaL0cm;
+  const totalEquilLenCm = springMount === 'supported' ? Math.max(2, naturalLenCm - deltaL0cm) : (naturalLenCm + deltaL0cm);
 
   // Oscillation Physics
   const periodT = 2 * Math.PI * Math.sqrt(massKg / springK);
@@ -75,23 +76,45 @@ export default function VerticalSpringSimulator({ lang, params = {}, onParamChan
       ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
     }
 
-    // Top Ceiling Beam
-    const ceilingY = 40;
-    ctx.fillStyle = '#334155';
-    ctx.fillRect(80, ceilingY - 15, 300, 15);
-    ctx.strokeStyle = '#475569';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(80, ceilingY - 15, 300, 15);
-
-    // Ceiling Hatching
-    ctx.strokeStyle = '#64748b';
-    ctx.lineWidth = 1;
-    for (let hx = 90; hx < 370; hx += 15) {
-      ctx.beginPath(); ctx.moveTo(hx, ceilingY - 15); ctx.lineTo(hx - 8, ceilingY - 25); ctx.stroke();
-    }
-
+    const isSupported = springMount === 'supported';
     const springAnchorX = 180;
     const scalePxPerCm = 3.2; // 1 cm = 3.2 px
+    const massW = 48;
+    const massH = 40;
+
+    const ceilingY = 50;
+    const baseY = height - 50;
+
+    // Draw Support Base or Ceiling
+    if (isSupported) {
+      // Base Floor on Bottom
+      ctx.fillStyle = '#334155';
+      ctx.fillRect(80, baseY, 300, 15);
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(80, baseY, 300, 15);
+
+      // Floor Hatching
+      ctx.strokeStyle = '#64748b';
+      ctx.lineWidth = 1;
+      for (let hx = 90; hx < 370; hx += 15) {
+        ctx.beginPath(); ctx.moveTo(hx, baseY + 15); ctx.lineTo(hx + 8, baseY + 25); ctx.stroke();
+      }
+    } else {
+      // Ceiling on Top
+      ctx.fillStyle = '#334155';
+      ctx.fillRect(80, ceilingY - 15, 300, 15);
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(80, ceilingY - 15, 300, 15);
+
+      // Ceiling Hatching
+      ctx.strokeStyle = '#64748b';
+      ctx.lineWidth = 1;
+      for (let hx = 90; hx < 370; hx += 15) {
+        ctx.beginPath(); ctx.moveTo(hx, ceilingY - 15); ctx.lineTo(hx - 8, ceilingY - 25); ctx.stroke();
+      }
+    }
 
     // Calculate Instantaneous Displacement x(t) and Spring Length
     let currentDisplaceCm = 0;
@@ -99,14 +122,29 @@ export default function VerticalSpringSimulator({ lang, params = {}, onParamChan
       currentDisplaceCm = amplitudeCm * Math.sin(omega * animProgress);
     }
 
-    const currentTotalStretchCm = deltaL0cm + currentDisplaceCm;
-    const currentSpringLengthPx = (naturalLenCm + currentTotalStretchCm) * scalePxPerCm;
-    const massCenterY = ceilingY + currentSpringLengthPx;
+    let currentSpringLengthPx;
+    let massCenterY;
+    let centerGY;
+
+    if (isSupported) {
+      // Compressed spring standing on base
+      const currentEquilLenCm = Math.max(2, naturalLenCm - deltaL0cm);
+      const currentLengthCm = Math.max(2, currentEquilLenCm + currentDisplaceCm);
+      currentSpringLengthPx = currentLengthCm * scalePxPerCm;
+      massCenterY = baseY - currentSpringLengthPx - massH;
+      centerGY = massCenterY + massH / 2;
+    } else {
+      // Stretched spring hanging from ceiling
+      const currentTotalStretchCm = deltaL0cm + currentDisplaceCm;
+      currentSpringLengthPx = (naturalLenCm + currentTotalStretchCm) * scalePxPerCm;
+      massCenterY = ceilingY + currentSpringLengthPx;
+      centerGY = massCenterY + massH / 2;
+    }
 
     // Draw Metric Ruler / Scale on the Left
     const rulerX = 90;
-    const rulerTopY = ceilingY;
-    const rulerBottomY = ceilingY + 320;
+    const rulerTopY = isSupported ? baseY - 320 : ceilingY;
+    const rulerBottomY = isSupported ? baseY : ceilingY + 320;
 
     ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
     ctx.strokeStyle = '#38bdf8';
@@ -119,8 +157,8 @@ export default function VerticalSpringSimulator({ lang, params = {}, onParamChan
     ctx.textAlign = 'right';
 
     for (let cm = 0; cm <= 100; cm += 5) {
-      const ry = rulerTopY + cm * scalePxPerCm;
-      if (ry > rulerBottomY) break;
+      const ry = isSupported ? (baseY - cm * scalePxPerCm) : (rulerTopY + cm * scalePxPerCm);
+      if (ry < rulerTopY || ry > rulerBottomY) continue;
 
       ctx.strokeStyle = cm % 10 === 0 ? '#38bdf8' : '#64748b';
       ctx.lineWidth = cm % 10 === 0 ? 2 : 1;
@@ -138,7 +176,7 @@ export default function VerticalSpringSimulator({ lang, params = {}, onParamChan
     ctx.fillStyle = '#38bdf8';
     ctx.font = 'bold 10px Inter';
     ctx.textAlign = 'center';
-    ctx.fillText('cm', rulerX, rulerTopY - 5);
+    ctx.fillText('cm', rulerX, (isSupported ? rulerTopY - 5 : rulerBottomY + 15));
 
     // ----------------------------------------------------
     // DRAW DYNAMIC HELICAL VERTICAL SPRING
@@ -151,21 +189,28 @@ export default function VerticalSpringSimulator({ lang, params = {}, onParamChan
     ctx.shadowColor = mode === 'oscillation' ? '#ec4899' : '#38bdf8';
     ctx.shadowBlur = 10;
     ctx.beginPath();
-    ctx.moveTo(springAnchorX, ceilingY);
 
-    for (let i = 0; i <= coils; i++) {
-      const cy = ceilingY + (i / coils) * currentSpringLengthPx;
-      const cx = springAnchorX + (i % 2 === 0 ? 1 : -1) * springRadius;
-      ctx.lineTo(cx, cy);
+    if (isSupported) {
+      ctx.moveTo(springAnchorX, baseY);
+      for (let i = 0; i <= coils; i++) {
+        const cy = baseY - (i / coils) * currentSpringLengthPx;
+        const cx = springAnchorX + (i % 2 === 0 ? 1 : -1) * springRadius;
+        ctx.lineTo(cx, cy);
+      }
+      ctx.lineTo(springAnchorX, baseY - currentSpringLengthPx);
+    } else {
+      ctx.moveTo(springAnchorX, ceilingY);
+      for (let i = 0; i <= coils; i++) {
+        const cy = ceilingY + (i / coils) * currentSpringLengthPx;
+        const cx = springAnchorX + (i % 2 === 0 ? 1 : -1) * springRadius;
+        ctx.lineTo(cx, cy);
+      }
+      ctx.lineTo(springAnchorX, massCenterY);
     }
-    ctx.lineTo(springAnchorX, massCenterY);
     ctx.stroke();
     ctx.shadowBlur = 0;
 
-    // Draw Hanging Mass Cylinder / Box
-    const massW = 48;
-    const massH = 40;
-
+    // Draw Mass Box
     ctx.fillStyle = '#0284c7';
     ctx.strokeStyle = '#ffffff';
     ctx.lineWidth = 2;
@@ -173,7 +218,6 @@ export default function VerticalSpringSimulator({ lang, params = {}, onParamChan
     ctx.strokeRect(springAnchorX - massW / 2, massCenterY, massW, massH);
 
     // Center of mass G dot
-    const centerGY = massCenterY + massH / 2;
     ctx.fillStyle = '#ffffff';
     ctx.beginPath();
     ctx.arc(springAnchorX, centerGY, 3.5, 0, 2 * Math.PI);
@@ -187,7 +231,9 @@ export default function VerticalSpringSimulator({ lang, params = {}, onParamChan
     // DRAW CLEAR FORCE VECTORS (P, F_dh) & LEADER LINES
     // ----------------------------------------------------
     const vectorScale = 0.8;
-    const currentElasticForceN = springK * (currentTotalStretchCm / 100);
+    const currentElasticForceN = isSupported
+      ? springK * Math.abs(naturalLenCm - (naturalLenCm - deltaL0cm + currentDisplaceCm)) / 100
+      : springK * ((deltaL0cm + currentDisplaceCm) / 100);
 
     // Helper to draw vector arrow
     const drawVector = (startX, startY, endX, endY, color) => {
@@ -365,10 +411,39 @@ export default function VerticalSpringSimulator({ lang, params = {}, onParamChan
             </div>
           </div>
 
+          {/* Spring Mount Orientation (Hanging vs Supported) */}
+          <div className="p-2.5 rounded-xl bg-cyan-950/30 border border-cyan-500/30 flex flex-col gap-1.5">
+            <label className="text-xs font-bold text-cyan-300 block">
+              {isEn ? '📍 Spring Mounting Type:' : '📍 Cách bố trí Lò xo:'}
+            </label>
+            <div className="grid grid-cols-2 gap-1.5">
+              <button
+                onClick={() => { onParamChange('springMount', 'hanging'); handleReset(); }}
+                className={`py-1.5 px-2 rounded-lg text-[11px] font-bold transition-all ${
+                  springMount === 'hanging'
+                    ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
+                    : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                {isEn ? '🔻 Hanging (Top/Stretch)' : '🔻 Treo Trên (Lò xo dãn)'}
+              </button>
+              <button
+                onClick={() => { onParamChange('springMount', 'supported'); handleReset(); }}
+                className={`py-1.5 px-2 rounded-lg text-[11px] font-bold transition-all ${
+                  springMount === 'supported'
+                    ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20'
+                    : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                {isEn ? '🔺 Supported (Bottom/Compress)' : '🔺 Đế Dưới (Lò xo nén)'}
+              </button>
+            </div>
+          </div>
+
           {/* Mass Slider */}
           <div>
             <div className="flex justify-between text-xs text-slate-400 mb-1">
-              <span>{isEn ? 'Hanging Mass m:' : 'Khối lượng quả cân m:'}</span>
+              <span>{isEn ? 'Mass m:' : 'Khối lượng quả cân m:'}</span>
               <span className="text-amber-400 font-bold">{massKg} kg</span>
             </div>
             <input
@@ -413,7 +488,7 @@ export default function VerticalSpringSimulator({ lang, params = {}, onParamChan
         {/* Realtime Measured Results */}
         <div className="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col gap-3">
           <h3 className="text-sm font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4" /> {isEn ? 'STRETCH & PERIOD DATA' : 'Độ Giãn & Chu Kỳ Dao Động'}
+            <ShieldCheck className="w-4 h-4" /> {isEn ? 'STRETCH & PERIOD DATA' : 'Độ Biến Dạng & Chu Kỳ Dao Động'}
           </h3>
 
           <div className="grid grid-cols-2 gap-2 text-xs">
@@ -423,7 +498,11 @@ export default function VerticalSpringSimulator({ lang, params = {}, onParamChan
             </div>
 
             <div className="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-              <span className="text-slate-400 block text-[11px]">{isEn ? 'Stretch Δl0:' : 'Độ giãn VTCB Δl0:'}</span>
+              <span className="text-slate-400 block text-[11px]">
+                {springMount === 'supported'
+                  ? (isEn ? 'Compression Δl0:' : 'Độ NÉN VTCB Δl0:')
+                  : (isEn ? 'Stretch Δl0:' : 'Độ DÃN VTCB Δl0:')}
+              </span>
               <span className="text-emerald-400 font-bold text-sm">{deltaL0cm.toFixed(1)} cm</span>
             </div>
 
@@ -439,8 +518,10 @@ export default function VerticalSpringSimulator({ lang, params = {}, onParamChan
 
             <div className="col-span-2 bg-emerald-950/40 p-3 rounded-lg border border-emerald-800/50 flex justify-between items-center">
               <div>
-                <span className="text-emerald-300 font-semibold block text-xs">{isEn ? 'Total Length at Equil:' : 'Chiều dài tại VTCB:'}</span>
-                <span className="text-slate-400 text-[10px]">l = l0 + Δl0</span>
+                <span className="text-emerald-300 font-semibold block text-xs">{isEn ? 'Length at Equil:' : 'Chiều dài tại VTCB:'}</span>
+                <span className="text-slate-400 text-[10px]">
+                  {springMount === 'supported' ? 'l = l0 - Δl0 (Nén)' : 'l = l0 + Δl0 (Dãn)'}
+                </span>
               </div>
               <span className="font-extrabold text-xs px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                 {totalEquilLenCm.toFixed(1)} cm

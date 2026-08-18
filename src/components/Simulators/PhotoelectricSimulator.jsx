@@ -50,14 +50,14 @@ export default function PhotoelectricSimulator({ lang, params = {}, onParamChang
 
   // Wavelength to RGB Color Converter for Light Beam & Photons
   const getWavelengthColor = (nm) => {
-    if (nm < 380) return { hex: '#c084fc', name: 'Tia Tử Ngoại (UV)', glow: 'rgba(192, 132, 252, 0.6)' };
-    if (nm < 440) return { hex: '#818cf8', name: 'Chùm Tím (Violet)', glow: 'rgba(129, 140, 248, 0.6)' };
-    if (nm < 490) return { hex: '#38bdf8', name: 'Chùm Lam (Blue)', glow: 'rgba(56, 189, 248, 0.6)' };
-    if (nm < 560) return { hex: '#4ade80', name: 'Chùm Lục (Green)', glow: 'rgba(74, 222, 128, 0.6)' };
-    if (nm < 590) return { hex: '#facc15', name: 'Chùm Vàng (Yellow)', glow: 'rgba(250, 204, 21, 0.6)' };
-    if (nm < 640) return { hex: '#fb923c', name: 'Chùm Cam (Orange)', glow: 'rgba(251, 146, 60, 0.6)' };
-    if (nm <= 750) return { hex: '#f87171', name: 'Chùm Đỏ (Red)', glow: 'rgba(248, 113, 113, 0.6)' };
-    return { hex: '#991b1b', name: 'Tia Hồng Ngoại (IR)', glow: 'rgba(153, 27, 27, 0.4)' };
+    if (nm < 380) return { hex: '#c084fc', name: isEn ? 'Ultraviolet (UV)' : 'Tia Tử Ngoại (UV)', glow: 'rgba(192, 132, 252, 0.6)' };
+    if (nm < 440) return { hex: '#818cf8', name: isEn ? 'Violet Beam' : 'Chùm Tím (Violet)', glow: 'rgba(129, 140, 248, 0.6)' };
+    if (nm < 490) return { hex: '#38bdf8', name: isEn ? 'Blue Beam' : 'Chùm Lam (Blue)', glow: 'rgba(56, 189, 248, 0.6)' };
+    if (nm < 560) return { hex: '#4ade80', name: isEn ? 'Green Beam' : 'Chùm Lục (Green)', glow: 'rgba(74, 222, 128, 0.6)' };
+    if (nm < 590) return { hex: '#facc15', name: isEn ? 'Yellow Beam' : 'Chùm Vàng (Yellow)', glow: 'rgba(250, 204, 21, 0.6)' };
+    if (nm < 640) return { hex: '#fb923c', name: isEn ? 'Orange Beam' : 'Chùm Cam (Orange)', glow: 'rgba(251, 146, 60, 0.6)' };
+    if (nm <= 750) return { hex: '#f87171', name: isEn ? 'Red Beam' : 'Chùm Đỏ (Red)', glow: 'rgba(248, 113, 113, 0.6)' };
+    return { hex: '#991b1b', name: isEn ? 'Infrared (IR)' : 'Tia Hồng Ngoại (IR)', glow: 'rgba(153, 27, 27, 0.4)' };
   };
 
   const lightColorObj = getWavelengthColor(wavelengthNm);
